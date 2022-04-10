@@ -14,9 +14,13 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        echo "hello";
+       return view('admin.category');
     }
 
+    public function manage_category(){
+
+        return view('admin.manage_category');
+    }
     /**
      * Show the form for creating a new resource.
      *
