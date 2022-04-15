@@ -14,21 +14,42 @@ class CategoryController extends Controller
      */
     public function index()
     {
-       return view('admin.category');
+        $result['data'] = Category::all();
+       return view('admin.category',$result);
     }
 
-    public function manage_category(){
+    public function manage_category(Request $request, $id=''){
+if($id>0){
 
-        return view('admin.manage_category');
+          $arr = Category::where(['id'=>$id])->get();
+          $result['name'] = $arr['0']->name;
+          $result['slug'] = $arr['0']->slug;
+          $result['id'] = $arr['0']->id;
+
+
+}else{
+
+$result['name'] = '';
+$result['slug'] = '';
+$result['id'] = 0;
+
+}
+
+        return view('admin.manage_category',$result);
     }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function delete($id)
+
     {
-        //
+        $category = Category::find($id);
+        $category->delete();
+        session()->flash('message','Category Deleted Sucessfully');
+        return redirect()->route('admin.category');
+
     }
 
     /**
@@ -37,9 +58,34 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function manage_category_process(Request $request)
     {
-        //
+     $request->validate([
+'name' => 'required',
+'slug' => 'required|unique:categories,slug,'.$request->post('id'),
+]);
+
+if($request->post('id')>0){
+    $category = Category::find($request->post('id'));
+    $msg = "Category Update Sucessfully";
+
+}else{
+    $category = new Category();
+    $msg = "Category Added Sucessfully";
+}
+
+$category->name = $request->post('name');
+$category->slug = $request->post('slug');
+$category->save();
+$request->session()->flash('message',$msg);
+
+return redirect('admin/category');
+
+
+
+
+
+
     }
 
     /**
