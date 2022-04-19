@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CouponController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 /*
@@ -27,8 +28,19 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::get('admin/manage_category', [CategoryController::class, 'manage_category'])->name('manage_category');
     Route::get('admin/manage_category/{id}', [CategoryController::class, 'manage_category'])->name('manage_category');
     Route::get('admin/category/delete/{id}', [CategoryController::class, 'delete']);
+    Route::get('admin/category/status/{status}/{id}', [CategoryController::class, 'status']);
     Route::get('admin/category/edit/{id}', [CategoryController::class, 'edit']);
     Route::post('admin/manage_category_process', [CategoryController::class, 'manage_category_process'])->name('category.insert');
+
+
+    Route::get('admin/coupon', [CouponController::class, 'index'])->name('admin.coupon');
+    Route::get('admin/manage_coupon', [CouponController::class, 'manage_coupon'])->name('manage_coupon');
+    Route::get('admin/manage_coupon/{id}', [CouponController::class, 'manage_coupon'])->name('manage_coupon');
+    Route::get('admin/coupon/delete/{id}', [CouponController::class, 'delete']);
+    Route::get('admin/coupon/edit/{id}', [CouponController::class, 'edit']);
+    Route::get('admin/coupon/status/{status}/{id}', [CouponController::class, 'status']);
+    Route::post('admin/manage_coupon_process', [CouponController::class, 'manage_coupon_process'])->name('coupon.insert');
+
     Route::get('admin/logout', function () {
         session()->forget('ADMIN_LOGIN');
         session()->forget('ADMIN_ID');

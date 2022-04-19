@@ -5,7 +5,7 @@
 
 
     <!-- Title Page-->
-    <title>Login</title>
+    <title>@yield('page_title')</title>
 
     <!-- Fontfaces CSS-->
     <link href=" {{ asset('admin_asset/css/font-face.css') }}" rel="stylesheet" media="all">

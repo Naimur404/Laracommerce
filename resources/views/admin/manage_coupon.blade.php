@@ -1,8 +1,8 @@
 @extends('admin.layout')
-@section('page_title','Manage Category')
-@section('category_select','active')
+@section('page_title','Manage Coupon')
+@section('coupon_select','active')
 @section('container')
-    <h3> Manage Category</h3>
+    <h3> Manage Coupon</h3>
     <div class="row">
 
         <div class="col-lg-12  mt-2">
@@ -14,17 +14,17 @@
             </div>
             <div class="card">
                 {{ session('message') }}
-                <div class="card-header">Add Category</div>
+                <div class="card-header">Manage Coupon</div>
                 <div class="card-body">
 
 
 
-                    <form action="{{ route('category.insert') }}" method="post" >
+                    <form action="{{ route('coupon.insert') }}" method="post" >
                         @csrf
                         <div class="form-group">
-                            <label for="category" class="control-label mb-1">Category Name</label>
-                            <input id="name" name="name" type="text" class="form-control" aria-required="true"
-                                aria-invalid="false" value="{{ $name }}" required>
+                            <label for="category" class="control-label mb-1">Coupon Title</label>
+                            <input id="title" name="title" type="text" class="form-control" aria-required="true"
+                                aria-invalid="false" value="{{ $title }}" required>
                                 @error('name')
 
 
@@ -32,13 +32,22 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="cc-payment" class="control-label mb-1">Category Slug</label>
-                            <input id="slug" name="slug" type="text" class="form-control" aria-required="true"
-                                aria-invalid="false" value="{{ $slug }}" required>
-                                @error('slug')
+                            <label for="cc-payment" class="control-label mb-1">Cupon Code</label>
+                            <input id="code" name="code" type="text" class="form-control" aria-required="true"
+                                aria-invalid="false" value="{{ $code }}" required>
+                                @error('code')
                                 <div class="alert alert-danger" role="alert">
                                    {{ $message }}
                                 </div>
+
+                                @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="category" class="control-label mb-1">Coupon Value</label>
+                            <input id="value" name="value" type="text" class="form-control" aria-required="true"
+                                aria-invalid="false" value="{{ $value }}" required>
+                                @error('name')
+
 
                                 @enderror
                         </div>

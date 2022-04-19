@@ -51,6 +51,18 @@ $result['id'] = 0;
         return redirect()->route('admin.category');
 
     }
+    public function status(Request $request,$status)
+
+    {
+        $category = Category::find($request->id);
+        $category->status= $status;
+        $category->save();
+        session()->flash('message','Category Status Updated Sucessfully');
+        return redirect()->route('admin.category');
+
+
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -76,6 +88,7 @@ if($request->post('id')>0){
 
 $category->name = $request->post('name');
 $category->slug = $request->post('slug');
+$category->status = 1;
 $category->save();
 $request->session()->flash('message',$msg);
 
