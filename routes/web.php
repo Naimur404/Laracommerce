@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\SizeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 /*
@@ -40,6 +42,23 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::get('admin/coupon/edit/{id}', [CouponController::class, 'edit']);
     Route::get('admin/coupon/status/{status}/{id}', [CouponController::class, 'status']);
     Route::post('admin/manage_coupon_process', [CouponController::class, 'manage_coupon_process'])->name('coupon.insert');
+
+    Route::get('admin/size', [SizeController::class, 'index'])->name('admin.size');
+    Route::get('admin/manage_size', [SizeController::class, 'manage_size'])->name('manage_size');
+    Route::get('admin/manage_size/{id}', [SizeController::class, 'manage_size'])->name('manage_size');
+    Route::get('admin/size/delete/{id}', [SizeController::class, 'delete']);
+    Route::get('admin/size/edit/{id}', [SizeController::class, 'edit']);
+    Route::get('admin/size/status/{status}/{id}', [SizeController::class, 'status']);
+    Route::post('admin/manage_size_process', [SizeController::class, 'manage_size_process'])->name('size.insert');
+
+    Route::get('admin/color', [ColorController::class, 'index'])->name('admin.color');
+    Route::get('admin/manage_color', [ColorController::class, 'manage_color'])->name('manage_color');
+    Route::get('admin/manage_color/{id}', [ColorController::class, 'manage_color'])->name('manage_color');
+    Route::get('admin/color/delete/{id}', [ColorController::class, 'delete']);
+    Route::get('admin/color/edit/{id}', [ColorController::class, 'edit']);
+    Route::get('admin/color/status/{status}/{id}', [ColorController::class, 'status']);
+    Route::post('admin/manage_color_process', [ColorController::class, 'manage_color_process'])->name('color.insert');
+
 
     Route::get('admin/logout', function () {
         session()->forget('ADMIN_LOGIN');

@@ -22,8 +22,16 @@
                         <i class=" fas fa-solid fa-tag"></i>Coupon</a>
 
                 </li>
+                <li class=" @yield('size_select')">
+                    <a href="size">
+                        <i class="fas fa-solid fa-window-maximize"></i>Size</a>
 
+                </li>
+                <li class=" @yield('color_select')">
+                    <a href="color">
+                        <i class=" fas fa-solid fa-tag"></i>color</a>
 
+                </li>
 
             </ul>
         </nav>
