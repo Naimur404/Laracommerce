@@ -32,6 +32,11 @@
                         <i class=" fas fa-solid fa-tag"></i>color</a>
 
                 </li>
+                <li class=" @yield('product_select')">
+                    <a href="product">
+                        <i class=" fas fa-solid fa-list"></i>Product</a>
+
+                </li>
 
             </ul>
         </nav>

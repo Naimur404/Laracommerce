@@ -13,7 +13,15 @@
                 </a>
             </div>
             <div class="card">
-                {{ session('message') }}
+                @if(session()->has('message'))
+                <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+                    {{ session('message') }}
+
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                @endif
                 <div class="card-header">Manage Coupon</div>
                 <div class="card-body">
 

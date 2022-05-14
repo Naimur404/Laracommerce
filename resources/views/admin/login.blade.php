@@ -45,9 +45,12 @@
 
                                 </div>
                                 <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
+                                @if(session()->has('error'))
                                 <div class="alert alert-danger" role="alert">
                                     {{ session('error') }}
                                 </div>
+
+                               @endif
                             </form>
 
                         </div>
