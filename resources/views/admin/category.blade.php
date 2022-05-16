@@ -24,7 +24,7 @@
 
                                 <th>name</th>
                                 <th>slug</th>
-                                
+
 
                                 <th></th>
                             </tr>

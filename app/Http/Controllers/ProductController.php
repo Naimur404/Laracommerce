@@ -67,7 +67,7 @@ $result['id'] = 0;
     {
         $product = Product::find($id);
         $product->delete();
-        session()->flash('message','Category Deleted Sucessfully');
+        session()->flash('message','Product Deleted Sucessfully');
         return redirect()->route('admin.product');
 
     }
@@ -77,7 +77,7 @@ $result['id'] = 0;
         $product = Product::find($request->id);
         $product->status= $status;
         $product->save();
-        session()->flash('message','Category Status Updated Sucessfully');
+        session()->flash('message','Product Status Updated Sucessfully');
         return redirect()->route('admin.product');
 
 
@@ -99,11 +99,11 @@ $result['id'] = 0;
 
 if($request->post('id')>0){
     $product = Product::find($request->post('id'));
-    $msg = "Category Update Sucessfully";
+    $msg = "Product Update Sucessfully";
 
 }else{
     $product = new Product();
-    $msg = "Category Added Sucessfully";
+    $msg = "Product Added Sucessfully";
 }
 
 $product->name = $request->post('name');
@@ -138,42 +138,5 @@ return redirect('admin/product');
      * @param  \App\Models\Category  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Category $category)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Category $category)
-    {
-        //
-    }
+    
 }

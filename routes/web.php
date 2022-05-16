@@ -61,7 +61,7 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::post('admin/manage_color_process', [ColorController::class, 'manage_color_process'])->name('color.insert');
 
     Route::get('admin/product', [ProductController::class, 'index'])->name('admin.color');
-    Route::get('admin/manage_product', [ProductController::class, 'manage_color'])->name('manage_color');
+    Route::get('admin/manage_product', [ProductController::class, 'manage_product'])->name('manage_color');
     Route::get('admin/manage_product/{id}', [ProductController::class, 'manage_product'])->name('manage_product');
     Route::get('admin/product/delete/{id}', [ProductController::class, 'delete']);
     Route::get('admin/product/edit/{id}', [ProductController::class, 'edit']);
