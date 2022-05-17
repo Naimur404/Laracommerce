@@ -22,23 +22,28 @@
 
                 </li>
                 <li class="@yield('catagory_select')">
-                    <a class="js-arrow" href="#">
+                    <a class="js-arrow" href="{{ route('admin.category') }}">
                         <i class="fas fa-tachometer-alt"></i>Category</a>
 
                 </li>
                 <li class=" @yield('coupon_select')">
-                    <a href="coupon">
+                    <a href="{{ route('admin.coupon') }}">
                         <i class=" fas fa-solid fa-tag"></i>Coupon</a>
 
                 </li>
                 <li class=" @yield('size_select')">
-                    <a href="size">
+                    <a href="route('admin.size')">
                         <i class=" fas fa-solid fa-tag"></i>Size</a>
 
                 </li>
                 <li class=" @yield('color_select')">
-                    <a href="color">
+                    <a href="{{ route('admin.color') }}">
                         <i class=" fas fa-solid fa-tag"></i>color</a>
+
+                </li>
+                <li class=" @yield('product_select')">
+                    <a href="{{ route('admin.product') }}">
+                        <i class=" fas fa-solid fa-tag"></i>product</a>
 
                 </li>
 

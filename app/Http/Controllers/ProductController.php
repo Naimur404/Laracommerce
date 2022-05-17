@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -42,6 +43,7 @@ if($id>0){
 
 $result['name'] = '';
 $result['image'] = '';
+$result['category_id'] = '';
 $result['slug'] = '';
 $result['brand'] = '';
 $result['model'] = '';
@@ -54,6 +56,7 @@ $result['warranty'] = '';
 $result['id'] = 0;
 
 }
+$result['category'] = DB::table('categories')->where(['status'=>1])->get();
 
         return view('admin.manage_product',$result);
     }
@@ -92,8 +95,16 @@ $result['id'] = 0;
      */
     public function manage_product_process(Request $request)
     {
+
+        if($request->post('id')>0){
+           $image_validate = "mimes:png,jpg,jpeg";
+
+        }else{
+            $image_validate = "required|mimes:png,jpg,jpeg";
+        }
      $request->validate([
 'name' => 'required',
+'image' => $image_validate,
 'slug' => 'required|unique:products,slug,'.$request->post('id'),
 ]);
 
@@ -105,9 +116,18 @@ if($request->post('id')>0){
     $product = new Product();
     $msg = "Product Added Sucessfully";
 }
+if($request->hasFile('image')){
+    $image = $request->file('image');
+    $ext = $image->extension();
+    $image_name = time().'.'.$ext;
+    $image -> storeAs('/public/media', $image_name);
+    $product->image = $image_name;
+}
 
 $product->name = $request->post('name');
+$product->category_id = $request->post('category_id');
 $product->slug = $request->post('slug');
+
 $product->brand = $request->post('brand');
 $product->model = $request->post('model');
 $product->short_desc = $request->post('short_desc');
@@ -138,5 +158,5 @@ return redirect('admin/product');
      * @param  \App\Models\Category  $product
      * @return \Illuminate\Http\Response
      */
-    
+
 }

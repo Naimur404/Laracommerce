@@ -24,7 +24,7 @@
 
                                 <th>name</th>
                                 <th>slug</th>
-
+                                <th>image</th>
 
                                 <th></th>
                             </tr>
@@ -37,29 +37,34 @@
                                     <td>
                                         <span class="block-email">{{ $list->slug }}</span>
                                     </td>
+                                    <td>
+                                        @if($list->image != '')
+                                        <img width="80px" src="{{ asset('storage/media/' . $list->image) }}"/>
+                                        @endif
 
+                                    </td>
 
 
                                     <td>
 
                                         <div class="table-data-feature">
                                             @if ($list->status == 1)
-                                        <a href="product/status/0/{{ $list->id }}">
-                                                <button class="item" data-toggle="tooltip" data-placement="top"
-                                                    title="Active">
-                                                    <i class=" fas fa-solid fa-toggle-on"></i>
-                                                </button>
-                                            </a>
+                                                <a href="product/status/0/{{ $list->id }}">
+                                                    <button class="item" data-toggle="tooltip"
+                                                        data-placement="top" title="Active">
+                                                        <i class=" fas fa-solid fa-toggle-on"></i>
+                                                    </button>
+                                                </a>
                                             @elseif ($list->status == 0)
-                                            <a href="product/status/1/{{ $list->id }}">
-                                                <button class="item" data-toggle="tooltip" data-placement="top"
-                                                    title="Inactive">
-                                                    <i class=" fas fa-solid fa-toggle-off"></i>
-                                                </button>
-                                            </a>
+                                                <a href="product/status/1/{{ $list->id }}">
+                                                    <button class="item" data-toggle="tooltip"
+                                                        data-placement="top" title="Inactive">
+                                                        <i class=" fas fa-solid fa-toggle-off"></i>
+                                                    </button>
+                                                </a>
                                             @endif
 
-                                            <a href="manage_product/{{ $list->id }}">
+                                            <a href="{{ route('manage_product.edit', $list->id) }}">
                                                 <button class="item" data-toggle="tooltip" data-placement="top"
                                                     title="Edit">
                                                     <i class="zmdi zmdi-edit"></i>
