@@ -35,7 +35,8 @@ if($id>0){
           $result['technical_specification'] = $arr['0']->technical_specification;
           $result['uses'] = $arr['0']->uses;
           $result['warranty'] = $arr['0']->warranty;
-
+          $result['size_id'] = $arr['0']->size_id;
+          $result['color_id'] = $arr['0']->color_id;
           $result['id'] = $arr['0']->id;
 
 
@@ -53,10 +54,16 @@ $result['keywords'] = '';
 $result['technical_specification'] = '';
 $result['uses'] = '';
 $result['warranty'] = '';
+$result['size_id'] ='';
+$result['color_id'] = '';
 $result['id'] = 0;
-
 }
-$result['category'] = DB::table('categories')->where(['status'=>1])->get();
+
+    $result['category'] = DB::table('categories')->where(['status'=>1])->get();
+    $result['size'] = DB::table('sizes')->where(['status'=>1])->get();
+    $result['color'] = DB::table('colors')->where(['status'=>1])->get();
+
+
 
         return view('admin.manage_product',$result);
     }
