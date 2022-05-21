@@ -48,7 +48,7 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::get('admin/manage_size', [SizeController::class, 'manage_size'])->name('manage_size');
     Route::get('admin/manage_size/{id}', [SizeController::class, 'manage_size'])->name('manage_size.edit');
     Route::get('admin/size/delete/{id}', [SizeController::class, 'delete']);
-    
+
     Route::get('admin/size/status/{status}/{id}', [SizeController::class, 'status']);
     Route::post('admin/manage_size_process', [SizeController::class, 'manage_size_process'])->name('size.insert');
 
@@ -64,6 +64,7 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::get('admin/manage_product', [ProductController::class, 'manage_product'])->name('manage_product');
     Route::get('admin/manage_product/{id}', [ProductController::class, 'manage_product'])->name('manage_product.edit');
     Route::get('admin/product/delete/{id}', [ProductController::class, 'delete']);
+    Route::get('admin/product/product_arrt_delete/{paid}/{pid}', [ProductController::class, 'product_arrt_delete'])->name('product_arrt_delete');
 
     Route::get('admin/product/status/{status}/{id}', [ProductController::class, 'status']);
     Route::post('admin/manage_product_process', [ProductController::class, 'manage_product_process'])->name('product.insert');

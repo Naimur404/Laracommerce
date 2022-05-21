@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Product_art;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -35,10 +36,9 @@ if($id>0){
           $result['technical_specification'] = $arr['0']->technical_specification;
           $result['uses'] = $arr['0']->uses;
           $result['warranty'] = $arr['0']->warranty;
-          $result['size_id'] = $arr['0']->size_id;
-          $result['color_id'] = $arr['0']->color_id;
-          $result['id'] = $arr['0']->id;
 
+          $result['id'] = $arr['0']->id;
+          $result['productAttrArr'] = DB::table('product_arts')->where(['product_id'=>$id])->get();
 
 }else{
 
@@ -54,9 +54,17 @@ $result['keywords'] = '';
 $result['technical_specification'] = '';
 $result['uses'] = '';
 $result['warranty'] = '';
-$result['size_id'] ='';
-$result['color_id'] = '';
+
 $result['id'] = 0;
+$result['productAttrArr'][0]['product_id'] ='';
+$result['productAttrArr'][0]['attr_image'] ='';
+$result['productAttrArr'][0]['sku'] ='';
+$result['productAttrArr'][0]['mrp'] ='';
+$result['productAttrArr'][0]['price'] ='';
+$result['productAttrArr'][0]['qty'] ='';
+$result['productAttrArr'][0]['size_id'] ='';
+$result['productAttrArr'][0]['color_id'] ='';
+
 }
 
     $result['category'] = DB::table('categories')->where(['status'=>1])->get();
@@ -81,6 +89,15 @@ $result['id'] = 0;
         return redirect()->route('admin.product');
 
     }
+    public function product_arrt_delete( $paid,$pid)
+
+    {
+        DB::table('product_arts')->where(['id'=> $paid])->delete();
+
+return redirect('admin/manage_product/'.$pid);
+
+
+    }
     public function status(Request $request,$status)
 
     {
@@ -102,6 +119,7 @@ $result['id'] = 0;
      */
     public function manage_product_process(Request $request)
     {
+
 
         if($request->post('id')>0){
            $image_validate = "mimes:png,jpg,jpeg";
@@ -148,6 +166,40 @@ $product->warranty = $request->post('warranty');
 
 $product->status = 1;
 $product->save();
+$pid = $product->id;
+/**
+ * product attr start
+ */
+$SkuArr = $request->post('sku');
+$mrpArr = $request->post('mrp');
+$priceArr = $request->post('price');
+$qtyArr = $request->post('qty');
+$sizeArr = $request->post('size_id');
+$colorArr = $request->post('color_id');
+foreach($SkuArr as $key=>$val){
+    $productAttrArr['product_id'] = $pid;
+    $productAttrArr['sku'] = $SkuArr[$key];
+    $productAttrArr['attr_image'] = 'test';
+   $productAttrArr['mrp'] = $mrpArr[$key];
+    $productAttrArr['price'] = $priceArr[$key];
+    $productAttrArr['qty'] = $qtyArr[$key];
+    if($sizeArr[$key] == ''){
+        $productAttrArr['size_id'] = 0;
+    }else{
+        $productAttrArr['size_id'] = $sizeArr[$key];
+    }
+    if($colorArr[$key] == ''){
+        $productAttrArr['color_id'] = 0;
+    }else{
+        $productAttrArr['color_id'] = $colorArr[$key];
+    }
+
+
+
+    DB::table('product_arts')->insert($productAttrArr);
+}
+
+ //product attr end
 $request->session()->flash('message',$msg);
 
 return redirect('admin/product');

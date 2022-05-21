@@ -9,9 +9,9 @@
     @endif
     <h3> Manage Product</h3>
     <div class="row">
-
+        <form action="{{ route('product.insert') }}" method="post" enctype="multipart/form-data">
         <div class="col-lg-12  mt-2">
-            <form action="{{ route('product.insert') }}" method="post" enctype="multipart/form-data">
+
                 <div class="table-data__tool-right mb-2">
                     <a href="{{ route('admin.product') }}">
                         <button class="au-btn au-btn-icon au-btn--green au-btn--small">
@@ -150,48 +150,65 @@
         </div>
         <h2 class="m-b-10">Product Attributes</h2>
         <div class="col-lg-12  mt-2" id="new_box">
+@php
+    $loop_count_num = 1;
 
-            <div class="card" id="product_arrt_1">
+@endphp
+@foreach ($productAttrArr as $key=>$val)
+<?php
+    $loop_count_pre = $loop_count_num;
+$pArr = (array)$val;
+?>
+            <div class="card" id="product_arrt_{{ $loop_count_num++ }}">
+
+
+
                 <div class="card-body" >
                     <div class="form-group">
                         <div class="row">
 
                             <div class="col-md-4">
                                 <label for="sku" class="control-label mb-1">SKU</label>
-                                <input id="name" name="sku" type="text" class="form-control" aria-required="true"
-                                    aria-invalid="false" required >
+                                <input id="name" name="sku[]" type="text" class="form-control" aria-required="true"
+                                    aria-invalid="false" value="{{ $pArr['sku'] }}" required >
 
                             </div>
                             <div class="col-md-3">
                                 <label for="mrp" class="control-label mb-1">MRP</label>
-                                <input id="name" name="mrp" type="number" class="form-control" aria-required="true"
-                                    aria-invalid="false" required>
+                                <input id="name" name="mrp[]" type="number" class="form-control" aria-required="true"
+                                    aria-invalid="false" value="{{ $pArr['mrp'] }}" required>
 
                             </div>
                             <div class="col-md-3">
                                 <label for="price" class="control-label mb-1">Price</label>
-                                <input id="name" name="price" type="number" class="form-control" aria-required="true"
+                                <input id="name" name="price[]" type="number" class="form-control" aria-required="true" value="{{ $pArr['price'] }}"
                                     aria-invalid="false" >
 
                             </div>
                             <div class="col-md-2">
                                 <label for="mrp" class="control-label mb-1">Qty</label>
-                                <input id="name" name="qty" type="number" class="form-control" aria-required="true"
-                                    aria-invalid="false" >
+                                <input id="name" name="qty[]" type="number" class="form-control" aria-required="true"
+                                    aria-invalid="false" value="{{ $pArr['qty'] }}" >
 
                             </div>
                             <div class="col-md-4">
                                 <label for="cc-payment" class="control-label mb-1">Size</label>
-                                <select id="slug" name="size_id" type="text" class="form-control" aria-required="true"
+                                <select id="slug" name="size_id[]" type="text" class="form-control" aria-required="true"
                                     aria-invalid="false" >
                                     <option value="">Select Size</option>
                                     @foreach ($size as $list)
-                                        @if ($size_id == $list->id)
-                                            <option selected value="{{ $list->id }}">
-                                            @else
-                                            <option value="{{ $list->id }}">
-                                        @endif
+
+                                       @if ($pArr['size_id'] == $list->id)
+                                       <option selected value="{{ $list->id }}">
+
                                         {{ $list->size }}</option>
+
+
+                                        @else
+                                            <option value="{{ $list->id }}">
+
+                                        {{ $list->size }}</option>
+                                        @endif
                                     @endforeach
 
                                 </select>
@@ -204,16 +221,20 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="cc-payment" class="control-label mb-1">Color</label>
-                                <select id="slug" name="color_id" type="text" class="form-control" aria-required="true"
+                                <select id="slug" name="color_id[]" type="text" class="form-control" aria-required="true"
                                     aria-invalid="false" >
                                     <option value="">Select color</option>
                                     @foreach ($color as $list)
-                                        @if ($color_id == $list->id)
+                                    @if($pArr['color_id'] == $list->id)
+
                                             <option selected value="{{ $list->id }}">
-                                            @else
-                                            <option value="{{ $list->id }}">
-                                        @endif
-                                        {{ $list->color }}</option>
+
+@else
+
+<option  value="{{ $list->id }}">
+
+    @endif
+    {{ $list->color }}</option>
                                     @endforeach
 
                                 </select>
@@ -226,7 +247,7 @@
                             </div>
                             <div class="col-md-2">
                                 <label for="category" class="control-label mb-1">Image</label>
-                                <input id="image" name="attr_image" type="file" class="form-control" aria-required="true"
+                                <input id="image" name="attr_image[]" type="file" class="form-control" aria-required="true"
                                     aria-invalid="false" {{ $image_requried }}>
                                 @error('attr_image')
                                     <div class="alert alert-danger" role="alert">
@@ -234,38 +255,56 @@
                                     </div>
                                 @enderror
                             </div>
+                            @if($loop_count_num == 2)
                             <div class="col-md-2">
+
                                 <label for="category" class="control-label mb-1"></label>
                                 <button class="au-btn au-btn-icon au-btn--green au-btn--large mt-4" onclick="add_more()">
                                     <i class="zmdi zmdi-plus"></i>Add</button>
+                                </div>
 
-                            </div>
+                            @else
+                            <div class="col-md-2">
+                                <label for="category" class="control-label mb-1"></label>
+                            <a href="{{ url('admin/product/product_arrt_delete/') }}/{{ $pArr['id'] }}/{{ $id }}">
+                            <button class="au-btn au-btn-icon au-btn--green au-btn--large mt-4" type="button" >
+                                <i class="zmdi zmdi-minus"></i>Delete</button>
+
+                            </a>
+                        </div>
+                            @endif
+
+
                         </div>
                     </div>
                 </div>
+
             </div>
+            @endforeach
         </div>
-    </div>
-    <div>
-        <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
+        <div>
+            <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
 
-            <span id="payment-button-amount">Submit</span>
+                <span id="payment-button-amount">Submit</span>
 
-            <input type="hidden" name="id" value="{{ $id }}">
-            </form>
+                <input type="hidden" name="id" value="{{ $id }}">
+
+        </div>
+    </form>
     </div>
+
     <script>
         var loop_count = 1;
         function add_more() {
             loop_count++;
             var html = '<div class="card" id="product_arrt_'+loop_count+'"><div class = "card-body" ><div class = "form-group" ><div class = "row" >';
-            html+='<div class="col-md-4"><label for="sku" class="control-label mb-1">SKU</label><input id="name" name="sku" type="text" class="form-control" aria-required="true" aria-invalid="false" required></div>';
-                html+= '<div class="col-md-3"><label for="mrp" class="control-label mb-1">MRP</label><input id="mrp" name="mrp" type="text" class="form-control" aria-required="true" aria-invalid="false" required></div>';
-                html+= '<div class="col-md-3"><label for="price" class="control-label mb-1">Price</label><input id="price" name="price" type="number" class="form-control" aria-required="true" aria-invalid="false" required></div>';
-                html+='  <div class="col-md-2"><label for="mrp" class="control-label mb-1">Qty</label><input id="name" name="qty" type="number" class="form-control" aria-required="true"aria-invalid="false" ></div>';
-                html+='<div class="col-md-4"><label for="cc-payment" class="control-label mb-1">Size</label><select id="slug" name="size_id" type="text" class="form-control" aria-required="true" aria-invalid="false" ><option value="">Select Size</option> @foreach ($size as $list)@if ($size_id == $list->id)<option selected value="{{ $list->id }}">@else<option value="{{ $list->id }}"> @endif{{ $list->size }}</option> @endforeach</select></div>';
-html+='<div class="col-md-3"> <label for="cc-payment" class="control-label mb-1">Color</label><select id="slug" name="color_id" type="text" class="form-control" aria-required="true"aria-invalid="false" > <option value="">Select color</option>@foreach ($color as $list) @if ($color_id == $list->id)<option selected value="{{ $list->id }}">@else<option value="{{ $list->id }}"> @endif{{ $list->color }}</option> @endforeach</select></div>';
-html+= '<div class="col-md-3"><label for="category" class="control-label mb-1">Image</label><input id="image" name="attr_image" type="file" class="form-control" aria-required="true"aria-invalid="false" {{ $image_requried }}></div>';
+            html+='<div class="col-md-4"><label for="sku" class="control-label mb-1">SKU</label><input id="name" name="sku[]" type="text" class="form-control" aria-required="true" aria-invalid="false" required></div>';
+                html+= '<div class="col-md-3"><label for="mrp" class="control-label mb-1">MRP</label><input id="mrp" name="mrp[]" type="text" class="form-control" aria-required="true" aria-invalid="false" required></div>';
+                html+= '<div class="col-md-3"><label for="price" class="control-label mb-1">Price</label><input id="price" name="price[]" type="number" class="form-control" aria-required="true" aria-invalid="false" required></div>';
+                html+='  <div class="col-md-2"><label for="mrp" class="control-label mb-1">Qty</label><input id="name" name="qty[]" type="number" class="form-control" aria-required="true"aria-invalid="false" ></div>';
+                html+='<div class="col-md-4"><label for="cc-payment" class="control-label mb-1">Size</label><select id="slug" name="size_id[]" type="text" class="form-control" aria-required="true" aria-invalid="false" ><option value="">Select Size</option> @foreach ($size as $list)   @if ($pArr['size_id'] == $list->id)<option selected value="{{ $list->id }}">{{ $list->size }}</option>@else<option value="{{ $list->id }}">{{ $list->size }}</option> @endif @endforeach</select></div>';
+html+='<div class="col-md-3"> <label for="cc-payment" class="control-label mb-1">Color</label><select id="slug" name="color_id[]" type="text" class="form-control" aria-required="true"aria-invalid="false" > <option value="">Select color</option>@foreach ($color as $list)   @if($pArr['color_id'] == $list->id)<option selected value="{{ $list->id }}">@else<option  value="{{ $list->id }}">@endif{{ $list->color }}</option> @endforeach</select></div>';
+html+= '<div class="col-md-3"><label for="category" class="control-label mb-1">Image</label><input id="image" name="attr_image[]" type="file" class="form-control" aria-required="true"aria-invalid="false" {{ $image_requried }}></div>';
 html+= '<div class="col-md-2"><label for="category" class="control-label mb-1"></label><button class="au-btn au-btn-icon au-btn--green au-btn--large mt-4" onclick=remove_more("'+loop_count+'")><i class="zmdi zmdi-minus"></i>Remove</button></div>';
             html+= '</div></div></div></div>';
 
