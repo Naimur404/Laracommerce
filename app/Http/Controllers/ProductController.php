@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Product_art;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\File\File;
 
 class ProductController extends Controller
 {
@@ -39,7 +40,13 @@ if($id>0){
 
           $result['id'] = $arr['0']->id;
           $result['productAttrArr'] = DB::table('product_arts')->where(['product_id'=>$id])->get();
-
+          $productImgArr= DB::table('product_imgs')->where(['product_id'=>$id])->get();
+if(!isset($productImgArr[0])){
+    $result['productImgArr'][0]['images'] ='';
+    $result['productImgArr'][0]['id'] ='';
+}else{
+    $result['productImgArr'] = $productImgArr;
+}
 }else{
 
 $result['name'] = '';
@@ -56,6 +63,7 @@ $result['uses'] = '';
 $result['warranty'] = '';
 
 $result['id'] = 0;
+$result['productAttrArr'][0]['id'] ='';
 $result['productAttrArr'][0]['product_id'] ='';
 $result['productAttrArr'][0]['attr_image'] ='';
 $result['productAttrArr'][0]['sku'] ='';
@@ -64,6 +72,8 @@ $result['productAttrArr'][0]['price'] ='';
 $result['productAttrArr'][0]['qty'] ='';
 $result['productAttrArr'][0]['size_id'] ='';
 $result['productAttrArr'][0]['color_id'] ='';
+$result['productImgArr'][0]['images'] ='';
+$result['productImgArr'][0]['id'] ='';
 
 }
 
@@ -98,6 +108,16 @@ return redirect('admin/manage_product/'.$pid);
 
 
     }
+    public function product_image_delete($piid,$pid)
+
+    {
+        DB::table('product_imgs')->where(['id'=> $piid])->delete();
+
+return redirect('admin/manage_product/'.$pid);
+
+
+    }
+
     public function status(Request $request,$status)
 
     {
@@ -131,7 +151,27 @@ return redirect('admin/manage_product/'.$pid);
 'name' => 'required',
 'image' => $image_validate,
 'slug' => 'required|unique:products,slug,'.$request->post('id'),
+//attr_image.* using for array input
+'attr_image.*' => 'mimes:png,jpg,jpeg',
+'images.*' => 'mimes:png,jpg,jpeg',
+
 ]);
+       $paidArr = $request->post('paid');
+       $SkuArr = $request->post('sku');
+       $mrpArr = $request->post('mrp');
+       $priceArr = $request->post('price');
+       $qtyArr = $request->post('qty');
+       $sizeArr = $request->post('size_id');
+       $colorArr = $request->post('color_id');
+       foreach($SkuArr as $key=>$val){
+
+       $check = DB::table('product_arts')->where('sku','=',$SkuArr[$key])->where('id','!=',$paidArr[$key])->get();
+
+if(isset($check[0])){
+    $request->session()->flash('sku_error',$SkuArr[$key]. 'SKU Already Used');
+    return redirect(request()->headers->get('referer'));
+}
+}
 
 if($request->post('id')>0){
     $product = Product::find($request->post('id'));
@@ -170,19 +210,17 @@ $pid = $product->id;
 /**
  * product attr start
  */
-$SkuArr = $request->post('sku');
-$mrpArr = $request->post('mrp');
-$priceArr = $request->post('price');
-$qtyArr = $request->post('qty');
-$sizeArr = $request->post('size_id');
-$colorArr = $request->post('color_id');
+
 foreach($SkuArr as $key=>$val){
+
     $productAttrArr['product_id'] = $pid;
     $productAttrArr['sku'] = $SkuArr[$key];
-    $productAttrArr['attr_image'] = 'test';
-   $productAttrArr['mrp'] = $mrpArr[$key];
+
+    $productAttrArr['mrp'] = $mrpArr[$key];
     $productAttrArr['price'] = $priceArr[$key];
     $productAttrArr['qty'] = $qtyArr[$key];
+
+
     if($sizeArr[$key] == ''){
         $productAttrArr['size_id'] = 0;
     }else{
@@ -193,23 +231,65 @@ foreach($SkuArr as $key=>$val){
     }else{
         $productAttrArr['color_id'] = $colorArr[$key];
     }
+    if($request->hasFile("attr_image.$key")){
 
+       $rand = rand('111111111','999999999');
+       $attr_image = $request->file("attr_image.$key");
+       $ext = $attr_image->extension();
+       $image_name = $rand.'.'.$ext;
+       $request ->File("attr_image.$key")->storeAs('/public/media', $image_name);
+       $productAttrArr['attr_image'] = $image_name;
+    }
 
+    if($paidArr[$key]!= ''){
 
-    DB::table('product_arts')->insert($productAttrArr);
+      DB::table('product_arts')->where(['id'=>$paidArr[$key]])->update($productAttrArr);
+    }else{
+
+      DB::table('product_arts')->insert($productAttrArr);
+    }
 }
 
+
+
  //product attr end
+
+ //product images start
+$piidArr = $request->post('piid');
+foreach($piidArr as $key=>$val){
+    $productImgArr['product_id'] = $pid;
+    if($request->hasFile("images.$key")){
+
+        $rand = rand('111111111','999999999');
+        $images = $request->file("images.$key");
+        $ext = $images->extension();
+        $image_name = $rand.'.'.$ext;
+        $request ->File("images.$key")->storeAs('/public/media', $image_name);
+        $productImgArr['images'] = $image_name;
+     }else{
+         $productImgArr['images'] = '';
+     }
+
+     if($piidArr[$key]!= ''){
+
+       DB::table('product_imgs')->where(['id'=>$piidArr[$key]])->update($productImgArr);
+     }else{
+
+       DB::table('product_imgs')->insert($productImgArr);
+     }
+}
+
+ //product images end
 $request->session()->flash('message',$msg);
 
 return redirect('admin/product');
 
 
+}
+}
 
 
 
-
-    }
 
     /**
      * Display the specified resource.
@@ -218,4 +298,4 @@ return redirect('admin/product');
      * @return \Illuminate\Http\Response
      */
 
-}
+
