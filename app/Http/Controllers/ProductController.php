@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Product_art;
+use App\Models\product_img;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\File\File;
 
+use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     /**
@@ -80,6 +81,7 @@ $result['productImgArr'][0]['id'] ='';
     $result['category'] = DB::table('categories')->where(['status'=>1])->get();
     $result['size'] = DB::table('sizes')->where(['status'=>1])->get();
     $result['color'] = DB::table('colors')->where(['status'=>1])->get();
+    $result['brands'] = DB::table('brands')->where(['status'=>1])->get();
 
 
 
@@ -94,7 +96,13 @@ $result['productImgArr'][0]['id'] ='';
 
     {
         $product = Product::find($id);
-        $product->delete();
+        if (!is_null($product)) {
+            if (Storage::exists('/public/media/'. $product->image)) {
+                Storage::delete('/public/media/'. $product->image);
+            }
+            $product->delete();
+        }
+
         session()->flash('message','Product Deleted Sucessfully');
         return redirect()->route('admin.product');
 
@@ -102,7 +110,13 @@ $result['productImgArr'][0]['id'] ='';
     public function product_arrt_delete( $paid,$pid)
 
     {
-        DB::table('product_arts')->where(['id'=> $paid])->delete();
+       $product_attr = Product_art::find($paid);
+       if (!is_null($product_attr)) {
+        if (Storage::exists('/public/media/'. $product_attr->attr_image)) {
+            Storage::delete('/public/media/'. $product_attr->attr_image);
+        }
+        $product_attr->delete();
+    }
 
 return redirect('admin/manage_product/'.$pid);
 
@@ -111,8 +125,13 @@ return redirect('admin/manage_product/'.$pid);
     public function product_image_delete($piid,$pid)
 
     {
+        $product_image_attr = product_img::find($piid);
+        if (!is_null($product_image_attr)) {
+         if (Storage::exists('/public/media/'. $product_image_attr->images)) {
+             Storage::delete('/public/media/'. $product_image_attr->images);
+         }
         DB::table('product_imgs')->where(['id'=> $piid])->delete();
-
+        }
 return redirect('admin/manage_product/'.$pid);
 
 
@@ -216,9 +235,9 @@ foreach($SkuArr as $key=>$val){
     $productAttrArr['product_id'] = $pid;
     $productAttrArr['sku'] = $SkuArr[$key];
 
-    $productAttrArr['mrp'] = $mrpArr[$key];
-    $productAttrArr['price'] = $priceArr[$key];
-    $productAttrArr['qty'] = $qtyArr[$key];
+    $productAttrArr['mrp'] = (int)$mrpArr[$key];
+    $productAttrArr['price'] = (int)$priceArr[$key];
+    $productAttrArr['qty'] = (int)$qtyArr[$key];
 
 
     if($sizeArr[$key] == ''){
@@ -239,15 +258,17 @@ foreach($SkuArr as $key=>$val){
        $image_name = $rand.'.'.$ext;
        $request ->File("attr_image.$key")->storeAs('/public/media', $image_name);
        $productAttrArr['attr_image'] = $image_name;
+
+       if($paidArr[$key]!= ''){
+
+        DB::table('product_arts')->where(['id'=>$paidArr[$key]])->update($productAttrArr);
+      }else{
+
+        DB::table('product_arts')->insert($productAttrArr);
+      }
     }
 
-    if($paidArr[$key]!= ''){
 
-      DB::table('product_arts')->where(['id'=>$paidArr[$key]])->update($productAttrArr);
-    }else{
-
-      DB::table('product_arts')->insert($productAttrArr);
-    }
 }
 
 
@@ -266,17 +287,16 @@ foreach($piidArr as $key=>$val){
         $image_name = $rand.'.'.$ext;
         $request ->File("images.$key")->storeAs('/public/media', $image_name);
         $productImgArr['images'] = $image_name;
-     }else{
-         $productImgArr['images'] = '';
+        if($piidArr[$key]!= ''){
+
+            DB::table('product_imgs')->where(['id'=>$piidArr[$key]])->update($productImgArr);
+          }else{
+
+            DB::table('product_imgs')->insert($productImgArr);
+          }
      }
 
-     if($piidArr[$key]!= ''){
 
-       DB::table('product_imgs')->where(['id'=>$piidArr[$key]])->update($productImgArr);
-     }else{
-
-       DB::table('product_imgs')->insert($productImgArr);
-     }
 }
 
  //product images end

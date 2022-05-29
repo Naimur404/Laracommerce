@@ -114,9 +114,32 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="category" class="control-label mb-1">Product Brand</label>
-                                    <input id="name" name="brand" type="text" class="form-control" aria-required="true"
-                                        aria-invalid="false" value="{{ $brand }}" required>
+                                    <label for="cc-payment" class="control-label mb-1">Brand</label>
+                                    <select id="brand" name="brand" type="text" class="form-control" aria-required="true"
+                                        aria-invalid="false" >
+                                        <option value="">Select Brand</option>
+                                        @foreach ($brands as $list)
+
+                                           @if ($brand == $list->id)
+                                           <option selected value="{{ $list->id }}">
+
+                                            {{ $list->name }}</option>
+
+
+                                            @else
+                                                <option value="{{ $list->id }}">
+
+                                            {{ $list->name }}</option>
+                                            @endif
+                                        @endforeach
+
+                                    </select>
+
+                                    @error('brand')
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
 
                                 </div>
                                 <div class="col-md-4">
@@ -185,8 +208,8 @@
                         <div class="card-body" >
                             <div class="form-group">
                                 <div class="row" id="new_img_box">
-                                    @php
-                                    $loop_count_num = 1;
+                                @php
+                                $loop_count_num = 1;
 
                                 @endphp
                                 @foreach ($productImgArr as $key=>$val)
@@ -417,7 +440,7 @@ html+= '<div class="col-md-2"><label for="category" class="control-label mb-1"><
         var loop_image_count = 1;
         function add_image_more(){
             loop_image_count++;
-           var html= '<input id="name" name="piid[]" type="hidden"  value=""><div class="col-md-3 product_images_'+loop_image_count+'"><label for="images" class="control-label mb-1">Image</label><input id="image" name="images[]" type="file" class="form-control" aria-required="true"aria-invalid="false" ></div>';
+           var html= '<input id="name" name="piid[]" type="hidden"  value=""><div class="col-md-3 product_images_'+loop_image_count+'"><label for="images" class="control-label mb-1">Image</label><input id="image" name="images[]" type="file" class="form-control" aria-required="true"aria-invalid="false" required></div>';
             html+= '<div class="col-md-2 product_images_'+loop_image_count+'"><label for="category" class="control-label mb-1"></label><button class="au-btn au-btn-icon au-btn--green au-btn--large mt-4" onclick=remove_image_more("'+loop_image_count+'")><i class="zmdi zmdi-minus"></i>Remove</button></div>';
             $('#new_img_box').append(html);
 

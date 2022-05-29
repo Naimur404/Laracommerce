@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
@@ -70,6 +71,14 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::get('admin/product/status/{status}/{id}', [ProductController::class, 'status']);
     Route::post('admin/manage_product_process', [ProductController::class, 'manage_product_process'])->name('product.insert');
 
+
+    Route::get('admin/brand', [BrandController::class, 'index'])->name('admin.brand');
+    Route::get('admin/manage_brand', [BrandController::class, 'manage_brand'])->name('manage_brand');
+    Route::get('admin/manage_brand/{id}', [BrandController::class, 'manage_brand'])->name('manage_brand.edit');
+    Route::get('admin/brand/delete/{id}', [BrandController::class, 'delete']);
+    Route::get('admin/brand/edit/{id}', [BrandController::class, 'edit']);
+    Route::get('admin/brand/status/{status}/{id}', [BrandController::class, 'status']);
+    Route::post('admin/manage_brand_process', [BrandController::class, 'manage_brand_process'])->name('brand.insert');
 
     Route::get('admin/logout', function () {
         session()->forget('ADMIN_LOGIN');

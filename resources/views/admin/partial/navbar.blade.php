@@ -43,7 +43,12 @@
                 </li>
                 <li class=" @yield('product_select')">
                     <a href="{{ route('admin.product') }}">
-                        <i class=" fas fa-solid fa-tag"></i>product</a>
+                        <i class="fa-brands fa-product-hunt"></i>product</a>
+
+                </li>
+                <li class=" @yield('brand_select')">
+                    <a href="{{ route('admin.brand') }}">
+                        <i class=" fas fa-solid fa-tag"></i>Brand</a>
 
                 </li>
 
