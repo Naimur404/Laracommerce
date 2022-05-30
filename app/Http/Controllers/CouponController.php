@@ -25,6 +25,9 @@ if($id>0){
           $result['title'] = $arr['0']->title;
           $result['code'] = $arr['0']->code;
           $result['value'] = $arr['0']->value;
+          $result['type'] = $arr['0']->type;
+          $result['min_order'] = $arr['0']->min_order;
+          $result['is_one_time'] = $arr['0']->is_one_time;
           $result['id'] = $arr['0']->id;
 
 
@@ -33,6 +36,9 @@ if($id>0){
 $result['title'] = '';
 $result['code'] = '';
 $result['value'] = '';
+$result['type'] = '';
+$result['min_order'] = '';
+$result['is_one_time'] = '';
 $result['id'] = 0;
 
 }
@@ -86,12 +92,16 @@ if($request->post('id')>0){
 }else{
     $coupon = new Coupon();
     $msg = "Coupon Added Sucessfully";
+    $coupon->status = 1;
 }
 
 $coupon->title = $request->post('title');
 $coupon->code = $request->post('code');
 $coupon->value = $request->post('value');
-$coupon->status = 1;
+$coupon->type = $request->post('type');
+$coupon->min_order = $request->post('min_order');
+$coupon->is_one_time = $request->post('is_one_time');
+
 $coupon->save();
 $request->session()->flash('message',$msg);
 

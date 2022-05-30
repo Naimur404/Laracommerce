@@ -42,6 +42,11 @@
                         <i class=" fas fa-solid fa-tag"></i>Brand</a>
 
                 </li>
+                <li class=" @yield('tax_select')">
+                    <a href="{{ route('admin.tax') }}">
+                        <i class="fa-solid fa-percent"></i>Tax</a>
+
+                </li>
             </ul>
         </nav>
     </div>

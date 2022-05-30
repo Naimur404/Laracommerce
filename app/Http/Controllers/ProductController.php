@@ -38,10 +38,18 @@ if($id>0){
           $result['technical_specification'] = $arr['0']->technical_specification;
           $result['uses'] = $arr['0']->uses;
           $result['warranty'] = $arr['0']->warranty;
+          $result['lead_time'] = $arr['0']->lead_time;
+          $result['tax_id'] = $arr['0']->tax_id;
+
+          $result['is_promo'] = $arr['0']->is_promo;
+          $result['is_featured'] = $arr['0']->is_featured;
+          $result['is_discounted'] = $arr['0']->is_discounted;
+          $result['is_tranding'] = $arr['0']->is_tranding;
 
           $result['id'] = $arr['0']->id;
           $result['productAttrArr'] = DB::table('product_arts')->where(['product_id'=>$id])->get();
           $productImgArr= DB::table('product_imgs')->where(['product_id'=>$id])->get();
+
 if(!isset($productImgArr[0])){
     $result['productImgArr'][0]['images'] ='';
     $result['productImgArr'][0]['id'] ='';
@@ -62,6 +70,13 @@ $result['keywords'] = '';
 $result['technical_specification'] = '';
 $result['uses'] = '';
 $result['warranty'] = '';
+$result['lead_time'] = '';
+$result['tax_id'] ='' ;
+
+$result['is_promo'] = '';
+$result['is_featured'] = '';
+$result['is_discounted'] ='' ;
+$result['is_tranding'] ='' ;
 
 $result['id'] = 0;
 $result['productAttrArr'][0]['id'] ='';
@@ -83,7 +98,7 @@ $result['productImgArr'][0]['id'] ='';
     $result['color'] = DB::table('colors')->where(['status'=>1])->get();
     $result['brands'] = DB::table('brands')->where(['status'=>1])->get();
 
-
+    $result['tax'] = DB::table('taxes')->where(['status'=>1])->get();
 
         return view('admin.manage_product',$result);
     }
@@ -220,6 +235,13 @@ $product->keywords = $request->post('keywords');
 $product->technical_specification = $request->post('technical_specification');
 $product->uses = $request->post('uses');
 $product->warranty = $request->post('warranty');
+$product->lead_time = $request->post('lead_time');
+$product->tax_id = $request->post('tax_id');
+
+$product->is_promo = $request->post('is_promo');
+$product->is_featured = $request->post('is_featured');
+$product->is_discounted = $request->post('is_discounted');
+$product->is_tranding = $request->post('is_tranding');
 
 
 

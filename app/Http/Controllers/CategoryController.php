@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 class CategoryController extends Controller
 {
     /**
@@ -24,16 +25,21 @@ if($id>0){
           $arr = Category::where(['id'=>$id])->get();
           $result['name'] = $arr['0']->name;
           $result['slug'] = $arr['0']->slug;
+          $result['parent_category_id'] = $arr['0']->parent_category_id;
+          $result['category_image'] = $arr['0']->category_image;
           $result['id'] = $arr['0']->id;
-
+          $result['category'] = DB::table('categories')->where(['status'=>1])->where('id','!=',$id)->get();
 
 }else{
 
 $result['name'] = '';
 $result['slug'] = '';
+$result['parent_category_id'] = '';
+$result['category_image'] = '';
 $result['id'] = 0;
-
+$result['category'] = DB::table('categories')->where(['status'=>1])->get();
 }
+
 
         return view('admin.manage_category',$result);
     }
@@ -46,7 +52,14 @@ $result['id'] = 0;
 
     {
         $category = Category::find($id);
-        $category->delete();
+        if (!is_null($category)) {
+            if (Storage::exists('/public/media/'. $category->category_image)) {
+                Storage::delete('/public/media/'. $category->category_image);
+            }
+            $category->delete();
+        }
+
+
         session()->flash('message','Category Deleted Sucessfully');
         return redirect()->route('admin.category');
 
@@ -88,7 +101,15 @@ if($request->post('id')>0){
 
 $category->name = $request->post('name');
 $category->slug = $request->post('slug');
+$category->parent_category_id = $request->post('parent_category_id');
 $category->status = 1;
+if($request->hasFile('category_image')){
+    $image = $request->file('category_image');
+    $ext = $image->extension();
+    $image_name = time().'.'.$ext;
+    $image -> storeAs('/public/media', $image_name);
+    $category->category_image = $image_name;
+}
 $category->save();
 $request->session()->flash('message',$msg);
 

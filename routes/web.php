@@ -7,6 +7,7 @@ use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SizeController;
+use App\Http\Controllers\TaxController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 /*
@@ -79,6 +80,15 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::get('admin/brand/edit/{id}', [BrandController::class, 'edit']);
     Route::get('admin/brand/status/{status}/{id}', [BrandController::class, 'status']);
     Route::post('admin/manage_brand_process', [BrandController::class, 'manage_brand_process'])->name('brand.insert');
+
+
+    Route::get('admin/tax', [TaxController::class, 'index'])->name('admin.tax');
+    Route::get('admin/manage_tax', [TaxController::class, 'manage_tax'])->name('manage_tax');
+    Route::get('admin/manage_tax/{id}', [TaxController::class, 'manage_tax'])->name('manage_tax.edit');
+    Route::get('admin/tax/delete/{id}', [TaxController::class, 'delete']);
+    Route::get('admin/tax/edit/{id}', [TaxController::class, 'edit']);
+    Route::get('admin/tax/status/{status}/{id}', [TaxController::class, 'status']);
+    Route::post('admin/manage_tax_process', [TaxController::class, 'manage_tax_process'])->name('tax.insert');
 
     Route::get('admin/logout', function () {
         session()->forget('ADMIN_LOGIN');

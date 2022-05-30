@@ -7,6 +7,7 @@
     @else
         {{ $image_requried ='requried'}}
     @endif
+
     @if(session()->has('sku_error'))
     <div class="alert alert-danger" role="alert">
         {{ session('sku_error') }}
@@ -33,16 +34,16 @@
   @enderror
     <h3> Manage Product</h3>
     <div class="row">
-
+        <div class="table-data__tool-right mb-2">
+            <a href="{{ route('admin.product') }}">
+                <button class="au-btn au-btn-icon au-btn--green au-btn--small">
+                    <i class="zmdi zmdi-plus"></i>Back</button>
+            </a>
+        </div>
         <form action="{{ route('product.insert') }}" method="post" enctype="multipart/form-data">
         <div class="col-lg-12  mt-2">
 
-                <div class="table-data__tool-right mb-2">
-                    <a href="{{ route('admin.product') }}">
-                        <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                            <i class="zmdi zmdi-plus"></i>Back</button>
-                    </a>
-                </div>
+
                 <div class="card">
                     @if (session()->has('message'))
                         <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
@@ -152,7 +153,7 @@
                         </div>
                         <div class="form-group">
                             <label for="category" class="control-label mb-1">Short Desc</label>
-                            <textarea id="name" name="short_desc" type="text" class="form-control" aria-required="true"
+                            <textarea id="short_desc" name="short_desc" type="text" class="form-control" aria-required="true"
                                 aria-invalid="false">{{ $short_desc }}</textarea>
 
                         </div>
@@ -187,7 +188,101 @@
 
                         </div>
 
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="category" class="control-label mb-1">Lead Time</label>
+                                    <input id="lead_time" name="lead_time" type="text" class="form-control" aria-required="true"
+                                        aria-invalid="false" value="{{ $lead_time }}" >
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="cc-payment" class="control-label mb-1">Tax</label>
+                                    <select id="brand" name="tax_id" type="text" class="form-control" aria-required="true"
+                                        aria-invalid="false" >
+                                        <option value="">Select Tax</option>
+                                        @foreach ($tax as $list)
 
+                                           @if ($tax_id == $list->id)
+                                           <option selected value="{{ $list->id }}">
+
+                                            {{ $list->tax_desc }}</option>
+
+
+                                            @else
+                                                <option value="{{ $list->id }}">
+
+                                            {{ $list->tax_desc }}</option>
+                                            @endif
+                                        @endforeach
+
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="category" class="control-label mb-1">Is Promo</label>
+                                    <select id="is_promo" name="is_promo" type="text" class="form-control"
+                                        aria-required="true" aria-invalid="false" required>\
+                                        @if($is_promo == '1')
+                                        <option value="1" selected>Yes</option>
+                                        <option value="0">No</option>
+                                        @else
+                                        <option value="1" >Yes</option>
+                                        <option value="0" selected>No</option>
+
+                                        @endif
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="category" class="control-label mb-1">Is Featured</label>
+                                    <select id="is_featured" name="is_featured" type="text" class="form-control"
+                                        aria-required="true" aria-invalid="false" required>
+                                        @if($is_featured == '1')
+                                        <option value="1" selected>Yes</option>
+                                        <option value="0">No</option>
+                                        @else
+                                        <option value="1" >Yes</option>
+                                        <option value="0" selected>No</option>
+
+                                        @endif
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label for="category" class="control-label mb-1">Is Discounted</label>
+                                    <select id="is_discounted" name="is_discounted" type="text" class="form-control"
+                                        aria-required="true" aria-invalid="false" required>
+                                        @if($is_discounted == '1')
+                                        <option value="1" selected>Yes</option>
+                                        <option value="0">No</option>
+                                        @else
+                                        <option value="1" >Yes</option>
+                                        <option value="0" selected>No</option>
+
+                                        @endif
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="category" class="control-label mb-1">Is Tranding</label>
+                                    <select id="is_tranding" name="is_tranding" type="text" class="form-control"
+                                        aria-required="true" aria-invalid="false" required>
+                                        @if($is_tranding == '1')
+                                        <option value="1" selected>Yes</option>
+                                        <option value="0">No</option>
+                                        @else
+                                        <option value="1" >Yes</option>
+                                        <option value="0" selected>No</option>
+
+
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
 
 
 
@@ -448,6 +543,9 @@ html+= '<div class="col-md-2"><label for="category" class="control-label mb-1"><
         function remove_image_more(loop_image_count){
          $('.product_images_'+loop_image_count).remove();
         }
+        CKEDITOR.replace('short_desc');
+        CKEDITOR.replace('desc');
+        CKEDITOR.replace('technical_specification');
     </script>
 
 @endsection

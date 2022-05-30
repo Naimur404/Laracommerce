@@ -30,6 +30,9 @@
                     <form action="{{ route('coupon.insert') }}" method="post" >
                         @csrf
                         <div class="form-group">
+                            <div class="row">
+
+                                <div class="col-md-6">
                             <label for="category" class="control-label mb-1">Coupon Title</label>
                             <input id="title" name="title" type="text" class="form-control" aria-required="true"
                                 aria-invalid="false" value="{{ $title }}" required>
@@ -39,7 +42,12 @@
                                 @enderror
                         </div>
 
-                        <div class="form-group">
+
+
+
+
+
+                                    <div class="col-md-6">
                             <label for="cc-payment" class="control-label mb-1">Cupon Code</label>
                             <input id="code" name="code" type="text" class="form-control" aria-required="true"
                                 aria-invalid="false" value="{{ $code }}" required>
@@ -49,18 +57,60 @@
                                 </div>
 
                                 @enderror
-                        </div>
-                        <div class="form-group">
+                            </div>
+
+
+
+
+                                <div class="col-md-3">
                             <label for="category" class="control-label mb-1">Coupon Value</label>
                             <input id="value" name="value" type="text" class="form-control" aria-required="true"
                                 aria-invalid="false" value="{{ $value }}" required>
-                                @error('name')
+
+                        </div>
+                        <div class="col-md-3">
+                            <label for="category" class="control-label mb-1">Coupon Type</label>
+                            <select id="type" name="type" type="text" class="form-control"
+                            aria-required="true" aria-invalid="false" required>
+                            @if($type == 'Value')
+                            <option value="Value" selected>Value</option>
+                            <option value="Per">Per</option>
+                            @elseif ($type == 'Per')
+                            <option value="Value">Value</option>
+                            <option value="Per" selected>Per</option>
+                            @else
+                            <option value="Value">Value</option>
+                            <option value="Per" >Per</option>
+                            @endif
+                        </select>
+
+                        </div>
+                        <div class="col-md-3">
+                            <label for="category" class="control-label mb-1">Min Order</label>
+                            <input id="min_order" name="min_order" type="text" class="form-control" aria-required="true"
+                                aria-invalid="false" value="{{ $min_order }}" required>
+
+                        </div>
+                        <div class="col-md-3">
+                            <label for="category" class="control-label mb-1">Is One Time</label>
+                            <select id="type" name="is_one_time" type="text" class="form-control"
+                            aria-required="true" aria-invalid="false" required>
+                            @if($is_one_time == '1')
+                            <option value="1" selected>Yes</option>
+                            <option value="0">No</option>
+                            @else
+                            <option value="1">Yes</option>
+                            <option value="0" selected>No</option>
 
 
-                                @enderror
+                            @endif
+                        </select>
+
                         </div>
 
 
+                        </div>
+                        </div>
                         <div>
                             <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
 

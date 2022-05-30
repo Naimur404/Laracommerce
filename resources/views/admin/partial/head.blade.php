@@ -15,7 +15,7 @@
         media="all"> --}}
     <link href="{{ asset('admin_asset/vendor/mdi-font/css/material-design-iconic-font.min.css') }}" rel="stylesheet"
         media="all">
-
+        <script src="//cdn.ckeditor.com/4.19.0/standard/ckeditor.js"></script>
     <!-- Bootstrap CSS-->
     <link href="{{ asset('admin_asset/vendor/bootstrap-4.1/bootstrap.min.css') }}" rel="stylesheet" media="all">
 
