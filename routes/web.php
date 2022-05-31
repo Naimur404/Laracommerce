@@ -5,9 +5,11 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\TaxController;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 /*
@@ -89,6 +91,11 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::get('admin/tax/edit/{id}', [TaxController::class, 'edit']);
     Route::get('admin/tax/status/{status}/{id}', [TaxController::class, 'status']);
     Route::post('admin/manage_tax_process', [TaxController::class, 'manage_tax_process'])->name('tax.insert');
+
+
+    Route::get('admin/customer', [CustomerController::class, 'index'])->name('admin.customer');
+    Route::get('admin/customer/show/{id}', [CustomerController::class, 'show'])->name('customer.show');
+    Route::get('admin/customer/status/{status}/{id}', [CustomerController::class, 'status']);
 
     Route::get('admin/logout', function () {
         session()->forget('ADMIN_LOGIN');
