@@ -32,31 +32,31 @@
 
                         <div class="form-group">
                             <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                             <label for="category" class="control-label mb-1">Category Name</label>
                             <input id="name" name="name" type="text" class="form-control" aria-required="true"
                                 aria-invalid="false" value="{{ $name }}" required>
                             </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label for="cc-payment" class="control-label mb-1">Parent Category</label>
                                     <select id="slug" name="parent_category_id" type="text" class="form-control"
                                         aria-required="true" aria-invalid="false" required>
-                                        <option value="">Select Category</option>
+                                        <option value="0">Select Category</option>
                                         @foreach ($category as $list)
                                             @if ($parent_category_id == $list->id)
                                                 <option selected value="{{ $list->id }}">
                                                 @else
                                                 <option value="{{ $list->id }}">
                                             @endif
-                                           
+
                                             {{ $list->name }}</option>
                                         @endforeach
 
                                     </select>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label for="cc-payment" class="control-label mb-1">Category Slug</label>
                                     <input id="slug" name="slug" type="text" class="form-control" aria-required="true"
                                         aria-invalid="false" value="{{ $slug }}" required>
@@ -81,6 +81,11 @@
 
                                         @enderror
                         </div>
+                        <div class="col-md-6">
+                            <label for="category" class="control-label mb-1">Show In Home Page</label>
+                            <input id="is_home" name="is_home" type="checkbox" class="form-control" style="width: 10%" {{ $is_home_selected }} >
+
+                </div>
 
                         </div>
                         </div>

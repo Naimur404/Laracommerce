@@ -408,7 +408,7 @@ $pArr = (array)$val;
                             </div>
                             <div class="col-md-4">
                                 <label for="cc-payment" class="control-label mb-1">Size</label>
-                                <select id="slug" name="size_id[]" type="text" class="form-control" aria-required="true"
+                                <select id="size" name="size_id[]" type="text" class="form-control" aria-required="true"
                                     aria-invalid="false" >
                                     <option value="">Select Size</option>
                                     @foreach ($size as $list)
@@ -436,7 +436,7 @@ $pArr = (array)$val;
                             </div>
                             <div class="col-md-4">
                                 <label for="cc-payment" class="control-label mb-1">Color</label>
-                                <select id="slug" name="color_id[]" type="text" class="form-control" aria-required="true"
+                                <select id="color_id" name="color_id[]" type="text" class="form-control" aria-required="true"
                                     aria-invalid="false" >
                                     <option value="">Select color</option>
                                     @foreach ($color as $list)
