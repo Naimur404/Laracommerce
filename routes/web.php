@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ColorController;
@@ -91,6 +92,14 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::get('admin/tax/status/{status}/{id}', [TaxController::class, 'status']);
     Route::post('admin/manage_tax_process', [TaxController::class, 'manage_tax_process'])->name('tax.insert');
 
+    Route::get('admin/banner', [BannerController::class, 'index'])->name('admin.banner');
+    Route::get('admin/manage_banner', [BannerController::class, 'manage_banner'])->name('manage_banner');
+    Route::get('admin/manage_banner/{id}', [BannerController::class, 'manage_banner'])->name('manage_banner.edit');
+    Route::get('admin/banner/delete/{id}', [BannerController::class, 'delete']);
+    Route::get('admin/banner/edit/{id}', [BannerController::class, 'edit']);
+    Route::get('admin/banner/status/{status}/{id}', [BannerController::class, 'status']);
+    Route::post('admin/manage_banner_process', [BannerController::class, 'manage_banner_process'])->name('banner.insert');
+
 
     Route::get('admin/customer', [CustomerController::class, 'index'])->name('admin.customer');
     Route::get('admin/customer/show/{id}', [CustomerController::class, 'show'])->name('customer.show');
@@ -104,5 +113,6 @@ Route::group(['middleware' => 'admin_auth'], function () {
 
     });
 });
-Route::get('/',[FrontController::class, 'index'] );
+Route::get('/',[FrontController::class, 'index'] )->name('index');
+Route::get('product/{slug}',[FrontController::class, 'product'] );
 

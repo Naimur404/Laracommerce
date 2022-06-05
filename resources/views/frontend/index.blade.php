@@ -1,4 +1,5 @@
 @extends('frontend.layout')
+@section('title','Home Page')
 @section('index')
 <section id="aa-slider">
     <div class="aa-slider-area">
@@ -6,65 +7,22 @@
         <div class="seq-screen">
           <ul class="seq-canvas">
             <!-- single slide item -->
-            <li>
-              <div class="seq-model">
-                <img data-seq src="{{asset('front_asset/img/slider/1.jpg')}}" alt="Men slide img" />
-              </div>
-              <div class="seq-title">
-               <span data-seq>Save Up to 75% Off</span>
-                <h2 data-seq>Men Collection</h2>
-                <p data-seq>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus, illum.</p>
-                <a data-seq href="#" class="aa-shop-now-btn aa-secondary-btn">SHOP NOW</a>
-              </div>
-            </li>
-            <!-- single slide item -->
-            <li>
-              <div class="seq-model">
-                <img data-seq src="{{asset('front_asset/img/slider/2.jpg')}}" alt="Wristwatch slide img" />
-              </div>
-              <div class="seq-title">
-                <span data-seq>Save Up to 40% Off</span>
-                <h2 data-seq>Wristwatch Collection</h2>
-                <p data-seq>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus, illum.</p>
-                <a data-seq href="#" class="aa-shop-now-btn aa-secondary-btn">SHOP NOW</a>
-              </div>
-            </li>
-            <!-- single slide item -->
-            <li>
-              <div class="seq-model">
-                <img data-seq src="{{asset('front_asset/img/slider/3.jpg')}}" alt="Women Jeans slide img" />
-              </div>
-              <div class="seq-title">
-                <span data-seq>Save Up to 75% Off</span>
-                <h2 data-seq>Jeans Collection</h2>
-                <p data-seq>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus, illum.</p>
-                <a data-seq href="#" class="aa-shop-now-btn aa-secondary-btn">SHOP NOW</a>
-              </div>
-            </li>
-            <!-- single slide item -->
-            <li>
-              <div class="seq-model">
-                <img data-seq src="{{asset('front_asset/img/slider/4.jpg')}}" alt="Shoes slide img" />
-              </div>
-              <div class="seq-title">
-                <span data-seq>Save Up to 75% Off</span>
-                <h2 data-seq>Exclusive Shoes</h2>
-                <p data-seq>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus, illum.</p>
-                <a data-seq href="#" class="aa-shop-now-btn aa-secondary-btn">SHOP NOW</a>
-              </div>
-            </li>
-            <!-- single slide item -->
+            @foreach ($home_banner as $list)
+
              <li>
               <div class="seq-model">
-                <img data-seq src="{{asset('front_asset/img/slider/5.jpg')}}" alt="Male Female slide img" />
+                <img data-seq src="{{ asset('storage/media/' . $list->image )}}"/>
               </div>
               <div class="seq-title">
                 <span data-seq>Save Up to 50% Off</span>
-                <h2 data-seq>Best Collection</h2>
-                <p data-seq>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus, illum.</p>
-                <a data-seq href="#" class="aa-shop-now-btn aa-secondary-btn">SHOP NOW</a>
+                <h2 data-seq>{{ $list->name }}</h2>
+
+                <a data-seq href="{{ $list->btn_link }}" class="aa-shop-now-btn aa-secondary-btn">{{ $list->btn_text }}</a>
               </div>
             </li>
+
+            @endforeach
+
           </ul>
         </div>
         <!-- slider navigation btn -->
@@ -145,7 +103,7 @@
                            @endphp
                     <div class="tab-pane fade {{ $cat_class }}" id="cat{{ $list->id }}">
                       <ul class="aa-product-catg">
-                          @if (isset($home_category_product[$list->id][0]))
+                        @if (isset($home_category_product[$list->id]))
 
 
                         @foreach ($home_category_product[$list->id] as $product)
@@ -157,9 +115,11 @@
                             <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                               <figcaption>
                               <h4 class="aa-product-title"><a href="{{ url('product/'. $product->slug) }}">{{ $product->name }}</a></h4>
-                              @foreach ($home_product_attr[$product->id] as $productAttr)
-                              <span class="aa-product-price">৳ {{ $productAttr->price }}</span><span class="aa-product-price"><del>৳ {{ $productAttr->mrp }}</del></span>
-                              @endforeach
+                            @if (isset($home_product_attr[$product->id][0]))
+
+
+                              <span class="aa-product-price">৳ {{$home_product_attr[$product->id][0]->price}}</span><span class="aa-product-price"><del>৳ {{  $home_product_attr[$product->id][0]->mrp}}</del></span>
+                              @endif
                             </figcaption>
                           </figure>
 
@@ -192,7 +152,7 @@
                       </ul>
 
                     </div>
-@endforeach
+                    @endforeach
                   </div>
                   <!-- quick view modal -->
 
@@ -251,9 +211,11 @@
                         <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                           <figcaption>
                           <h4 class="aa-product-title"><a href="{{ url('product/'. $product->slug) }}">{{ $product->name }}</a></h4>
-                          @foreach ($home_featured_product_attr[$product->id] as $productAttr)
-                          <span class="aa-product-price">৳ {{ $productAttr->price }}</span><span class="aa-product-price"><del>৳ {{ $productAttr->mrp }}</del></span>
-                          @endforeach
+                           @if (isset($home_featured_product_attr[$product->id][0]))
+
+
+                          <span class="aa-product-price">৳ {{ $home_featured_product_attr[$product->id][0]->price }}</span><span class="aa-product-price"><del>৳ {{ $home_featured_product_attr[$product->id][0]->mrp }}</del></span>
+                          @endif
                         </figcaption>
                       </figure>
 
@@ -302,9 +264,9 @@
                         <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                           <figcaption>
                           <h4 class="aa-product-title"><a href="{{ url('product/'. $product->slug) }}">{{ $product->name }}</a></h4>
-                          @foreach ($home_tranding_product_attr[$product->id] as $productAttr)
-                          <span class="aa-product-price">৳ {{ $productAttr->price }}</span><span class="aa-product-price"><del>৳ {{ $productAttr->mrp }}</del></span>
-                          @endforeach
+                          @if (isset($home_tranding_product_attr[$product->id][0]))
+                          <span class="aa-product-price">৳ {{ $home_tranding_product_attr[$product->id][0]->price }}</span><span class="aa-product-price"><del>৳ {{ $home_tranding_product_attr[$product->id][0]->mrp }}</del></span>
+                          @endif
                         </figcaption>
                       </figure>
 
@@ -353,9 +315,9 @@
                         <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                          <figcaption>
                           <h4 class="aa-product-title"><a href="#"></a>{{ $list->name }}</h4>
-                          @foreach ($home_discounted_product_attr[$list->id] as $dAttr )
-                          <span class="aa-product-price">{{ $dAttr->price }}</span><span class="aa-product-price"><del>{{ $dAttr->mrp }}</del></span>
-                          @endforeach
+                          @if (isset($home_discounted_product_attr[$list->id][0]))
+                          <span class="aa-product-price">{{ $home_discounted_product_attr[$list->id][0]->price }}</span><span class="aa-product-price"><del>{{ $home_discounted_product_attr[$list->id][0]->mrp }}</del></span>
+                          @endif
                         </figcaption>
                       </figure>
 

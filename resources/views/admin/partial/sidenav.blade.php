@@ -47,6 +47,13 @@
                         <i class="fa-solid fa-percent"></i>Tax</a>
 
                 </li>
+
+                <li class=" @yield('banner_select')">
+                    <a href="{{ route('admin.banner') }}">
+                        <i class="fa-brands fa-adversal"></i>Banner</a>
+
+                </li>
+
                 <li class=" @yield('customers_select')">
                     <a href="{{ route('admin.customer') }}">
                         <i class="fas fa-users"></i>Customers</a>

@@ -17,8 +17,11 @@ class FrontController extends Controller
      */
     public function index()
     {
+
         $result['home_category'] = DB::table('categories')->where(['status' =>1])->where(['is_home' =>1])->get();
+
         $result['home_brand'] = DB::table('brands')->where(['status' =>1])->where(['is_home' =>1])->get();
+        $result['home_banner'] = DB::table('banners')->where(['status' =>1])->get();
 
 
         foreach($result['home_category'] as $list){
@@ -54,9 +57,24 @@ class FrontController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function category()
+    public function product($slug)
     {
-        //
+        $result['product'] = DB::table('products')->where(['slug'=>$slug])->where(['status'=>1])-> get();
+        foreach($result['product'] as $list1){
+            $result['product_attr'][$list1->id] = DB::table('product_arts')->leftJoin('sizes','sizes.id','=','size_id')->leftJoin('colors','colors.id','=','color_id')->where(['product_arts.product_id'=>$list1->id]) ->get();
+        }
+        foreach($result['product'] as $list1){
+            $result['product_images'][$list1->id] = DB::table('product_imgs')->where(['product_imgs.product_id'=>$list1->id]) ->get();
+        }
+        //for related product basis on related category
+        $result['related_product'] = DB::table('products')->where(['status'=>1])->where('slug','!=',$slug)->where(['category_id'=>$result['product'][0]->category_id])->get();
+
+        foreach($result['related_product'] as $list1){
+            $result['related_product_attr'][$list1->id] = DB::table('product_arts')->leftJoin('sizes','sizes.id','=','size_id')->leftJoin('colors','colors.id','=','color_id')->where(['product_arts.product_id'=>$list1->id]) ->get();
+        }
+        return view('frontend.product',$result);
+
+
     }
 
     /**

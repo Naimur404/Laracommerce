@@ -391,7 +391,7 @@ $pArr = (array)$val;
                             <div class="col-md-3">
                                 <label for="mrp" class="control-label mb-1">MRP</label>
                                 <input id="name" name="mrp[]" type="number" class="form-control" aria-required="true"
-                                    aria-invalid="false" value="{{ $pArr['mrp'] }}" required>
+                                    aria-invalid="false" value="{{ $pArr['mrp'] }}" >
 
                             </div>
                             <div class="col-md-3">
@@ -516,9 +516,9 @@ $pArr = (array)$val;
         function add_more() {
             loop_count++;
             var html = '<input id="name" name="paid[]" type="hidden"  ><div class="card" id="product_arrt_'+loop_count+'"><div class = "card-body" ><div class = "form-group" ><div class = "row" >';
-            html+='<div class="col-md-4"><label for="sku" class="control-label mb-1">SKU</label><input id="name" name="sku[]" type="text" class="form-control" aria-required="true" aria-invalid="false" required></div>';
-                html+= '<div class="col-md-3"><label for="mrp" class="control-label mb-1">MRP</label><input id="mrp" name="mrp[]" type="text" class="form-control" aria-required="true" aria-invalid="false" required></div>';
-                html+= '<div class="col-md-3"><label for="price" class="control-label mb-1">Price</label><input id="price" name="price[]" type="number" class="form-control" aria-required="true" aria-invalid="false" required></div>';
+            html+='<div class="col-md-4"><label for="sku" class="control-label mb-1">SKU</label><input id="name" name="sku[]" type="text" class="form-control" aria-required="true" aria-invalid="false" requried></div>';
+                html+= '<div class="col-md-3"><label for="mrp" class="control-label mb-1">MRP</label><input id="mrp" name="mrp[]" type="text" class="form-control" aria-required="true" aria-invalid="false" ></div>';
+                html+= '<div class="col-md-3"><label for="price" class="control-label mb-1">Price</label><input id="price" name="price[]" type="number" class="form-control" aria-required="true" aria-invalid="false" ></div>';
                 html+='  <div class="col-md-2"><label for="mrp" class="control-label mb-1">Qty</label><input id="name" name="qty[]" type="number" class="form-control" aria-required="true"aria-invalid="false" ></div>';
 
                 html+='<div class="col-md-4"><label for="cc-payment" class="control-label mb-1">Size</label><select id="slug" name="size_id[]" type="text" class="form-control" aria-required="true" aria-invalid="false" ><option value="">Select Size</option> @foreach ($size as $list)   @if ($pArr['size_id'] == $list->id)<option selected value="{{ $list->id }}">{{ $list->size }}</option>@else<option value="{{ $list->id }}">{{ $list->size }}</option> @endif @endforeach</select></div>';

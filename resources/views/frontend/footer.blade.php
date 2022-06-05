@@ -53,12 +53,12 @@
                     <address>
                       <p> 25 Astor Pl, NY 10003, USA</p>
                       <p><span class="fa fa-phone"></span>+1 212-982-4589</p>
-                      <p><span class="fa fa-envelope"></span>dailyshop@gmail.com</p>
+                      <p><span class="fa fa-envelope"></span>naimur404cse@gmail.com</p>
                     </address>
                     <div class="aa-footer-social">
                       <a href="#"><span class="fa fa-facebook"></span></a>
                       <a href="#"><span class="fa fa-twitter"></span></a>
-                      <a href="#"><span class="fa fa-google-plus"></span></a>
+                      <a href="#"><span class="fa fa-github"></span></a>
                       <a href="#"><span class="fa fa-youtube"></span></a>
                     </div>
                   </div>
