@@ -356,7 +356,18 @@ jQuery(function($){
     });
 
 });
-function chnage_product_color_image(img){
-    $('.simpleLens-big-image-container').html('<a data-lens-image="'+img+'" class="simpleLens-lens-image"><img src="'+img+'" class="simpleLens-big-image"></a>');
-}
+function chnage_product_color_image(img,color){
+    $('#color_id').val(color);
+    $('.simpleLens-big-image-container').html(`<a data-lens-image="${img}" class="simpleLens-lens-image"><img src="${img}" class="simpleLens-big-image"></a>`);
+};
+function showColor(size){
+    $('#size_id').val(size);
+    $('.product_color').hide();
+    $('.size_'+size).show();
+    $('.size_link').css('border', '1px solid #ddd');
+    $("#size_"+size).css('border', '1px solid black');
 
+};
+function add_to_cart(){
+    alert('s');
+}

@@ -2,7 +2,7 @@
 @section('title',$product[0]->name)
 @section('index')
 
-<section id="aa-catg-head-banner">
+{{-- <section id="aa-catg-head-banner">
     <img src="{{ asset('front_asset/img/fashion/fashion-header-bg-8.jpg') }}" alt="fashion img">
     <div class="aa-catg-head-banner-area">
 
@@ -17,7 +17,7 @@
        </div>
       </div>
     </div>
-   </section>
+   </section> --}}
 
    <!-- / catg header banner section -->
 
@@ -41,7 +41,7 @@
                            @foreach ($product_images[$product[0]->id] as $list )
 
                            <a data-big-image="{{ asset('storage/media/' . $list->images ) }}" data-lens-image="{{ asset('storage/media/' . $list->images ) }}" class="simpleLens-thumbnail-wrapper" href="#">
-                            <img src="{{ asset('storage/media/' . $list->images ) }}" width="70px"</a>
+                            <img src="{{ asset('storage/media/' . $list->images ) }}" width="70px"></a>
 
                              @endforeach
                              @endif
@@ -61,22 +61,32 @@
                        <p class="aa-product-avilability"> <span style="color: red; font-weight:bold">{{ $product[0]->lead_time }}</span></p>
                        @endif
                      </div>
-                     <p>{!! $product[0]->short_desc !!}</p>
-                     <h4>Size</h4>
-                     <div class="aa-prod-view-size">
-                        @foreach ($product_attr[$product[0]->id] as $size )
 
-                        @if($size->size != '')
-                       <a href="#">{{ $size->size }}</a>
-                       @endif
-                       @endforeach
+                     <p>{!! $product[0]->short_desc !!}</p>
+
+                     <h4>Size</h4>
+
+                     <div class="aa-prod-view-size">
+                        @php
+                        $arry_size =[];
+                        foreach ($product_attr[$product[0]->id] as $attr ){
+                            $arry_size[] = $attr->size;
+                        }
+                        $arry_size= array_unique($arry_size);
+                       @endphp
+
+                     @foreach ($arry_size  as $size )
+                   @if($size!= '')
+                  <a href="javascript:void(0)" id="size_{{ $size }}" class="size_link" onclick="showColor('{{ $size }}')">{{ $size }}</a>
+                  @endif
+                  @endforeach
                      </div>
                      <h4>Color</h4>
                      <div class="aa-color-tag">
                          @foreach ($product_attr[$product[0]->id] as $color )
 
                         @if($color->color != '')
-                       <a href="javascript:void(0)" class="aa-color-{{ strtolower($color->color) }}" onclick=chnage_product_color_image("{{ asset('storage/media/' .$color->attr_image)}}")></a>
+                       <a href="javascript:void(0)" class="aa-color-{{ strtolower($color->color) }} product_color size_{{ $color->size }}" onclick=chnage_product_color_image("{{ asset('storage/media/' .$color->attr_image)}}","{{($color->color) }}")></a>
                        @endif
                        @endforeach
 
@@ -97,9 +107,8 @@
                        </p>
                      </div>
                      <div class="aa-prod-view-bottom">
-                       <a class="aa-add-to-cart-btn" href="#">Add To Cart</a>
-                       <a class="aa-add-to-cart-btn" href="#">Wishlist</a>
-                       <a class="aa-add-to-cart-btn" href="#">Compare</a>
+                       <a class="aa-add-to-cart-btn" href="javascript:void(0)" onclick="add_to_cart()">Add To Cart</a>
+
                      </div>
                    </div>
                  </div>
@@ -229,4 +238,7 @@
        </div>
      </div>
    </section>
+   <input type="hidden" id="size_id"/>
+   <input type="hidden" id="color_id"/>
+
 @endsection

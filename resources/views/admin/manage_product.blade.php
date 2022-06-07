@@ -516,7 +516,7 @@ $pArr = (array)$val;
         function add_more() {
             loop_count++;
             var html = '<input id="name" name="paid[]" type="hidden"  ><div class="card" id="product_arrt_'+loop_count+'"><div class = "card-body" ><div class = "form-group" ><div class = "row" >';
-            html+='<div class="col-md-4"><label for="sku" class="control-label mb-1">SKU</label><input id="name" name="sku[]" type="text" class="form-control" aria-required="true" aria-invalid="false" requried></div>';
+            html+='<div class="col-md-4"><label for="sku" class="control-label mb-1">SKU</label><input id="name" name="sku[]" type="text" class="form-control" aria-required="true" aria-invalid="false" required></div>';
                 html+= '<div class="col-md-3"><label for="mrp" class="control-label mb-1">MRP</label><input id="mrp" name="mrp[]" type="text" class="form-control" aria-required="true" aria-invalid="false" ></div>';
                 html+= '<div class="col-md-3"><label for="price" class="control-label mb-1">Price</label><input id="price" name="price[]" type="number" class="form-control" aria-required="true" aria-invalid="false" ></div>';
                 html+='  <div class="col-md-2"><label for="mrp" class="control-label mb-1">Qty</label><input id="name" name="qty[]" type="number" class="form-control" aria-required="true"aria-invalid="false" ></div>';
