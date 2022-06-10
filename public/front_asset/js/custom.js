@@ -368,6 +368,60 @@ function showColor(size){
     $("#size_"+size).css('border', '1px solid black');
 
 };
-function add_to_cart(){
-    alert('s');
+function home_add_to_cart(id,size_attr_id,color_attr_id){
+    $('#size_id').val(size_attr_id);
+    $('#color_id').val(color_attr_id);
+    add_to_cart(id,size_attr_id,color_attr_id);
+}
+function add_to_cart(id,size_attr_id,color_attr_id){
+    $('#add_to_cart_mgs').html('');
+ var size= $('#size_id').val();
+  var color =$('#color_id').val();
+  if(size_attr_id ==0 && color_attr_id ==0){
+      size = 'no';
+      color ='no';
+  }
+  if(size == '' && size!='no'){
+  $('#add_to_cart_mgs').html('<div class="alert alert-danger fade in alert-dismissible mt10" ><a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>Please Select Size</div>');
+
+ }else if(color == '' && color!= 'no'){
+    $('#add_to_cart_mgs').html('<div class="alert alert-danger fade in alert-dismissible mt10" ><a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>Please Select Color</div>');
+  }
+
+  else{
+$('#product_id').val(id);
+$('#pqty').val($('#qty').val());
+
+$.ajax({
+    type: "Post",
+    url: "/product/add_to_cart",
+    data: $('#frmAddToCart').serialize(),
+
+    success: function (result) {
+        console.log(result);
+    }
+});
+}
+}
+function updateQty(pid,size,color,attr_id,price){
+    $('#size_id').val(size);
+    $('#color_id').val(color);
+    var qty =$('#qty'+attr_id).val();
+    $('#qty').val(qty);
+    add_to_cart(pid,size,color,attr_id);
+    $('#total_price_'+attr_id).html('৳ '+qty*price);
+
+
+}
+function deleteCartProduct(pid,size,color,attr_id){
+    $('#size_id').val(size);
+    $('#color_id').val(color);
+
+    $('#qty').val(0);
+    add_to_cart(pid,size,color,attr_id);
+    $('#cart_box'+attr_id).remove();
+    $('#box_remove_'+attr_id).remove();
+
+
+
 }

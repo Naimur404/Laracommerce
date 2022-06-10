@@ -29,6 +29,7 @@ use Illuminate\Http\Request;
 Route::get('admin', [AdminController::class, 'index']);
 Route::post('admin/auth', [AdminController::class, 'auth'])->name('admin.auth');
 
+
 Route::group(['middleware' => 'admin_auth'], function () {
     Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('admin/category', [CategoryController::class, 'index'])->name('admin.category');
@@ -115,4 +116,6 @@ Route::group(['middleware' => 'admin_auth'], function () {
 });
 Route::get('/',[FrontController::class, 'index'] )->name('index');
 Route::get('product/{slug}',[FrontController::class, 'product'] );
+Route::Post('product/add_to_cart',[FrontController::class, 'add_to_cart'] )->name('add_to_cart');
+Route::get('/cart',[FrontController::class, 'cart'] )->name('cart');
 

@@ -1108,7 +1108,7 @@ img {
   height: 380px;
   text-align: center;
   margin: 0 0 20px 55px;
-  
+
   position: relative;
   overflow: hidden;
 }
@@ -3072,6 +3072,9 @@ img {
   -ms-transition: all 0.5s;
   -o-transition: all 0.5s;
   transition: all 0.5s;
+}
+.mt10{
+    margin-top: 10px;
 }
 .aa-blog-details .aa-blog-comment-threat .comments .commentlist li .reply-btn:hover {
   color: #fff;

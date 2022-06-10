@@ -1,4 +1,6 @@
 <?php
+
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
@@ -44,10 +46,33 @@ function buildTreeView($arr,$parent,$level=0,$preLevel=-1){
     }
     return $html;
 }
+function getUserTempId(){
+   if(session()->has('USER_TEMP_ID') ===null){
+       $rand = rand(11111111,99999999);
+ session()->put('USER_TEMP_ID',$rand);
+ return $rand;
+   }else{
+    return session()->has('USER_TEMP_ID');
+   }
+}
 
 
+function cartCount(){
+    if(session()->has('FRONT_USER_LOGIN')){
+        $uid = session()->get('FRONT_USER_LOGIN');
+        $user_type = "Reg";
+     }else{
+         $uid = getUserTempId();
+         $user_type = "Not-Reg";
+     }
+     $result =  DB::table('cart')->leftJoin('products','products.id','=','cart.product_id')->leftJoin('product_arts','product_arts.id','=','cart.product_attr_id')->leftJoin('sizes','sizes.id','=','product_arts.size_id')->leftJoin('colors','colors.id','=','product_arts.color_id')
+    ->where(['user_id'=> $uid])
+    ->where(['user_type'=>$user_type])
+    ->select('cart.qty','products.name','products.image','products.slug','sizes.size','colors.color','product_arts.price','products.id as pid','product_arts.id as attr_id')
+    -> get();
 
-
+ return $result;
+}
 
 
 ?>
