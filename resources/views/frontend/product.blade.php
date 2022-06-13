@@ -1,5 +1,5 @@
 @extends('frontend.layout')
-@section('title',$product[0]->name)
+@section('title',$product[0]->pname)
 @section('index')
 
 {{-- <section id="aa-catg-head-banner">
@@ -34,7 +34,7 @@
                    <div class="aa-product-view-slider">
                      <div id="demo-1" class="simpleLens-gallery-container">
                        <div class="simpleLens-container">
-                         <div class="simpleLens-big-image-container"><a data-lens-image="{{ asset('storage/media/' . $product[0]->image ) }}" class="simpleLens-lens-image"><img src="{{ asset('storage/media/' . $product[0]->image ) }}" alt="{{ $product[0]->name }}" class="simpleLens-big-image"></a></div>
+                         <div class="simpleLens-big-image-container"><a data-lens-image="{{ asset('storage/media/' . $product[0]->image ) }}" class="simpleLens-lens-image"><img src="{{ asset('storage/media/' . $product[0]->image ) }}" alt="{{ $product[0]->pname }}" class="simpleLens-big-image"></a></div>
                        </div>
                        <div class="simpleLens-thumbnails-container">
                            @if(isset($product_images[$product[0]->id][0]))
@@ -53,7 +53,7 @@
                  <!-- Modal view content -->
                  <div class="col-md-7 col-sm-7 col-xs-12">
                    <div class="aa-product-view-content">
-                     <h3>{{ $product[0]->name }}</h3>
+                     <h3>{{ $product[0]->pname }}</h3>
                      <div class="aa-price-block">
                        <span class="aa-product-view-price">৳ {{ $product_attr[$product[0]->id][0]->price }}</span>
                        <p class="aa-product-avilability">Avilability: <span>In stock</span></p>
@@ -197,16 +197,19 @@
                </div>
              </div>
              <!-- Related product -->
+             @if (isset($related_product[0]))
+
+
              <div class="aa-product-related-item">
                <h3>Related Products</h3>
                <ul class="aa-product-catg aa-related-item-slider">
                  <!-- start single product item -->
                  <li>
                    <figure>
-                     <a class="aa-product-img" href="{{ url('product/'. $related_product[0]->slug) }}"><img src="{{ asset('storage/media/' . $related_product[0]->image ) }}" alt="polo shirt img"></a>
+                     <a class="aa-product-img" href="{{ url('product/'. $related_product[0]->pslug) }}"><img src="{{ asset('storage/media/' . $related_product[0]->image ) }}" alt="polo shirt img"></a>
                      <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                       <figcaption>
-                       <h4 class="aa-product-title"><a href="#">{{ $related_product[0]->name }}</a></h4>
+                       <h4 class="aa-product-title"><a href="#">{{ $related_product[0]->pname }}</a></h4>
                        <span class="aa-product-price">৳ {{ $related_product_attr[$related_product[0]->id][0]->price }}</span>
                       @if($related_product_attr[$related_product[0]->id][0]->mrp != '')
                        <span class="aa-product-price"><del>৳ {{ $related_product_attr[$related_product[0]->id][0]->mrp }}</del></span>
@@ -240,6 +243,35 @@
 
                <!-- / quick view modal -->
              </div>
+             @else
+             <div class="aa-product-related-item">
+                <h3>Related Products</h3>
+                <ul class="aa-product-catg aa-related-item-slider">
+                  <!-- start single product item -->
+                  <li>
+                  <h3 style="text-align: center">No Related Product Found</h3>
+                  </li>
+                   <!-- start single product item -->
+
+                  <!-- start single product item -->
+
+                  <!-- start single product item -->
+
+                  <!-- start single product item -->
+
+                  <!-- start single product item -->
+
+                  <!-- start single product item -->
+
+                  <!-- start single product item -->
+
+                </ul>
+                <!-- quick view modal -->
+
+                <!-- / quick view modal -->
+              </div>
+
+             @endif
            </div>
          </div>
        </div>

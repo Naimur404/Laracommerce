@@ -82,6 +82,7 @@
                     <?php
                     $data = cartCount();
                     $count = count($data);
+                    $totalprice = 0;
                     ?>
                   <span class="fa fa-shopping-basket"></span>
                   <span class="aa-cart-title">SHOPPING CART</span>
@@ -97,21 +98,29 @@
 
                   <ul>
                     @foreach ($data as $list)
-
+                    <?php
+                        $totalprice = $totalprice +($list->qty*$list->price);
+                    ?>
                     <li id="box_remove_{{ $list->attr_id }}">
-                      <a class="aa-cartbox-img" href="{{ url('product/'.$list->slug) }}"><img src="{{ asset('storage/media/' . $list->image ) }}" alt="img"></a>
+                      <a class="aa-cartbox-img" href="{{ url('product/'.$list->pslug) }}"><img src="{{ asset('storage/media/' . $list->image ) }}" alt="img"></a>
                       <div class="aa-cartbox-info">
-                        <h4><a href="#">{{ $list->name }}</a></h4>
+                        <h4><a href="#">{{ $list->pname }}</a></h4>
                         <p>{{ $list->qty }} x ৳ {{ $list->price }}</p>
                       </div>
                       <a class="aa-remove-product" href="javascript:void(0)" onclick="deleteCartProduct('{{ $list->pid }}','{{ $list->size }}','{{ $list->color }}','{{ $list->attr_id }}')"><span class="fa fa-times"></span></a>
                     </li>
                     @endforeach
-
+                    <li>
+                        <span class="aa-cartbox-total-title">
+                          Total
+                        </span>
+                        <span class="aa-cartbox-total-price">
+                            ৳ {{ $totalprice }}
+                        </span>
+                      </li>
                   </ul>
-                  <a class="aa-cartbox-checkout aa-primary-btn" href="checkout.html">Checkout</a>
-                  @else
-                  <h3>Cart Is Empty</h3>
+                  <a class="aa-cartbox-checkout aa-primary-btn" href="{{ url('/checkout') }}">Checkout</a>
+
                   @endif
                 </div>
 

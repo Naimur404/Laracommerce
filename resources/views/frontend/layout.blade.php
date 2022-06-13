@@ -27,7 +27,7 @@
     <!-- Main style sheet -->
     <link href="{{ asset('front_asset/css/style.css')}}" rel="stylesheet">
 
-    
+
 
     <!-- Google Font -->
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
@@ -41,9 +41,11 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-
+<script>
+    var ImagePath="{{ asset('storage/media')}}";
+</script>
   </head>
-  <body>
+  <body class="productPage">
    <!-- wpf loader Two -->
     <div id="wpf-loader-two">
       <div class="wpf-loader-two-inner">

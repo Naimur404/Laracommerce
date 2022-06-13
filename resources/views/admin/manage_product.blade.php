@@ -63,9 +63,9 @@
                         @csrf
                         <div class="form-group">
                             <label for="category" class="control-label mb-1">Product Name</label>
-                            <input id="name" name="name" type="text" class="form-control" aria-required="true"
-                                aria-invalid="false" value="{{ $name }}" required>
-                            @error('name')
+                            <input id="name" name="pname" type="text" class="form-control" aria-required="true"
+                                aria-invalid="false" value="{{ $pname }}" required>
+                            @error('pname')
                             @enderror
                         </div>
                         <div class="form-group">
@@ -82,9 +82,9 @@
 
                         <div class="form-group">
                             <label for="cc-payment" class="control-label mb-1">Slug</label>
-                            <input id="slug" name="slug" type="text" class="form-control" aria-required="true"
-                                aria-invalid="false" value="{{ $slug }}" required>
-                            @error('slug')
+                            <input id="slug" name="pslug" type="text" class="form-control" aria-required="true"
+                                aria-invalid="false" value="{{ $pslug }}" required>
+                            @error('pslug')
                                 <div class="alert alert-danger" role="alert">
                                     {{ $message }}
                                 </div>
@@ -108,11 +108,7 @@
 
                                     </select>
 
-                                    @error('slug')
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
+                                    
                                 </div>
                                 <div class="col-md-4">
                                     <label for="cc-payment" class="control-label mb-1">Brand</label>

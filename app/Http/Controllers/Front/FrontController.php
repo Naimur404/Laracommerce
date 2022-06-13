@@ -59,7 +59,7 @@ class FrontController extends Controller
      */
     public function product($slug)
     {
-        $result['product'] = DB::table('products')->where(['slug'=>$slug])->where(['status'=>1])-> get();
+        $result['product'] = DB::table('products')->where(['pslug'=>$slug])->where(['status'=>1])-> get();
         foreach($result['product'] as $list1){
             $result['product_attr'][$list1->id] = DB::table('product_arts')->leftJoin('sizes','sizes.id','=','size_id')->leftJoin('colors','colors.id','=','color_id')->where(['product_arts.product_id'=>$list1->id]) ->get();
         }
@@ -67,7 +67,7 @@ class FrontController extends Controller
             $result['product_images'][$list1->id] = DB::table('product_imgs')->where(['product_imgs.product_id'=>$list1->id]) ->get();
         }
         //for related product basis on related category
-        $result['related_product'] = DB::table('products')->where(['status'=>1])->where('slug','!=',$slug)->where(['category_id'=>$result['product'][0]->category_id])->get();
+        $result['related_product'] = DB::table('products')->where(['status'=>1])->where('pslug','!=',$slug)->where(['category_id'=>$result['product'][0]->category_id])->get();
 
         foreach($result['related_product'] as $list1){
             $result['related_product_attr'][$list1->id] = DB::table('product_arts')->leftJoin('sizes','sizes.id','=','size_id')->leftJoin('colors','colors.id','=','color_id')->where(['product_arts.product_id'=>$list1->id]) ->get();
@@ -138,7 +138,12 @@ class FrontController extends Controller
             ]);
             $msg = "added";
         }
-       return response()->json(['msg'=>$msg]);
+        $result =  DB::table('cart')->leftJoin('products','products.id','=','cart.product_id')->leftJoin('product_arts','product_arts.id','=','cart.product_attr_id')->leftJoin('sizes','sizes.id','=','product_arts.size_id')->leftJoin('colors','colors.id','=','product_arts.color_id')
+        ->where(['user_id'=> $uid])
+        ->where(['user_type'=>$user_type])
+        ->select('cart.qty','products.pname','products.image','products.pslug','sizes.size','colors.color','product_arts.price','products.id as pid','product_arts.id as attr_id')
+        -> get();
+       return response()->json(['msg'=>$msg,'data'=>$result,'totalitems'=> count($result)]);
     }
   public  function cart(Request $request){
 
@@ -152,7 +157,7 @@ class FrontController extends Controller
     $result['list'] =  DB::table('cart')->leftJoin('products','products.id','=','cart.product_id')->leftJoin('product_arts','product_arts.id','=','cart.product_attr_id')->leftJoin('sizes','sizes.id','=','product_arts.size_id')->leftJoin('colors','colors.id','=','product_arts.color_id')
     ->where(['user_id'=> $uid])
     ->where(['user_type'=>$user_type])
-    ->select('cart.qty','products.name','products.image','products.slug','sizes.size','colors.color','product_arts.price','products.id as pid','product_arts.id as attr_id')
+    ->select('cart.qty','products.pname','products.image','products.pslug','sizes.size','colors.color','product_arts.price','products.id as pid','product_arts.id as attr_id')
     -> get();
 
 
@@ -162,4 +167,92 @@ class FrontController extends Controller
 
         return view('frontend.cart',$result);
     }
+public function category(Request $request, $slug){
+
+$sort ='';
+$sort_txt = "";
+$filter_price_start ='';
+$filter_price_end ='';
+$color_filter ='';
+$colorattrArr =[];
+
+    if($request->get('sort') !== null){
+        $sort = $request->get('sort');
+    }
+    $query= DB::table('products');
+
+
+    $query=$query->leftJoin('categories','products.category_id','=','categories.id');
+    $query=$query->leftJoin('product_arts','product_arts.product_id','=','products.id');
+    $query=$query-> where(['products.status'=>1]);
+    $query= $query->where(['categories.slug'=>$slug]);
+    if($sort == 'name'){
+        $query=$query->orderBy('products.pname','asc');
+        $sort_txt = "Name";
+
+    }
+    if($sort=='date'){
+        $query=$query->orderBy('products.id','desc');
+        $sort_txt = "Date";
+
+    }
+    if($sort=="price_desc"){
+        $query=$query->orderBy('product_arts.price','desc');
+        $sort_txt = "Price - Desc";
+
+       }
+    if($sort=="price_asc"){
+        $query=$query->orderBy('product_arts.price','asc');
+        $sort_txt = "Price - Asc";
+
+    }
+    if($request->get('filter_price_start') !== null && $request->get('filter_price_end') !== null){
+        $filter_price_start = $request->get('filter_price_start');
+        $filter_price_end = $request->get('filter_price_end');
+        if($filter_price_start >0 && $filter_price_end>0){
+            $query=$query->whereBetween('product_arts.price',[$filter_price_start,$filter_price_end]);
+        }
+
+    }
+    if($request->get('color_filter') !== null){
+
+        $color_filter =$request->get('color_filter');
+
+        $colorattrArr =explode(":",$color_filter);
+
+        $colorattrArr = array_filter($colorattrArr);
+
+        $query=$query->where(['product_arts.color_id' =>$request->get('color_filter')]);
+
+
+    }
+
+    $query= $query->distinct()->select('products.*');
+    $query= $query->get();
+    $result['product'] = $query;
+        foreach($result['product'] as $list1){
+           $query  = DB::table('product_arts');
+           $query= $query->leftJoin('sizes','sizes.id','=','size_id');
+           $query= $query->leftJoin('colors','colors.id','=','color_id');
+           $query= $query->where(['product_arts.product_id'=>$list1->id]);
+
+
+           $query= $query->get();
+
+
+            $result['product_attr'][$list1->id] = $query;
+        }
+        $result['colors'] = DB::table('colors')->where(['status'=>1])->get();
+        $result['sort'] = $sort;
+        $result['slug'] = $slug;
+        $result['color_filter'] = $color_filter;
+        $result['colorattrArr'] = $colorattrArr;
+        $result['filter_price_start']=$filter_price_start;
+        $result['filter_price_end']=$filter_price_end;
+        $result['sort_txt'] = $sort_txt;
+
+        $result['home_category'] = DB::table('categories')->where(['status' =>1])->where(['is_home' =>1])->get();
+
+    return view('frontend.category',$result);
+}
 }

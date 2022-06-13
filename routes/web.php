@@ -118,4 +118,5 @@ Route::get('/',[FrontController::class, 'index'] )->name('index');
 Route::get('product/{slug}',[FrontController::class, 'product'] );
 Route::Post('product/add_to_cart',[FrontController::class, 'add_to_cart'] )->name('add_to_cart');
 Route::get('/cart',[FrontController::class, 'cart'] )->name('cart');
+Route::get('/category/{slug}',[FrontController::class, 'category'] )->name('category');
 

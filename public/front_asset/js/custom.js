@@ -238,25 +238,32 @@ jQuery(function($){
   /* ----------------------------------------------------------- */
 
     jQuery(function(){
+
       if($('body').is('.productPage')){
        var skipSlider = document.getElementById('skipstep');
+       var start = $('#filter_price_start').val();
+       var end = $('#filter_price_end').val();
+       if(start=='' || end == ''){
+        var start = 100;
+         var end= 1800;
+       }
         noUiSlider.create(skipSlider, {
             range: {
                 'min': 0,
-                '10%': 10,
-                '20%': 20,
-                '30%': 30,
-                '40%': 40,
-                '50%': 50,
-                '60%': 60,
-                '70%': 70,
-                '80%': 80,
-                '90%': 90,
-                'max': 100
+                '10%': 100,
+                '20%': 300,
+                '30%': 500,
+                '40%': 700,
+                '50%': 900,
+                '60%': 1100,
+                '70%': 1300,
+                '80%': 1400,
+                '90%': 1600,
+                'max': 2000
             },
             snap: true,
             connect: true,
-            start: [20, 70]
+            start: [start, end]
         });
         // for value print
         var skipValues = [
@@ -398,11 +405,33 @@ $.ajax({
     data: $('#frmAddToCart').serialize(),
 
     success: function (result) {
-        console.log(result);
-    }
-});
+        alert('product '+result.msg);
+        if(result.totalitems == 0){
+            $('.aa-cart-notify').html('0');
+            $('.aa-cartbox-summary').remove();
+        }else{
+            var toltalprice=0;
+            $('.aa-cart-notify').html(result.totalitems);
+            var html = '<ul>'
+            //$.each jquery foreach
+            $.each(result.data, function(key,val){
+
+                toltalprice = parseInt(toltalprice)+(parseInt(val.qty)* parseInt(val.price));
+                html+=' <li id="box_remove_'+val.attr_id+'"><a class="aa-cartbox-img" href=""><img src="'+ImagePath+'/'+val.image+'"alt="img"></a> <div class="aa-cartbox-info"><h4><a href="#">'+val.name+'</a></h4><p>'+val.qty+' x ৳ '+val.price+'</p></div></li>';
+
+
+            });
+            html+=' <li><spanclass="aa-cartbox-total-title">Total</span><span class="aa-cartbox-total-price"> ৳ '+toltalprice+'</span></li>';
+            html+='</ul><a class="aa-cartbox-checkout aa-primary-btn" href="checkout">Checkout</a>';
+
+            $('.aa-cartbox-summary').html(html);
+
+            }
+        }
+    });
 }
 }
+
 function updateQty(pid,size,color,attr_id,price){
     $('#size_id').val(size);
     $('#color_id').val(color);
@@ -424,4 +453,30 @@ function deleteCartProduct(pid,size,color,attr_id){
 
 
 
+}
+function sort_by(){
+   var sort_by_value=$('#sort_by_value').val();
+   $('#sort').val(sort_by_value);
+   $('#categoryfilter').submit();
+}
+function sort_by_price(){
+
+   $('#filter_price_start').val($('#skip-value-lower').html());
+   $('#filter_price_end').val($('#skip-value-upper').html());
+   $('#categoryfilter').submit();
+
+
+}
+function set_color(color,type){
+    var color_str = $('#color_filter').val();
+    if(type==1){
+        var  new_color_str = color_str.replace(color+':','');
+        
+        $('#color_filter').val(new_color_str);
+    }else{
+        $('#color_filter').val(color+':'+color_str);
+        $('#categoryfilter').submit();
+    }
+
+    $('#categoryfilter').submit();
 }

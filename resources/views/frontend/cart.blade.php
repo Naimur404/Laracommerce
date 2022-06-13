@@ -49,8 +49,8 @@
 
                        <tr id="cart_box{{ $data->attr_id }}">
                          <td><a class="remove" onclick="deleteCartProduct('{{ $data->pid }}','{{ $data->size }}','{{ $data->color }}','{{ $data->attr_id }}')" href="javascript:void(0)"><fa class="fa fa-close"></fa></a></td>
-                         <td><a href="{{ url('product/'.$data->slug) }}"><img src="{{ asset('storage/media/' . $data->image ) }}" style="width: 80px" alt="img"></a></td>
-                         <td><a class="aa-cart-title" href="{{ url('product/'.$data->slug) }}">{{ $data->name }}</a>
+                         <td><a href="{{ url('product/'.$data->pslug) }}"><img src="{{ asset('storage/media/' . $data->image ) }}" style="width: 80px" alt="img"></a></td>
+                         <td><a class="aa-cart-title" href="{{ url('product/'.$data->pslug) }}">{{ $data->pname }}</a>
                           @if($data->size != '')
                           SIZE: {{ $data->size }}<br/>
                           @endif
@@ -118,7 +118,7 @@
     </div>
   </section>
   <input type="hidden" id="qty" value="1"/>
-  <form {{ route('add_to_cart') }}" method="POST" id="frmAddToCart">
+  <form  id="frmAddToCart">
     <input type="hidden" id="size_id" name="size_id"/>
     <input type="hidden" id="color_id" name="color_id"/>
     <input type="hidden" id="pqty" name="pqty"/>

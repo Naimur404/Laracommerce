@@ -28,9 +28,9 @@ if($id>0){
 
           $arr = Product::where(['id'=>$id])->get();
           $result['category_id'] = $arr['0']->category_id;
-          $result['name'] = $arr['0']->name;
+          $result['pname'] = $arr['0']->pname;
           $result['image'] = $arr['0']->image;
-          $result['slug'] = $arr['0']->slug;
+          $result['pslug'] = $arr['0']->pslug;
           $result['brand'] = $arr['0']->brand;
           $result['model'] = $arr['0']->model;
           $result['short_desc'] = $arr['0']->short_desc;
@@ -59,10 +59,10 @@ if(!isset($productImgArr[0])){
 }
 }else{
 
-$result['name'] = '';
+$result['pname'] = '';
 $result['image'] = '';
 $result['category_id'] = '';
-$result['slug'] = '';
+$result['pslug'] = '';
 $result['brand'] = '';
 $result['model'] = '';
 $result['short_desc'] = '';
@@ -183,9 +183,9 @@ return redirect('admin/manage_product/'.$pid);
             $image_validate = "required|mimes:png,jpg,jpeg";
         }
      $request->validate([
-'name' => 'required',
+'pname' => 'required',
 'image' => $image_validate,
-'slug' => 'required|unique:products,slug,'.$request->post('id'),
+'pslug' => 'required|unique:products,pslug,'.$request->post('id'),
 //attr_image.* using for array input
 'attr_image.*' => 'mimes:png,jpg,jpeg',
 'images.*' => 'mimes:png,jpg,jpeg',
@@ -232,9 +232,9 @@ if($request->hasFile('image')){
     $product->image = $image_name;
 }
 
-$product->name = $request->post('name');
+$product->pname = $request->post('pname');
 $product->category_id = $request->post('category_id');
-$product->slug = $request->post('slug');
+$product->pslug = $request->post('pslug');
 
 $product->brand = $request->post('brand');
 $product->model = $request->post('model');

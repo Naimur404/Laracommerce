@@ -111,10 +111,10 @@
 
                         <li>
                           <figure>
-                            <a class="aa-product-img" href="{{ url('product/'. $product->slug) }}"><img src="{{ asset('storage/media/' . $product->image ) }}" alt="{{ $product->name }}"></a>
+                            <a class="aa-product-img" href="{{ url('product/'. $product->pslug) }}"><img src="{{ asset('storage/media/' . $product->image ) }}" alt="{{ $product->pname }}"></a>
                             <a class="aa-add-card-btn"  href="javascript:void(0)" onclick="home_add_to_cart('{{ $product->id }}','{{$home_product_attr[$product->id][0]->size}}','{{ $home_product_attr[$product->id][0]->color}}')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                               <figcaption>
-                              <h4 class="aa-product-title"><a href="{{ url('product/'. $product->slug) }}">{{ $product->name }}</a></h4>
+                              <h4 class="aa-product-title"><a href="{{ url('product/'. $product->pslug) }}">{{ $product->pname }}</a></h4>
                             @if (isset($home_product_attr[$product->id][0]))
 
 
@@ -207,10 +207,10 @@
 
                     <li>
                       <figure>
-                        <a class="aa-product-img" href="{{ url('product/'. $product->slug) }}"><img src="{{ asset('storage/media/' . $product->image ) }}" alt="{{ $product->name }}"></a>
+                        <a class="aa-product-img" href="{{ url('product/'. $product->pslug) }}"><img src="{{ asset('storage/media/' . $product->image ) }}" alt="{{ $product->pname }}"></a>
                         <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                           <figcaption>
-                          <h4 class="aa-product-title"><a href="{{ url('product/'. $product->slug) }}">{{ $product->name }}</a></h4>
+                          <h4 class="aa-product-title"><a href="{{ url('product/'. $product->pslug) }}">{{ $product->pname }}</a></h4>
                            @if (isset($home_featured_product_attr[$product->id][0]))
 
 
@@ -260,10 +260,10 @@
 
                     <li>
                       <figure>
-                        <a class="aa-product-img" href="{{ url('product/'. $product->slug) }}"><img src="{{ asset('storage/media/' . $product->image ) }}" alt="{{ $product->name }}"></a>
+                        <a class="aa-product-img" href="{{ url('product/'. $product->pslug) }}"><img src="{{ asset('storage/media/' . $product->image ) }}" alt="{{ $product->pname }}"></a>
                         <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                           <figcaption>
-                          <h4 class="aa-product-title"><a href="{{ url('product/'. $product->slug) }}">{{ $product->name }}</a></h4>
+                          <h4 class="aa-product-title"><a href="{{ url('product/'. $product->pslug) }}">{{ $product->pname }}</a></h4>
                           @if (isset($home_tranding_product_attr[$product->id][0]))
                           <span class="aa-product-price">৳ {{ $home_tranding_product_attr[$product->id][0]->price }}</span><span class="aa-product-price"><del>৳ {{ $home_tranding_product_attr[$product->id][0]->mrp }}</del></span>
                           @endif
@@ -314,7 +314,7 @@
                         <a class="aa-product-img" href="#"><img src="{{ asset('storage/media/' . $list->image ) }}" alt="polo shirt img"></a>
                         <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                          <figcaption>
-                          <h4 class="aa-product-title"><a href="#"></a>{{ $list->name }}</h4>
+                          <h4 class="aa-product-title"><a href="#"></a>{{ $list->pname }}</h4>
                           @if (isset($home_discounted_product_attr[$list->id][0]))
                           <span class="aa-product-price">{{ $home_discounted_product_attr[$list->id][0]->price }}</span><span class="aa-product-price"><del>{{ $home_discounted_product_attr[$list->id][0]->mrp }}</del></span>
                           @endif
@@ -413,7 +413,7 @@
     </div>
   </section>
   <input type="hidden" id="qty" value="1"/>
-  <form action="{{ route('add_to_cart') }}" method="POST" id="frmAddToCart">
+  <form  id="frmAddToCart">
     <input type="hidden" id="size_id" name="size_id"/>
     <input type="hidden" id="color_id" name="color_id"/>
     <input type="hidden" id="pqty" name="pqty"/>

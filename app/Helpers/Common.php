@@ -10,6 +10,7 @@ function getTopNavCat(){
     foreach($result as $row){
         $arr[$row->id]['name'] = $row->name;
         $arr[$row->id]['parent_category_id'] = $row->parent_category_id;
+        $arr[$row->id]['slug'] = $row->slug;
 
     }
     $str=buildTreeView($arr,0);
@@ -32,7 +33,7 @@ function buildTreeView($arr,$parent,$level=0,$preLevel=-1){
             if($level==$preLevel){
                 $html.='</li>';
             }
-            $html.='<li><a href="#">'.$data['name'].'<span class="caret"></span></a>';
+            $html.='<li><a href="/category/'.$data['slug'].'">'.$data['name'].'<span class="caret"></span></a>';
             if($level>$preLevel){
                 $preLevel=$level;
             }
@@ -68,7 +69,7 @@ function cartCount(){
      $result =  DB::table('cart')->leftJoin('products','products.id','=','cart.product_id')->leftJoin('product_arts','product_arts.id','=','cart.product_attr_id')->leftJoin('sizes','sizes.id','=','product_arts.size_id')->leftJoin('colors','colors.id','=','product_arts.color_id')
     ->where(['user_id'=> $uid])
     ->where(['user_type'=>$user_type])
-    ->select('cart.qty','products.name','products.image','products.slug','sizes.size','colors.color','product_arts.price','products.id as pid','product_arts.id as attr_id')
+    ->select('cart.qty','products.pname','products.image','products.pslug','sizes.size','colors.color','product_arts.price','products.id as pid','product_arts.id as attr_id')
     -> get();
 
  return $result;

@@ -41,9 +41,9 @@
                             @foreach ($data as $list)
                                 <tr class="tr-shadow">
 
-                                    <td>{{ $list->name }}</td>
+                                    <td>{{ $list->pname }}</td>
                                     <td>
-                                        <span class="block-email">{{ $list->slug }}</span>
+                                        <span class="block-email">{{ $list->pslug }}</span>
                                     </td>
                                     <td>
                                         @if($list->image != '')
