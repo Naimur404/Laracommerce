@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 
-
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+
+use Illuminate\Support\Facades\Validator;
+
 
 class FrontController extends Controller
 {
@@ -255,4 +257,71 @@ $colorattrArr =[];
 
     return view('frontend.category',$result);
 }
+public function search($str){
+    $result['search_product'] =
+    $query= DB::table('products');
+
+
+    $query=$query->leftJoin('categories','products.category_id','=','categories.id');
+    $query=$query->leftJoin('product_arts','product_arts.product_id','=','products.id');
+    $query=$query-> where(['products.status'=>1]);
+
+    $query=$query->Where('pname','like',"%$str%");
+    $query=$query->orWhere('pslug','like',"%$str%");
+    $query=$query->orWhere('short_desc','like',"%$str%");
+    $query=$query->orWhere('desc','like',"%$str%");
+    $query=$query->orWhere('keywords','like',"%$str%");
+    $query=$query->orWhere('technical_specification','like',"%$str%");
+
+    $query= $query->distinct()->select('products.*');
+    $query= $query->get();
+    $result['product'] = $query;
+        foreach($result['product'] as $list1){
+           $query  = DB::table('product_arts');
+           $query= $query->leftJoin('sizes','sizes.id','=','size_id');
+           $query= $query->leftJoin('colors','colors.id','=','color_id');
+           $query= $query->where(['product_arts.product_id'=>$list1->id]);
+
+
+           $query= $query->get();
+
+
+            $result['product_attr'][$list1->id] = $query;
+        }
+
+
+return view('frontend.search',$result);
+}
+public function registration(){
+
+    return view('frontend.registration');
+}
+public function registration_process(Request $request){
+$valid = Validator::make($request->all(),[
+    "name"=>'required',
+    "email"=>'required|email|unique:customers,email',
+    "password"=>'required|min:8',
+    "phone"=>'required|numeric|digits:11',
+
+]);
+if($valid->fails()){
+    return response()->json(['status'=>'error', 'error'=>$valid->errors()->toArray()]);
+}else{
+    $arr=[
+        "name" => $request->name,
+        "email" => $request->email,
+        "phone" => $request->phone,
+        "password" =>Crypt::encrypt($request->password),
+        "status"=> 1,
+        "created_at"=>date('Y-m-d h:i:s'),
+        "updated_at"=>date('Y-m-d h:i:s')
+    ];
+    $query=DB::table('customers')->insert($arr);
+}
+if($query){
+    return response()->json(['status'=> 'sucess', 'msg'=>"Registration Sucessful"]);
+}
+
+}
+
 }

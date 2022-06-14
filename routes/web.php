@@ -116,7 +116,10 @@ Route::group(['middleware' => 'admin_auth'], function () {
 });
 Route::get('/',[FrontController::class, 'index'] )->name('index');
 Route::get('product/{slug}',[FrontController::class, 'product'] );
+Route::get('search/{str}',[FrontController::class, 'search'] );
+Route::get('registration',[FrontController::class, 'registration'] )->name('registration');
 Route::Post('product/add_to_cart',[FrontController::class, 'add_to_cart'] )->name('add_to_cart');
+Route::Post('user/registration_process',[FrontController::class, 'registration_process'])->name('user.registration');
 Route::get('/cart',[FrontController::class, 'cart'] )->name('cart');
 Route::get('/category/{slug}',[FrontController::class, 'category'] )->name('category');
 

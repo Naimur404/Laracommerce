@@ -471,7 +471,7 @@ function set_color(color,type){
     var color_str = $('#color_filter').val();
     if(type==1){
         var  new_color_str = color_str.replace(color+':','');
-        
+
         $('#color_filter').val(new_color_str);
     }else{
         $('#color_filter').val(color+':'+color_str);
@@ -480,3 +480,38 @@ function set_color(color,type){
 
     $('#categoryfilter').submit();
 }
+function pudsearch(){
+     var search_str = $('#search_str').val();
+     if(search_str != '' && search_str.length>3 ){
+        window.location.href= '/search/'+search_str;
+     }
+}
+
+$('#frmRegistration').submit(function(e){
+e.preventDefault();
+$('#field_error').html('');
+$.ajax({
+    type: "Post",
+    url: "user/registration_process",
+    data: $('#frmRegistration').serialize(),
+
+    success: function (result) {
+   if(result.status == "error"){
+    $.each(result.error,function(key,val){
+        $('#'+key+'_error').html(val);
+
+    });
+   }
+   if(result.status == "sucess"){
+    $('#frmRegistration')[0].reset();
+    $('.hello').remove();
+    $('#sucess_mgs').html(result.msg);
+
+
+   }
+
+
+    }
+});
+
+});
