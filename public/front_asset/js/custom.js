@@ -515,3 +515,33 @@ $.ajax({
 });
 
 });
+$('#frmLogin').submit(function(e){
+    $('#login_msg').html("");
+    e.preventDefault();
+
+
+    $.ajax({
+        type: "Post",
+        url: "/user/login_process",
+        data: $('#frmLogin').serialize(),
+
+        success: function (result) {
+       if(result.status == "error"){
+        $('#login_msg').html(result.msg);
+       }
+       if(result.status == "sucess"){
+        //for rederict
+       window.location.href ='/';
+
+        // $('#frmLogin')[0].reset();
+        // $('.hello').remove();
+        // $('#sucess_mgs').html(result.msg);
+
+
+       }
+
+
+        }
+    });
+
+    });

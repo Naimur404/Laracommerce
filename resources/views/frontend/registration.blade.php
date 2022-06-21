@@ -30,14 +30,16 @@
               <div class="col-md-6">
                 <div class="aa-myaccount-login">
                 <h4>Login</h4>
-                 <form action="" class="aa-login-form">
-                  <label for="">Username or Email address<span>*</span></label>
-                   <input type="text" placeholder="Username or email">
+                 <form action="" class="aa-login-form" id="frmLogin">
+                  <label for="">Email address<span>*</span></label>
+                   <input type="text" placeholder="Email" name="login_email">
                    <label for="">Password<span>*</span></label>
-                    <input type="password" placeholder="Password">
-                    <button type="submit" class="aa-browse-btn">Login</button>
+                    <input type="password" placeholder="Password" name="login_password">
+                    <button type="submit" class="aa-browse-btn" id="btnlogin">Login</button>
                     <label class="rememberme" for="rememberme"><input type="checkbox" id="rememberme"> Remember me </label>
+                    <div id="login_msg" style="clear: both;"></div>
                     <p class="aa-lost-password"><a href="#">Lost your password?</a></p>
+                    @csrf
                   </form>
                 </div>
               </div>

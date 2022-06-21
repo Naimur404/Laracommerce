@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
-
+use App\Models\Admin\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -292,11 +293,15 @@ public function search($str){
 
 return view('frontend.search',$result);
 }
-public function registration(){
-
+public function registration(Request $request){
+    if($request->session()->has('USER_LOGIN')!=null){
+        return redirect('/');
+      }
     return view('frontend.registration');
 }
 public function registration_process(Request $request){
+
+
 $valid = Validator::make($request->all(),[
     "name"=>'required',
     "email"=>'required|email|unique:customers,email',
@@ -307,21 +312,91 @@ $valid = Validator::make($request->all(),[
 if($valid->fails()){
     return response()->json(['status'=>'error', 'error'=>$valid->errors()->toArray()]);
 }else{
+    $rand_id = rand(11111111,9999999);
     $arr=[
         "name" => $request->name,
         "email" => $request->email,
         "phone" => $request->phone,
         "password" =>Crypt::encrypt($request->password),
         "status"=> 1,
+        "is_verify" =>0,
+        "random_id" => $rand_id,
         "created_at"=>date('Y-m-d h:i:s'),
         "updated_at"=>date('Y-m-d h:i:s')
     ];
     $query=DB::table('customers')->insert($arr);
 }
 if($query){
-    return response()->json(['status'=> 'sucess', 'msg'=>"Registration Sucessful"]);
+    // email verification code start
+     $data = ['name'=>$request->name,'rand_id'=>$rand_id];
+     $user['to'] = $request->email;
+     Mail::send('frontend/email_verification',$data,function($message) use
+     ($user){
+        $message->to($user['to']);
+        $message->subject('Email Id Verification');
+     });
+     //end
+    return response()->json(['status'=> 'sucess', 'msg'=>"Registration Sucessful. Please check your eamil id for verification"]);
 }
 
 }
+public function login_process(Request $request){
+//login exting user email check
+$result= Customer::where(['email'=>$request->login_email])->get();
+if(isset($result[0])){
+    //password decrypt
+   $pass_check= Crypt::decrypt($result[0]->password);
+   $status = $result[0]->status;
+   $is_verify = $result[0]->is_verify;
+   if($is_verify==0){
+    return response()->json(['status'=>'error', 'msg'=>'Please Verify Your Account']);
+   }
+   if($status==0){
+    return response()->json(['status'=>'error', 'msg'=>'Your Account Has Been Deactived']);
+   }
+    if($pass_check==$request->login_password){
+        //condition for remember me
+        if($request->rememberme != null){
+
+           //set cookie for remember me
+            Cookie::queue('login_email',$request->login_email, (60*60*24*100));
+            Cookie::queue('login_password',$request->login_password,(60*60*24*100));
+
+        }else{
+            //unset cookie for remember me
+            Cookie::queue(Cookie::forget('login_email'));
+            Cookie::queue(Cookie::forget('login_password'));
+        }
+
+        $status = "sucess";
+        $msg= "";
+        $request->session()->put('USER_LOGIN', true);
+        $request->session()->put('USER_ID', $result[0]->id);
+
+        $request->session()->put('USER_NAME', $result[0]->name);
+
+    }else{
+        $status = "error";
+         $msg= "Please entred valid password";
+
+    }
+}else{
+    $status = "error";
+    $msg= "Please entred valid email";
+}
+
+    return response()->json(['status'=> $status, 'msg'=>$msg]);
+
+
+    }
+    public function email_verification($id){
+     $result= DB::table('customers')->where(['random_id' => $id])->get();
+if(isset($result[0])){
+    DB::table('customers')->where(['id' => $result[0]->id])->update(['is_verify'=>1,'random_id'=>'']);
+    return view('frontend.thankyou');
+}else{
+    return redirect('/');
+}
+    }
 
 }

@@ -46,10 +46,15 @@
               <div class="aa-header-top-right">
                 <ul class="aa-head-top-nav-right">
                   <li><a href="account.html">My Account</a></li>
-                  <li class="hidden-xs"><a href="wishlist.html">Wishlist</a></li>
+                 
                   <li class="hidden-xs"><a href="{{ route('cart') }}">My Cart</a></li>
                   <li class="hidden-xs"><a href="checkout.html">Checkout</a></li>
+                  @if(session()->has('USER_LOGIN')!= null)
+                  <li><a href="{{ route('user.logout') }}" >Log Out</a></li>
+                  @else
                   <li><a href="" data-toggle="modal" data-target="#login-modal">Login</a></li>
+                  @endif
+
                 </ul>
               </div>
             </div>

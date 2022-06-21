@@ -90,7 +90,18 @@
   <!-- footer -->
   @include('frontend.footer')
   <!-- / footer -->
+<?php
 
+if(isset($_COOKIE["login_email"]) && isset($_COOKIE["login_password"])){
+
+    $checked = "checked='checked'";
+
+}else{
+
+    $checked = "";
+
+}
+?>
   <!-- Login Modal -->
   <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -98,17 +109,19 @@
         <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4>Login or Register</h4>
-          <form class="aa-login-form" action="">
-            <label for="">Username or Email address<span>*</span></label>
-            <input type="text" placeholder="Username or email">
+          <form class="aa-login-form" id="frmLogin">
+            <label for="">Email address<span>*</span></label>
+            <input type="email" placeholder="Email" name="login_email" value="{{ Cookie::get('login_email') }}"  required >
             <label for="">Password<span>*</span></label>
-            <input type="password" placeholder="Password">
-            <button class="aa-browse-btn" type="submit">Login</button>
-            <label for="rememberme" class="rememberme"><input type="checkbox" id="rememberme"> Remember me </label>
+            <input type="password" placeholder="Password" name="login_password" required value="{{Cookie::get('login_password') }}" >
+            <button class="aa-browse-btn" type="submit" id="btnLogin">Login</button>
+            <label for="rememberme" class="rememberme" ><input type="checkbox" id="rememberme" name="rememberme" {{  $checked}}> Remember me </label>
+            <div id="login_msg" style="clear: both;"></div>
             <p class="aa-lost-password"><a href="#">Lost your password?</a></p>
             <div class="aa-register-now">
               Don't have an account?<a href="{{ route('registration') }}">Register now!</a>
             </div>
+            @csrf
           </form>
         </div>
       </div><!-- /.modal-content -->

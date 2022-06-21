@@ -122,4 +122,14 @@ Route::Post('product/add_to_cart',[FrontController::class, 'add_to_cart'] )->nam
 Route::Post('user/registration_process',[FrontController::class, 'registration_process'])->name('user.registration');
 Route::get('/cart',[FrontController::class, 'cart'] )->name('cart');
 Route::get('/category/{slug}',[FrontController::class, 'category'] )->name('category');
+Route::Post('user/login_process',[FrontController::class, 'login_process'])->name('user.login');
 
+Route::get('/logout', function () {
+    session()->forget('USER_LOGIN');
+    session()->forget('USER_ID');
+    session()->forget('USER_NAME');
+
+    return redirect('/');
+
+})->name('user.logout');
+Route::get('/verification/{id}',[FrontController::class, 'email_verification'] );
