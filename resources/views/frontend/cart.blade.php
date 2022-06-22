@@ -70,7 +70,7 @@
                             <input class="aa-coupon-code" type="text" placeholder="Coupon">
                             <input class="aa-cart-view-btn" type="submit" value="Apply Coupon">
                           </div>
-                          <input class="aa-cart-view-btn" type="submit" value="Update Cart">
+                          <input class="aa-cart-view-btn" type="submit" value="Checkout">
                         </td>
                       </tr>
 
@@ -84,31 +84,7 @@
               </form>
               <!-- Cart Total view -->
 
-              <?php
-              $data = cartCount();
-              $count = count($data);
 
-              ?>
-              @if($count != 0)
-
-              <div class="cart-view-total ">
-                <h4>Cart Totals</h4>
-
-                <table class="aa-totals-table">
-                  <tbody>
-                    <tr>
-                      <th>Subtotal</th>
-                      <td>$450</td>
-                    </tr>
-                    <tr>
-                      <th>Total</th>
-                      <td>$450</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <a href="#" class="aa-cart-view-btn">Proced to Checkout</a>
-              </div>
-              @endif
 
 
             </div>

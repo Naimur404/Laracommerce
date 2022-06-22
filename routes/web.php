@@ -132,4 +132,9 @@ Route::get('/logout', function () {
     return redirect('/');
 
 })->name('user.logout');
+Route::Post('user/login_process',[FrontController::class, 'login_process'])->name('user.login');
 Route::get('/verification/{id}',[FrontController::class, 'email_verification'] );
+Route::Post('/forgot_password_change_process',[FrontController::class, 'forgot_password_change_process'])->name('user.orgot_password_change_process');
+Route::Post('/forgot_password',[FrontController::class, 'forgot_password'])->name('user.forgot_password');
+Route::get('/forget_password_change/{id}',[FrontController::class, 'forgot_password_change'] );
+Route::get('/checkout',[FrontController::class, 'checkout'] );

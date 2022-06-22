@@ -4200,3 +4200,11 @@ border: 2px solid orangered;
 #login_msg{
  color: red;
 }
+#forgot_msg{
+    color: red;
+   }
+   .color_checkout{
+    font-size: 14px;
+    color: green;
+    font-weight: bold;
+   }

@@ -48,19 +48,19 @@ function buildTreeView($arr,$parent,$level=0,$preLevel=-1){
     return $html;
 }
 function getUserTempId(){
-   if(session()->has('USER_TEMP_ID') ===null){
+   if(!session()->has('USER_TEMP_ID')){
        $rand = rand(11111111,99999999);
  session()->put('USER_TEMP_ID',$rand);
  return $rand;
    }else{
-    return session()->has('USER_TEMP_ID');
+    return session()->get('USER_TEMP_ID');
    }
 }
 
 
 function cartCount(){
-    if(session()->has('FRONT_USER_LOGIN')){
-        $uid = session()->get('FRONT_USER_LOGIN');
+    if(session()->has('USER_ID')){
+        $uid = session()->get('USER_ID');
         $user_type = "Reg";
      }else{
          $uid = getUserTempId();
