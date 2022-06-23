@@ -405,7 +405,8 @@ function add_to_cart(id, size_attr_id, color_attr_id) {
             data: $('#frmAddToCart').serialize(),
 
             success: function (result) {
-                alert('product ' + result.msg);
+                alertify.set('notifier','position', 'top-center');
+                alertify.success('Product ' +result.msg);
                 if (result.totalitems == 0) {
                     $('.aa-cart-notify').html('0');
                     $('.aa-cartbox-summary').remove();
@@ -616,10 +617,86 @@ $('#frmForgotPassword').submit(function (e) {
 });
 function applyCouponCode(){
 var coupon_code = $('#coupon_code').val();
-$('#coupon_msg').html('');
+var sum = 40;
 if(coupon_code!= ''){
+    $.ajax({
+        type: "post",
+        url: "/apply_coupon_code",
+        data: 'coupon_code='+coupon_code+'&_token='+$("[name='_token']").val(),
 
+        success: function (result) {
+
+     if(result.status == 'sucess'){
+        $('.show_coupon_box').removeClass('hide');
+        $('#coupon_code_str').html(coupon_code);
+        $('#subtotal_price').html('৳ '+result.totalprice);
+        //   sum += parseInt(result.totalprice);
+        $('#total_price').html('৳ '+parseInt(result.totalprice +40));
+
+        $('.apply_coupon_code_box2').hide();
+
+        alertify.set('notifier','position', 'top-center');
+        alertify.success(result.msg);
+     }else{
+        alertify.set('notifier','position', 'top-center');
+        alertify.error(result.msg);
+     }
+        }
+    });
 }else{
     $('#coupon_msg').html('Please Enter Coupon Code');
 }
 }
+function remove_coupon_code(){
+    var coupon_code = $('#coupon_code').val();
+
+    $('#coupon_code').val('');
+    if(coupon_code!= ''){
+        $.ajax({
+            type: "Post",
+            url: "user/remove_coupon_code",
+            data: 'coupon_code='+coupon_code+'&_token='+$("[name='_token']").val(),
+
+            success: function (result) {
+
+         if(result.status == 'sucess'){
+            $('.show_coupon_box').addClass('hide');
+            $('#coupon_code_str').html('');
+            $('#subtotal_price').html('৳ '+result.totalprice);
+            $('#total_price').html('৳ '+(result.totalprice +40));
+
+            $('.apply_coupon_code_box2').show();
+
+            alertify.set('notifier','position', 'top-center');
+            alertify.error(result.msg);
+
+         }
+    }
+});
+}
+
+}
+
+
+$('#frmPlaceOrder').submit(function (e) {
+
+
+    e.preventDefault();
+
+
+    $.ajax({
+        type: "Post",
+        url: "/place_order",
+        data: $('#frmPlaceOrder').serialize(),
+
+        success: function (result) {
+
+          console.log(result);
+
+        }
+    });
+
+});
+
+
+

@@ -27,6 +27,16 @@
     <!-- Main style sheet -->
     <link href="{{ asset('front_asset/css/style.css')}}" rel="stylesheet">
 
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+    <!-- Semantic UI theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+    <!-- Bootstrap theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
 
 
     <!-- Google Font -->
@@ -168,6 +178,6 @@ if(isset($_COOKIE["login_email"]) && isset($_COOKIE["login_password"])){
   <!-- Custom js -->
   <script src="{{ asset('front_asset/js/custom.js')}}"></script>
 
-  <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+ 
   </body>
 </html>

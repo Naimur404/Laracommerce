@@ -138,3 +138,6 @@ Route::Post('/forgot_password_change_process',[FrontController::class, 'forgot_p
 Route::Post('/forgot_password',[FrontController::class, 'forgot_password'])->name('user.forgot_password');
 Route::get('/forget_password_change/{id}',[FrontController::class, 'forgot_password_change'] );
 Route::get('/checkout',[FrontController::class, 'checkout'] );
+Route::Post('/apply_coupon_code',[FrontController::class, 'apply_coupon_code'])->name('user.apply_coupon_code');
+Route::Post('/user/remove_coupon_code',[FrontController::class, 'remove_coupon_code'])->name('user.remove_coupon_code');
+Route::Post('/place_order',[FrontController::class, 'place_order'])->name('user.place_order');

@@ -13,27 +13,7 @@
                <div class="col-md-8">
                  <div class="checkout-left">
                    <div class="panel-group" id="accordion">
-                     <!-- Coupon section -->
-                     <div class="panel panel-default aa-checkout-coupon">
-                       <div class="panel-heading">
-                         <h4 class="panel-title">
-                           <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                             Have a Coupon?
-                           </a>
-                         </h4>
-                       </div>
-                       <div id="collapseOne" class="panel-collapse collapse in">
-                         <div class="panel-body">
-                           <input type="text" placeholder="Coupon Code" class="aa-coupon-code" name="coupon_code" id="coupon_code">
-                           <input type="button" onclick="applyCouponCode()" value="Apply Coupon" class="aa-browse-btn">
-
-
-                         </div>
-                         <div id="coupon_msg" class="field_error"></div>
-                       </div>
-                     </div>
-                     <!-- Login section -->
-                     @if(session()->has('USER_LOGIN') == null)
+                    @if(session()->has('USER_LOGIN') == null)
                      <div class="panel panel-default aa-checkout-login">
                        <div class="panel-heading">
                          <h4 class="panel-title">
@@ -61,6 +41,34 @@
                        </div>
                      </div>
                      @endif
+
+                     <!-- Coupon section -->
+                     <form id="frmPlaceOrder">
+                     <div class="panel panel-default aa-checkout-coupon apply_coupon_code_box2">
+                       <div class="panel-heading">
+                         <h4 class="panel-title">
+
+
+                           <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="" >
+                             Have a Coupon?
+                           </a>
+                         </h4>
+                       </div>
+                       <div id="collapseOne" class="panel-collapse collapse in ">
+
+                         <div class="panel-body">
+                           <input type="text" placeholder="Coupon Code" class="aa-coupon-code " name="coupon_code" id="coupon_code">
+                           <input type="button" onclick="applyCouponCode()" value="Apply Coupon" class="aa-browse-btn apply_coupon_code_box">
+
+
+                         </div>
+                         <div id="coupon_msg" class="field_error"></div>
+
+
+                       </div>
+                     </div>
+                     <!-- Login section -->
+
                      <!-- Billing Details -->
                      <div class="panel panel-default aa-checkout-billaddress">
                        <div class="panel-heading">
@@ -100,7 +108,7 @@
                                </div>
                              </div>
                            </div>
-                           <div class="row">
+                           {{-- <div class="row">
                              <div class="col-md-12">
                                <div class="aa-checkout-single-bill">
                                  <select>
@@ -124,7 +132,7 @@
                                  </select>
                                </div>
                              </div>
-                           </div>
+                           </div> --}}
                            <div class="row">
 
                              <div class="col-md-4">
@@ -184,9 +192,13 @@
                          @endforeach
                        </tbody>
                        <tfoot>
+                        <tr class="hide show_coupon_box">
+                            <th>Coupon Code <a href="javescript:void(0)" onclick="remove_coupon_code()" class="remove_coupon_code_link">Remove</a></th>
+                            <td id="coupon_code_str"></td>
+                          </tr>
                          <tr>
                            <th>Subtotal</th>
-                           <td>৳ {{ $totalprice  }}</td>
+                           <td id="subtotal_price">৳ {{ $totalprice  }}</td>
                          </tr>
                           <tr>
                            <th>Shipping</th>
@@ -194,20 +206,25 @@
                          </tr>
                           <tr>
                            <th>Total</th>
-                           <td>৳ {{  $totalprice + 40 }}</td>
+                           <td id="total_price">৳ {{  $totalprice + 40 }}</td>
                          </tr>
                        </tfoot>
                      </table>
                    </div>
                    <h4>Payment Method</h4>
                    <div class="aa-payment-method">
-                     <label for="cashdelivery"><input type="radio" id="cashdelivery" name="optionsRadios"> Cash on Delivery </label>
-                     <label for="paypal"><input type="radio" id="paypal" name="optionsRadios" checked> Via Paypal </label>
-                     <img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark">
-                     <input type="submit" value="Place Order" class="aa-browse-btn">
+                     <label for="cod"><input type="radio" id="cod" name="payment_type" value="COD" checked > Cash on Delivery </label>
+                     <label for="instamojo"><input type="radio" id="instamojo" name="payment_type" value="Gateway"> Instamojo </label>
+                     {{-- <img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark"> --}}
+                     <input type="submit" value="Place Order" class="aa-browse-btn" id="btnPlaceOrder">
                    </div>
                  </div>
                </div>
+               @csrf
+
+            </form>
+             </div>
+
              </div>
 
           </div>

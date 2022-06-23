@@ -457,13 +457,14 @@ class FrontController extends Controller
             return response()->json(['status' => 'error', 'msg' => "Password Can Not Be Empty"]);
         }
     }
-    public function checkout(){
+    public function checkout()
+    {
 
         $result['cart_data'] = cartCount();
         if (session()->has('USER_ID')) {
-          $uid = session()->get('USER_ID');
-          $customer_info =  DB::table('customers')->where(['id' => $uid])
-            ->get();
+            $uid = session()->get('USER_ID');
+            $customer_info =  DB::table('customers')->where(['id' => $uid])
+                ->get();
             $result['customers']['name'] =  $customer_info[0]->name;
             $result['customers']['email'] =  $customer_info[0]->email;
             $result['customers']['phone'] =  $customer_info[0]->phone;
@@ -471,21 +472,131 @@ class FrontController extends Controller
             $result['customers']['city'] =  $customer_info[0]->city;
             $result['customers']['state'] =  $customer_info[0]->state;
             $result['customers']['zip'] =  $customer_info[0]->zip;
-
         } else {
-            $result['customers']['name'] ='';
-            $result['customers']['email'] ='';
-            $result['customers']['phone'] ='';
-            $result['customers']['address'] ='';
-            $result['customers']['city'] ='';
-            $result['customers']['state'] ='';
-            $result['customers']['zip'] ='';
+            $result['customers']['name'] = '';
+            $result['customers']['email'] = '';
+            $result['customers']['phone'] = '';
+            $result['customers']['address'] = '';
+            $result['customers']['city'] = '';
+            $result['customers']['state'] = '';
+            $result['customers']['zip'] = '';
         }
-        if(isset($result['cart_data'][0])){
-            return view('frontend.checkout',$result);
-        }else{
+        if (isset($result['cart_data'][0])) {
+            return view('frontend.checkout', $result);
+        } else {
             return redirect('/');
         }
+    }
+    public function apply_coupon_code(Request $request)
+    {
+        $totalprice = 0;
+        $result = DB::table('coupons')->where(['code' => $request->coupon_code])->get();
+        //check this request coupon code exist or not
+        if (isset($result[0])) {
+            $value = $result[0]->value;
+            $type = $result[0]->type;
+            if ($result[0]->status == 1) {
+                if ($result[0]->is_one_time == 1) {
+                    $status = "error";
+                    $msg = "Coupon Code Already Used";
+                } else {
+                    $min_order_amount = $result[0]->min_order;
+                    if ($min_order_amount > 0) {
+                        $totalAddtoCartItem = cartCount();
+                        $totalprice = 0;
+                        foreach ($totalAddtoCartItem as $list) {
+                            $totalprice = $totalprice + ($list->qty * $list->price);
+                        }
+                        if ($min_order_amount < $totalprice) {
+                            $status = "sucess";
+                            $msg = "Coupon Code Applied";
+                        } else {
+                            $status = "error";
+                            $msg = "Cart Ammount Must be Greater Then $min_order_amount";
+                        }
+                    } else {
+                        $status = "sucess";
+                        $msg = "Coupon Code Applied1";
+                    }
+                }
+            } else {
+                $status = "error";
+                $msg = "Coupon Code Deactive";
+            }
+        } else {
+            $status = "error";
+            $msg = "Please Enter Valid Coupon Code";
+        }
+        //check status is sucess or not if sucess then apply the coupon code
+        if ($status == 'sucess') {
+            if ($type == 'Value') {
 
+                $totalprice = $totalprice - $value;
+            } else {
+
+                $newprice = ($value / 100) * $totalprice;
+                $totalprice = round($totalprice - $newprice);
+            }
+        }
+
+
+
+        return response()->json(['status' => $status, 'msg' => $msg, 'totalprice' => $totalprice]);
+    }
+    public function remove_coupon_code(Request $request)
+    {
+        $totalprice = 0;
+        $result = DB::table('coupons')->where(['code' => $request->coupon_code])->get();
+        $totalAddtoCartItem = cartCount();
+
+        foreach ($totalAddtoCartItem as $list) {
+            $totalprice = $totalprice + ($list->qty * $list->price);
+        }
+        return response()->json(['status' => 'sucess', 'msg' => 'Coupon Code Removed', 'totalprice' => $totalprice]);
+    }
+    public function place_order(Request $request)
+    {
+        if ($request->session()->get('USER_ID')) {
+            $uid = $request->session()->get('USER_ID');
+            $totalprice = 0;
+            $totalAddtoCartItem = cartCount();
+
+            foreach ($totalAddtoCartItem as $list) {
+                $totalprice = $totalprice + ($list->qty * $list->price);
+            }
+            $arr = [
+                'customers_id' => $uid,
+
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'state' => $request->state,
+                'city' => $request->city,
+                'zip' => $request->zip,
+                'coupon_code' => $request->coupon_code,
+                'coupon_value' => 0,
+                'payment_type' => $request->payment_type,
+                'payment_status' => 'Pending',
+                'total_amt' => $totalprice,
+                'order_status' => 1,
+                'added_on' => date('Y-m-d h:i:s'),
+            ];
+            $order_id = DB::table('orders')->insertGetId($arr);
+if($order_id>0){
+    foreach ($totalAddtoCartItem as $list) {
+        $productDetailArr['product_id'] = $list->pid;
+        $productDetailArr['products_attr_id'] = $list->attr_id;
+        $productDetailArr['price'] = $list->price;
+        $productDetailArr['qty'] = $list->qty;
+        $productDetailArr['orders_id'] = $order_id;
+        DB::table('orders_details')->insert($productDetailArr);
+
+    }
+    DB::table('cart')->where(['user_id'=>$uid,'user_type' => 'Reg'])->delete();
+    $request->session()->put('ORDER_ID',$order_id);
+}
+        } else {
+        }
     }
 }

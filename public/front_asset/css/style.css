@@ -4203,8 +4203,12 @@ border: 2px solid orangered;
 #forgot_msg{
     color: red;
    }
-   .color_checkout{
+.color_checkout{
     font-size: 14px;
     color: green;
     font-weight: bold;
    }
+.remove_coupon_code_link{
+color: red;
+font-size: 13px;
+}
