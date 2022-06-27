@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Validator;
 
+use Illuminate\Support\Facades\Validator;
+use shurjopayv2\ShurjopayLaravelPackage8\Http\Controllers\ShurjopayController;
 
 class FrontController extends Controller
 {
@@ -489,59 +489,11 @@ class FrontController extends Controller
     }
     public function apply_coupon_code(Request $request)
     {
-        $totalprice = 0;
-        $result = DB::table('coupons')->where(['code' => $request->coupon_code])->get();
-        //check this request coupon code exist or not
-        if (isset($result[0])) {
-            $value = $result[0]->value;
-            $type = $result[0]->type;
-            if ($result[0]->status == 1) {
-                if ($result[0]->is_one_time == 1) {
-                    $status = "error";
-                    $msg = "Coupon Code Already Used";
-                } else {
-                    $min_order_amount = $result[0]->min_order;
-                    if ($min_order_amount > 0) {
-                        $totalAddtoCartItem = cartCount();
-                        $totalprice = 0;
-                        foreach ($totalAddtoCartItem as $list) {
-                            $totalprice = $totalprice + ($list->qty * $list->price);
-                        }
-                        if ($min_order_amount < $totalprice) {
-                            $status = "sucess";
-                            $msg = "Coupon Code Applied";
-                        } else {
-                            $status = "error";
-                            $msg = "Cart Ammount Must be Greater Then $min_order_amount";
-                        }
-                    } else {
-                        $status = "sucess";
-                        $msg = "Coupon Code Applied1";
-                    }
-                }
-            } else {
-                $status = "error";
-                $msg = "Coupon Code Deactive";
-            }
-        } else {
-            $status = "error";
-            $msg = "Please Enter Valid Coupon Code";
-        }
-        //check status is sucess or not if sucess then apply the coupon code
-        if ($status == 'sucess') {
-            if ($type == 'Value') {
+        //apply coupon using common.php and json ecode and decode
+        $arr = apply_coupon_code($request->coupon_code);
+        $arr = json_decode($arr, true);
 
-                $totalprice = $totalprice - $value;
-            } else {
-
-                $newprice = ($value / 100) * $totalprice;
-                $totalprice = round($totalprice - $newprice);
-            }
-        }
-
-
-
-        return response()->json(['status' => $status, 'msg' => $msg, 'totalprice' => $totalprice]);
+        return response()->json(['status' => $arr['status'], 'msg' => $arr['msg'], 'totalprice' => $arr['totalprice']]);
     }
     public function remove_coupon_code(Request $request)
     {
@@ -554,17 +506,44 @@ class FrontController extends Controller
         }
         return response()->json(['status' => 'sucess', 'msg' => 'Coupon Code Removed', 'totalprice' => $totalprice]);
     }
+
+
     public function place_order(Request $request)
     {
         if ($request->session()->get('USER_ID')) {
+            $coupon_value = 0;
+            $arr = [];
+
+            //chech user coupon code is valid or not when place order using commin.php
+            if ($request->coupon_code != '') {
+                $arr = apply_coupon_code($request->coupon_code);
+                $arr = json_decode($arr, true);
+                if ($arr['status'] == 'sucess') {
+                    $coupon_value = $arr['coupon_code_value'];
+                } else {
+                    return response()->json(['status' => 'error', 'msg' => $arr['msg']]);
+                }
+            }
             $uid = $request->session()->get('USER_ID');
             $totalprice = 0;
+
             $totalAddtoCartItem = cartCount();
 
             foreach ($totalAddtoCartItem as $list) {
                 $totalprice = $totalprice + ($list->qty * $list->price);
             }
-            $arr = [
+
+        $valid = Validator::make($request->all(), [
+            "name" => 'required',
+            "email" => 'required|email',
+
+            "phone" => 'required|numeric|digits:11',
+
+        ]);
+        if ($valid->fails()) {
+            return response()->json(['status' => 'errors', 'error' => $valid->errors()->toArray()]);
+        }else{
+            $post_data = [
                 'customers_id' => $uid,
 
                 'name' => $request->name,
@@ -575,28 +554,137 @@ class FrontController extends Controller
                 'city' => $request->city,
                 'zip' => $request->zip,
                 'coupon_code' => $request->coupon_code,
-                'coupon_value' => 0,
+                'coupon_value' => $coupon_value,
                 'payment_type' => $request->payment_type,
                 'payment_status' => 'Pending',
                 'total_amt' => $totalprice,
                 'order_status' => 1,
+
                 'added_on' => date('Y-m-d h:i:s'),
             ];
-            $order_id = DB::table('orders')->insertGetId($arr);
-if($order_id>0){
-    foreach ($totalAddtoCartItem as $list) {
-        $productDetailArr['product_id'] = $list->pid;
-        $productDetailArr['products_attr_id'] = $list->attr_id;
-        $productDetailArr['price'] = $list->price;
-        $productDetailArr['qty'] = $list->qty;
-        $productDetailArr['orders_id'] = $order_id;
-        DB::table('orders_details')->insert($productDetailArr);
+            $order_id = DB::table('orders')->insertGetId($post_data);
+        }
 
-    }
-    DB::table('cart')->where(['user_id'=>$uid,'user_type' => 'Reg'])->delete();
-    $request->session()->put('ORDER_ID',$order_id);
-}
+
+            $request->session()->put('ORDER_ID', $order_id);
+
+            if ($order_id > 0) {
+                foreach ($totalAddtoCartItem as $list) {
+                    $productDetailArr['product_id'] = $list->pid;
+                    $productDetailArr['products_attr_id'] = $list->attr_id;
+                    $productDetailArr['price'] = $list->price;
+                    $productDetailArr['qty'] = $list->qty;
+                    $productDetailArr['orders_id'] = $order_id;
+                    DB::table('orders_details')->insert($productDetailArr);
+                }
+                $url_final = "";
+                if ($request->payment_type == 'Gateway') {
+                    $final_amt = $totalprice - $coupon_value;
+                    $ch = curl_init();
+                    $url = 'https://sandbox.aamarpay.com/request.php'; // live url https://secure.aamarpay.com/request.php
+                    $fields = array(
+                        'store_id' => 'aamarpay', //store id will be aamarpay,  contact integration@aamarpay.com for test/live id
+                        'amount' => $final_amt, //transaction amount
+                        'payment_type' => 'VISA', //no need to change
+                        'order_id' => $order_id,
+                        'currency' => 'BDT',  //currenct will be USD/BDT
+                        'tran_id' => rand(1111111, 9999999), //transaction id must be unique from your end
+                        'cus_name' => $request->name,  //customer name
+                        'cus_email' => $request->email, //customer email address
+                        'cus_add1' => 'Dhaka',  //customer address
+                        'cus_add2' => 'Mohakhali DOHS', //customer address
+                        'cus_city' => 'Dhaka',  //customer city
+                        'cus_state' => 'Dhaka',  //state
+                        'cus_postcode' => '1206', //postcode or zipcode
+                        'cus_country' => 'Bangladesh',  //country
+                        'cus_phone' => '1231231231231', //customer phone number
+                        'cus_fax' => 'Not¬Applicable',  //fax
+                        'ship_name' => 'ship name', //ship name
+                        'ship_add1' => 'House B-121, Road 21',  //ship address
+                        'ship_add2' => 'Mohakhali',
+                        'ship_city' => 'Dhaka',
+                        'ship_state' => 'Dhaka',
+                        'ship_postcode' => '1212',
+                        'ship_country' => 'Bangladesh',
+                        'desc' => 'payment description',
+                        'success_url' => route('success'), //your success route
+                        'fail_url' => route('fail'), //your fail route
+                        'cancel_url' => 'http://localhost/foldername/cancel.php', //your cancel url
+                        'opt_a' => $order_id,  //optional paramter
+                        'opt_b' => 'Akil',
+                        'opt_c' => 'Liza',
+                        'opt_d' => 'Sohel',
+                        'signature_key' => '28c78bb1f45112f5d40b956fe104645a'
+                    ); //signature key will provided aamarpay, contact integration@aamarpay.com for test/live signature key
+
+
+
+
+
+                    curl_setopt($ch, CURLOPT_VERBOSE, true);
+                    curl_setopt($ch, CURLOPT_URL, $url);
+                    curl_setopt($ch, CURLOPT_HEADER, False);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($fields));
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    $url_forward = str_replace('"', '', stripslashes(curl_exec($ch)));
+
+
+                    curl_close($ch);
+                    // print_r ($_POST);
+
+                    $url_final =   'https://sandbox.aamarpay.com' . $url_forward;
+                }
+
+
+
+
+
+                // DB::table('cart')->where(['user_id' => $uid, 'user_type' => 'Reg'])->delete();
+                // $request->session()->put('ORDER_ID', $order_id);
+
+                $status = "sucess";
+                $msg = "Order Placed";
+            } else {
+                $status = "error";
+                $msg = "Please Try After Sometime";
+            }
+            //this else for not reg user
         } else {
+            $status = "error";
+            $msg = "Please login to placed order";
+        }
+        return response()->json(['status' => $status, 'msg' => $msg, 'url_final' =>  $url_final]);
+    }
+
+
+
+
+
+    public function success(Request $request)
+    {
+        if ($request['opt_a'] != '' && $request['pay_status'] == 'Successful') {
+
+
+            DB::table("orders")->where(['id' => $request['opt_a']])->update(['tran_id' => $request['pg_txnid'], 'payment_id' => $request['mer_txnid']]);
+            return redirect('/order_placed');
+        }
+    }
+
+    public function fail(Request $request)
+    {
+        return $request;
+    }
+
+
+
+
+    public function order_placed()
+    {
+        if (session()->has('ORDER_ID')) {
+            return view('frontend.order_placed');
+        } else {
+            return redirect('/');
         }
     }
 }

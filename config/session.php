@@ -45,7 +45,7 @@ return [
     | automatically by Laravel and you can use the Session like normal.
     |
     */
-
+    'same_site' => null,
     'encrypt' => false,
 
     /*

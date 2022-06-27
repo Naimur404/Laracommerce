@@ -7,6 +7,7 @@
     <title>@yield('title')</title>
 
     <!-- Font awesome -->
+
     <link href="{{ asset('front_asset/css/font-awesome.css') }}" rel="stylesheet">
     <!-- Bootstrap -->
     <link href="{{ asset('front_asset/css/bootstrap.css')}}" rel="stylesheet">
@@ -177,7 +178,17 @@ if(isset($_COOKIE["login_email"]) && isset($_COOKIE["login_password"])){
   <script type="text/javascript" src="{{ asset('front_asset/js/nouislider.js')}}"></script>
   <!-- Custom js -->
   <script src="{{ asset('front_asset/js/custom.js')}}"></script>
+<script>
+    (function (window, document) {
+        var loader = function () {
+            var script = document.createElement("script"), tag = document.getElementsByTagName("script")[0];
+            script.src = "https://sandbox.sslcommerz.com/embed.min.js?" + Math.random().toString(36).substring(7);
+            tag.parentNode.insertBefore(script, tag);
+        };
 
- 
+        window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+    })(window, document);
+</script>
+
   </body>
 </html>

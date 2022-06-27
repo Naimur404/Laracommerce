@@ -144,7 +144,80 @@
 
                              <div class="col-md-4">
                                <div class="aa-checkout-single-bill">
-                                 <input type="text" placeholder="District*" value="{{ $customers['city'] }}" name="city">
+
+                                 <select name="city">
+                                    @if($customers['city'] !='' )
+                                    <option value="0"selected>Select Your District</option>
+                                    <option value="{{ $customers['city'] }}" >{{ $customers['city'] }}</option>
+                                    @else
+                                    <option value="0">Select Your District</option>
+                                    <option value="{{ $customers['city'] }}" selected>{{ $customers['city'] }}</option>
+                                    @endif
+                                    <option value="Bagerhat">Bagerhat</option>
+                                    <option value="Bandarban">Bandarban</option>
+                                    <option value="Barguna">Barguna</option>
+                                    <option value="Barisal">Barisal</option>
+                                    <option value="Bhola">Bhola</option>
+                                    <option value="Bogra">Bogra</option>
+                                    <option value="Brahmanbaria">Brahmanbaria</option>
+                                    <option value="Chandpur">Chandpur</option>
+                                    <option value="Chittagong">Chittagong</option>
+                                    <option value="Chuadanga">Chuadanga</option>
+                                    <option value="Comilla">Comilla</option>
+                                    <option value="Cox'sBazar">Cox'sBazar</option>
+                                    <option value="Dhaka">Dhaka</option>
+                                    <option value="Dinajpur">Dinajpur</option>
+                                    <option value="Faridpur">Faridpur</option>
+                                    <option value="Feni">Feni</option>
+                                    <option value="Gaibandha">Gaibandha</option>
+                                    <option value="Gazipur">Gazipur</option>
+                                    <option value="Gopalganj">Gopalganj</option>
+                                    <option value="Habiganj">Habiganj</option>
+                                    <option value="Jaipurhat">Jaipurhat</option>
+                                    <option value="Jamalpur">Jamalpur</option>
+                                    <option value="Jessore">Jessore</option>
+                                    <option value="Jhalokati">Jhalokati</option>
+                                    <option value="Jhenaidah">Jhenaidah</option>
+                                    <option value="Khagrachari">Khagrachari</option>
+                                    <option value="Khulna">Khulna</option>
+                                    <option value="Kishoreganj">Kishoreganj</option>
+                                    <option value="Kurigram">Kurigram</option>
+                                    <option value="Kushtia">Kushtia</option>
+                                    <option value="Lakshmipur">Lakshmipur</option>
+                                    <option value="Lalmonirhat">Lalmonirhat</option>
+                                    <option value="Madaripur">Madaripur</option>
+                                    <option value="Magura">Magura</option>
+                                    <option value="Manikganj">Manikganj</option>
+                                    <option value="Maulvibazar">Maulvibazar</option>
+                                    <option value="Meherpur">Meherpur</option>
+                                    <option value="Munshiganj">Munshiganj</option>
+                                    <option value="Mymensingh">Mymensingh</option>
+                                    <option value="Naogaon">Naogaon</option>
+                                    <option value="Narail">Narail</option>
+                                    <option value="Narayanganj">Narayanganj</option>
+                                    <option value="Narsingdi">Narsingdi</option>
+                                    <option value="Natore">Natore</option>
+                                    <option value="Nawabganj">Nawabganj</option>
+                                    <option value="Netrokona">Netrokona</option>
+                                    <option value="Nilphamari">Nilphamari</option>
+                                    <option value="Noakhali">Noakhali</option>
+                                    <option value="Pabna">Pabna</option>
+                                    <option value="Panchagarh">Panchagarh</option>
+                                    <option value="Patuakhali">Patuakhali</option>
+                                    <option value="Pirojpur">Pirojpur</option>
+                                    <option value="Rajbari">Rajbari</option>
+                                    <option value="Rajshahi">Rajshahi</option>
+                                    <option value="Rangamati">Rangamati</option>
+                                    <option value="Rangpur">Rangpur</option>
+                                    <option value="Satkhira">Satkhira</option>
+                                    <option value="Shariatpur">Shariatpur</option>
+                                    <option value="Sherpur">Sherpur</option>
+                                    <option value="Sirajganj">Sirajganj</option>
+                                    <option value="Sunamganj">Sunamganj</option>
+                                    <option value="Sylhet">Sylhet</option>
+                                    <option value="Tangail">Tangail</option>
+                                    <option value="Thakurgaon">Thakurgaon</option>
+                                 </select>
                                </div>
                              </div>
                              <div class="col-md-4">
@@ -214,10 +287,11 @@
                    <h4>Payment Method</h4>
                    <div class="aa-payment-method">
                      <label for="cod"><input type="radio" id="cod" name="payment_type" value="COD" checked > Cash on Delivery </label>
-                     <label for="instamojo"><input type="radio" id="instamojo" name="payment_type" value="Gateway"> Instamojo </label>
+                     <label for="instamojo"><input type="radio" id="instamojo" name="payment_type" value="Gateway"> AamraPay </label>
                      {{-- <img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark"> --}}
                      <input type="submit" value="Place Order" class="aa-browse-btn" id="btnPlaceOrder">
                    </div>
+
                  </div>
                </div>
                @csrf

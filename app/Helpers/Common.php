@@ -74,6 +74,61 @@ function cartCount(){
 
  return $result;
 }
+function apply_coupon_code($coupon_code){
+    $totalprice = 0;
+    $result = DB::table('coupons')->where(['code' => $coupon_code])->get();
+    //check this request coupon code exist or not
+    if (isset($result[0])) {
+        $value = $result[0]->value;
+        $type = $result[0]->type;
+        if ($result[0]->status == 1) {
+            if ($result[0]->is_one_time == 1) {
+                $status = "error";
+                $msg = "Coupon Code Already Used";
+            } else {
+                $min_order_amount = $result[0]->min_order;
+                if ($min_order_amount > 0) {
+                    $totalAddtoCartItem = cartCount();
+                    $totalprice = 0;
+                    foreach ($totalAddtoCartItem as $list) {
+                        $totalprice = $totalprice + ($list->qty * $list->price);
+                    }
+                    if ($min_order_amount < $totalprice) {
+                        $status = "sucess";
+                        $msg = "Coupon Code Applied";
+                    } else {
+                        $status = "error";
+                        $msg = "Cart Ammount Must be Greater Then $min_order_amount";
+                    }
+                } else {
+                    $status = "sucess";
+                    $msg = "Coupon Code Applied1";
+                }
+            }
+        } else {
+            $status = "error";
+            $msg = "Coupon Code Deactive";
+        }
+    } else {
+        $status = "error";
+        $msg = "Please Enter Valid Coupon Code";
+    }
+    //check status is sucess or not if sucess then apply the coupon code
+    $coupon_code_value =0;
+    if ($status == 'sucess') {
+
+        if ($type == 'Value') {
+            $coupon_code_value = $value;
+            $totalprice = $totalprice - $value;
+        } else {
+
+            $newprice = ($value / 100) * $totalprice;
+            $totalprice = round($totalprice - $newprice);
+            $coupon_code_value = $newprice;
+        }
+    }
 
 
-?>
+
+    return json_encode(['status' => $status, 'msg' => $msg, 'totalprice' => $totalprice, 'coupon_code_value' =>$coupon_code_value]);
+}

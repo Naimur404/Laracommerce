@@ -141,3 +141,8 @@ Route::get('/checkout',[FrontController::class, 'checkout'] );
 Route::Post('/apply_coupon_code',[FrontController::class, 'apply_coupon_code'])->name('user.apply_coupon_code');
 Route::Post('/user/remove_coupon_code',[FrontController::class, 'remove_coupon_code'])->name('user.remove_coupon_code');
 Route::Post('/place_order',[FrontController::class, 'place_order'])->name('user.place_order');
+Route::get('/order_placed',[FrontController::class, 'order_placed'] );
+
+Route::post('/success',[FrontController::class, 'success'])->name('success');
+
+Route::post('/fail',[FrontController::class, 'fail'])->name('fail');
