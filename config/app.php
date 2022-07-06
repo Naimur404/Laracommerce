@@ -162,7 +162,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Cartalyst\Stripe\Laravel\StripeServiceProvider::class,
-        shurjopayv2\ShurjopayLaravelPackage8\ShurjopayServiceProvider::class,
+       
         /*
          * Package Service Providers...
          */

@@ -697,9 +697,11 @@ $('#frmPlaceOrder').submit(function (e) {
                     alertify.set('notifier', 'position', 'top-center');
                     alertify.success(result.msg);
                      window.location.href= result.url_final;
+
                 }else{
                 alertify.set('notifier', 'position', 'top-center');
                 alertify.success(result.msg);
+
                 window.location.href= '/order_placed';
                 }
 
@@ -711,11 +713,22 @@ $('#frmPlaceOrder').submit(function (e) {
 
                     alertify.set('notifier', 'position', 'top-center');
                     alertify.error(val[0]);
-                    
+
 
                 });
 
-        }
+        }else if(result.status == "email_error")
+
+        {
+
+
+                alertify.set('notifier', 'position', 'top-center');
+                alertify.error(result.error);
+
+
+
+
+    }
 
 
             else {

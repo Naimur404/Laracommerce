@@ -2559,7 +2559,7 @@ img {
   font-weight: normal;
 }
 #checkout .checkout-area .checkout-right .aa-payment-method img {
-  margin-top: -10px;
+
   width: 80%;
 }
 #checkout .checkout-area .checkout-right .aa-payment-method input[type="submit"] {
@@ -4211,4 +4211,27 @@ border: 2px solid orangered;
 .remove_coupon_code_link{
 color: red;
 font-size: 13px;
+}
+
+.order_detail{
+    float: left;
+    margin-bottom: 10px;
+    font-weight: bold;
+    line-height: 25px;
+}
+.coupon_code_txt{
+   font-size: 14px;
+   color: red;
+}
+.order_detail_2{
+    float: right;
+    margin-bottom: 10px;
+    font-weight: bold;
+    line-height: 25px;
+}
+.order_operations{
+    margin-top: 15px;
+}
+.whitebg{
+    background-color: white;
 }

@@ -11,7 +11,7 @@
                   <h3>Main Menu</h3>
                   <ul class="aa-footer-nav">
                     <li><a href="#">Home</a></li>
-                    <li><a href="#">Our Services</a></li>
+
                     <li><a href="#">Our Products</a></li>
                     <li><a href="#">About Us</a></li>
                     <li><a href="#">Contact Us</a></li>
@@ -25,9 +25,7 @@
                     <ul class="aa-footer-nav">
                       <li><a href="#">Delivery</a></li>
                       <li><a href="#">Returns</a></li>
-                      <li><a href="#">Services</a></li>
-                      <li><a href="#">Discount</a></li>
-                      <li><a href="#">Special Offer</a></li>
+
                     </ul>
                   </div>
                 </div>
@@ -38,9 +36,7 @@
                     <h3>Useful Links</h3>
                     <ul class="aa-footer-nav">
                       <li><a href="#">Site Map</a></li>
-                      <li><a href="#">Search</a></li>
-                      <li><a href="#">Advanced Search</a></li>
-                      <li><a href="#">Suppliers</a></li>
+
                       <li><a href="#">FAQ</a></li>
                     </ul>
                   </div>
@@ -51,8 +47,8 @@
                   <div class="aa-footer-widget">
                     <h3>Contact Us</h3>
                     <address>
-                      <p> 25 Astor Pl, NY 10003, USA</p>
-                      <p><span class="fa fa-phone"></span>+1 212-982-4589</p>
+                      <p> Road 3, Gate 7, Block K,  Halishahar, Chittagong, Bangladesh.</p>
+                      <p><span class="fa fa-phone"></span>+88-01715027077</p>
                       <p><span class="fa fa-envelope"></span>naimur404cse@gmail.com</p>
                     </address>
                     <div class="aa-footer-social">
@@ -76,12 +72,13 @@
         <div class="row">
         <div class="col-md-12">
           <div class="aa-footer-bottom-area">
-            <p>Designed by <a href="http://www.markups.io/">MarkUps.io</a></p>
+            <p>Designed by <a href="http://www.markups.io/">2022</a></p>
             <div class="aa-footer-payment">
-              <span class="fa fa-cc-mastercard"></span>
-              <span class="fa fa-cc-visa"></span>
-              <span class="fa fa-paypal"></span>
-              <span class="fa fa-cc-discover"></span>
+              <ul>
+                <li>
+                    <img src="https://www.gettoeasy.com.bd/public/uploads/all/lNiYoWYnfWDWKiruX9e8pANlGCqaylpvDM0vaE1A.png" class="mw-100 h-auto" style="max-height: 30px" height="30">
+                </li>
+              </ul>
             </div>
           </div>
         </div>

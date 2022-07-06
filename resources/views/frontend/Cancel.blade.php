@@ -1,5 +1,5 @@
 @extends('frontend.layout')
-@section('title','Thank You')
+@section('title','Order Cancle')
 @section('index')
 <head>
 	<meta charset="utf-8" />
@@ -15,13 +15,13 @@
 
 </head>
 	<header class="site-header " id="header">
-		<h1 class="site-header__title" data-lead-id="site-header-title">THANK YOU!</h1>
+		<h1 class="site-header__title" data-lead-id="site-header-title">SORRY!</h1>
 	</header>
 
 	<div class="main-content">
 		<i class="fa fa-check main-content__checkmark" id="checkmark"></i>
-        <h2> Your Order has been placed</h2>
-        <h2>Order Id :- {{ session()->get('ORDER_ID') }}
+        <h2> Your Order has been Cancled</h2>
+        
 		<p class="main-content__body" data-lead-id="main-content-body">Thanks a bunch for filling that out. It means a lot to us, just like you do! We really appreciate you giving us a moment of your time today. Thanks for being you.</p>
 	</div>
 

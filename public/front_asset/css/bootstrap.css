@@ -1381,14 +1381,21 @@ a.bg-primary:focus {
   background-color: #286090;
 }
 .bg-success {
-  background-color: #dff0d8;
+  background-color: green;
+}
+a.bg-secondary:hover,
+a.bg-secondary:focus {
+  background-color: #286090;
+}
+.bg-secondary {
+  background-color: darkgrey;
 }
 a.bg-success:hover,
 a.bg-success:focus {
   background-color: #c1e2b3;
 }
 .bg-info {
-  background-color: #d9edf7;
+  background-color:aqua;
 }
 a.bg-info:hover,
 a.bg-info:focus {
@@ -1402,7 +1409,7 @@ a.bg-warning:focus {
   background-color: #f7ecb5;
 }
 .bg-danger {
-  background-color: #f2dede;
+  background-color: red;
 }
 a.bg-danger:hover,
 a.bg-danger:focus {
@@ -4923,7 +4930,7 @@ a.label:focus {
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  background-color: #777;
+
   border-radius: 10px;
 }
 .badge:empty {

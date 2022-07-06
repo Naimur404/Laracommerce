@@ -21,6 +21,11 @@
                         <i class=" fas fa-solid fa-list"></i>Dashboard</a>
 
                 </li>
+                <li class="@yield('order_select')">
+                    <a  href="{{ route('admin.order') }}">
+                      <i class="fas fa-bag-shopping"></i>Order</a>
+
+                </li>
                 <li class="@yield('catagory_select')">
                     <a class="js-arrow" href="{{ route('admin.category') }}">
                         <i class="fas fa-tachometer-alt"></i>Category</a>

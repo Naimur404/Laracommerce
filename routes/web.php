@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\TaxController;
@@ -105,7 +106,10 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::get('admin/customer', [CustomerController::class, 'index'])->name('admin.customer');
     Route::get('admin/customer/show/{id}', [CustomerController::class, 'show'])->name('customer.show');
     Route::get('admin/customer/status/{status}/{id}', [CustomerController::class, 'status']);
-
+    Route::get('admin/order', [OrderController::class, 'index'])->name('admin.order');
+    Route::get('admin/order_details/{id}', [OrderController::class, 'order_details'])->name('admin.order_detail');
+    Route::get('admin/update_payment_status/{status}/{id}', [OrderController::class, 'update_payment_status']);
+    Route::get('admin/update_order_status/{status}/{id}', [OrderController::class, 'update_order_status']);
     Route::get('admin/logout', function () {
         session()->forget('ADMIN_LOGIN');
         session()->forget('ADMIN_ID');
@@ -113,6 +117,8 @@ Route::group(['middleware' => 'admin_auth'], function () {
         return redirect('admin');
 
     });
+
+
 });
 Route::get('/',[FrontController::class, 'index'] )->name('index');
 Route::get('product/{slug}',[FrontController::class, 'product'] );
@@ -137,12 +143,21 @@ Route::get('/verification/{id}',[FrontController::class, 'email_verification'] )
 Route::Post('/forgot_password_change_process',[FrontController::class, 'forgot_password_change_process'])->name('user.orgot_password_change_process');
 Route::Post('/forgot_password',[FrontController::class, 'forgot_password'])->name('user.forgot_password');
 Route::get('/forget_password_change/{id}',[FrontController::class, 'forgot_password_change'] );
-Route::get('/checkout',[FrontController::class, 'checkout'] );
+Route::get('/checkout',[FrontController::class, 'checkout'] )->name('checkout');
 Route::Post('/apply_coupon_code',[FrontController::class, 'apply_coupon_code'])->name('user.apply_coupon_code');
 Route::Post('/user/remove_coupon_code',[FrontController::class, 'remove_coupon_code'])->name('user.remove_coupon_code');
 Route::Post('/place_order',[FrontController::class, 'place_order'])->name('user.place_order');
 Route::get('/order_placed',[FrontController::class, 'order_placed'] );
+//payment success and fail Route
 
 Route::post('/success',[FrontController::class, 'success'])->name('success');
 
 Route::post('/fail',[FrontController::class, 'fail'])->name('fail');
+
+Route::get('/cancel',[FrontController::class, 'cancel'])->name('cancel');
+
+
+Route::group(['middleware' => 'user_auth'], function () {
+Route::get('/my_order',[FrontController::class, 'my_order']);
+Route::get('/order_detail/{id}',[FrontController::class, 'my_order_detail']);
+});

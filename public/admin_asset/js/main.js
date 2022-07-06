@@ -1258,7 +1258,7 @@
     var navbars = ['header', 'aside'];
     var hrefSelector = 'a:not([target="_blank"]):not([href^="#"]):not([class^="chosen-single"])';
     var linkElement = navbars.map(element => element + ' ' + hrefSelector).join(', ');
-    
+
 
 
   })(jQuery);
@@ -1651,3 +1651,28 @@
   }
 
 })(jQuery);
+
+function update_payment_status(id){
+   var check = confirm('Are You Sure');
+   var payment_status = $('#payment_status').val();
+
+   if(check==true){
+    window.location.href = '/admin/update_payment_status/'+payment_status+'/'+id;
+   }
+   else{
+
+   }
+
+}
+function update_order_status(id){
+    var check = confirm('Are You Sure');
+    var order_status = $('#order_status').val();
+
+    if(check==true){
+     window.location.href = '/admin/update_order_status/'+order_status+'/'+id;
+    }
+    else{
+
+    }
+
+ }

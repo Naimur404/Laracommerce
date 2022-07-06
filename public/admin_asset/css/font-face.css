@@ -232,3 +232,6 @@
        url('../fonts/poppins/poppins-v5-latin-900italic.ttf') format('truetype'), /* Safari, Android, iOS */
        url('../fonts/poppins/poppins-v5-latin-900italic.svg#Poppins') format('svg'); /* Legacy iOS */
 }
+.whitebg{
+    background-color: white;
+}
