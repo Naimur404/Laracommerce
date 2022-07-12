@@ -10,7 +10,7 @@
     <h3 class="title-5 m-b-35">Manage Order</h3>
 
     <div class="table-responsive table-responsive-data2">
-        <table class="table table-data2">
+        <table class="table table-data2" id="datatable">
             <thead>
                 <tr>
 
@@ -27,10 +27,10 @@
             </thead>
             <tbody>
 
-
+                @foreach ($orders as $data)
                 <tr class="tr-shadow">
 
-                    @foreach ($orders as $data)
+
 
 
                     <td> ST{{ $data->id }}</td>
@@ -68,8 +68,9 @@
                             </button>
                         </div>
                     </td>
-                    @endforeach
+
                 </tr>
+                @endforeach
             </tbody>
         </table>
     </div>

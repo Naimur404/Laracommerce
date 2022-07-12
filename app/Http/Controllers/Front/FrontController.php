@@ -76,6 +76,12 @@ class FrontController extends Controller
         foreach ($result['related_product'] as $list1) {
             $result['related_product_attr'][$list1->id] = DB::table('product_arts')->leftJoin('sizes', 'sizes.id', '=', 'size_id')->leftJoin('colors', 'colors.id', '=', 'color_id')->where(['product_arts.product_id' => $list1->id])->get();
         }
+        $result['product_review'] = DB::table('product_review')->leftJoin('customers', 'customers.id', '=', 'customers_id')->where(['product_review.product_id' => $result['product'][0]->id])
+        ->where(['product_review.status' => 1])
+        ->orderby('product_review.added_on','desc')
+        ->select('product_review.rating','product_review.review','product_review.added_on','customers.name')
+        ->get();
+
         return view('frontend.product', $result);
     }
 
@@ -459,6 +465,7 @@ class FrontController extends Controller
         }
     }
     public function checkout()
+
     {
 
         $result['cart_data'] = cartCount();
@@ -558,6 +565,7 @@ class FrontController extends Controller
                     'coupon_value' => $coupon_value,
                     'payment_type' => $request->payment_type,
                     'payment_status' => 'Pending',
+                    'tran_id' => $request->transaction_id,
                     'total_amt' => $totalprice,
                     'order_status' => 1,
 
@@ -690,6 +698,7 @@ class FrontController extends Controller
             if ($valid->fails()) {
                 return response()->json(['status' => 'email_error', 'error' => 'Your email already register please login for place order']);
             } else {
+
                 $post_data = [
                     'customers_id' => $uid,
 
@@ -705,6 +714,7 @@ class FrontController extends Controller
                     'payment_type' => $request->payment_type,
                     'payment_status' => 'Pending',
                     'total_amt' => $totalprice,
+                    'tran_id' => $request->transaction_id,
                     'order_status' => 1,
 
                     'added_on' => date('Y-m-d h:i:s'),
@@ -887,10 +897,42 @@ class FrontController extends Controller
           ->where(['orders_details.orders_id' =>$id])
           ->where(['orders.customers_id' =>$request->session()->get('USER_ID')])
           ->get();
-          if(!isset($result['oders_details'][0])){
+          if(!isset($result['orders_details'][0])){
             return redirect('/');
           }
 
         return view('frontend.order_detail',$result);
+    }
+    public function product_review_process(Request $request){
+     $result = DB::table('product_review')->get();
+
+     $uid= $request->session()->get('USER_ID');
+     if($result[0]->customers_id == $uid && $result[0]->product_id == $request->product_id){
+        $status = "error";
+        $msg = "Your Already Review This Product";
+     }else{
+        if($request->session()->has('USER_ID')){
+
+
+            $arr=[
+               "customers_id"=>$uid,
+               "product_id"=>$request->product_id,
+               "rating"=>$request->rating,
+               "review"=>$request->review,
+               "status"=> 0,
+               'added_on' => date('Y-m-d h:i:s'),
+            ];
+
+            DB::table('product_review')->insert($arr);
+            $status = "sucess";
+            $msg = "Thank Your For Your Review";
+         }else{
+            $status = "error";
+            $msg = "Please login to submit your review";
+         }
+     }
+
+         return response()->json(['status' => $status, 'msg' => $msg]);
+
     }
 }

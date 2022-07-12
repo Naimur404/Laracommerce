@@ -42,13 +42,15 @@
               Payment Status: {{ $orders_details[0]->payment_status }} <br/>
               Payment Type: {{ $orders_details[0]->payment_type }}<br/>
               <?php
-              if($orders_details[0]->payment_id != ''){
-              echo  'Payment Id: '.$orders_details[0]->payment_id.'<br/>';
+              if($orders_details[0]->tran_id != ''){
+              echo  'Payment Id: '.$orders_details[0]->tran_id.'<br/>';
               }
               ?>
 
-
+            <b class="m-t-5">Tracking Details: </b>
+            {{ $orders_details[0]->track_details }}
             </div>
+
         </div>
         <div class="col-md-12">
           <div class="cart-view-area">

@@ -47,5 +47,10 @@ class OrderController extends Controller
     return back();
 
    }
+   public function update_track_details(Request $request,$id){
+      DB::table('orders')->where(['id'=>$id])
+      ->update(['track_details'=>$request->post('track_details')]);
+      return back();
+   }
 
 }

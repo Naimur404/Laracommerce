@@ -110,6 +110,7 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::get('admin/order_details/{id}', [OrderController::class, 'order_details'])->name('admin.order_detail');
     Route::get('admin/update_payment_status/{status}/{id}', [OrderController::class, 'update_payment_status']);
     Route::get('admin/update_order_status/{status}/{id}', [OrderController::class, 'update_order_status']);
+    Route::post('admin/order_details/{id}', [OrderController::class, 'update_track_details']);
     Route::get('admin/logout', function () {
         session()->forget('ADMIN_LOGIN');
         session()->forget('ADMIN_ID');
@@ -156,8 +157,9 @@ Route::post('/fail',[FrontController::class, 'fail'])->name('fail');
 
 Route::get('/cancel',[FrontController::class, 'cancel'])->name('cancel');
 
-
+Route::post('/product_review_process',[FrontController::class, 'product_review_process']);
 Route::group(['middleware' => 'user_auth'], function () {
 Route::get('/my_order',[FrontController::class, 'my_order']);
 Route::get('/order_detail/{id}',[FrontController::class, 'my_order_detail']);
+
 });

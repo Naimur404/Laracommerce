@@ -58,7 +58,7 @@
         </script>
         <script src="{{ asset('admin_asset/vendor/wow/wow.min.js') }}"></script>
 
-
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
         <!-- Main JS-->
         <script src="{{ asset('admin_asset/js/main.js') }}"></script>
 

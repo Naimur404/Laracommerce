@@ -745,3 +745,56 @@ $('#frmPlaceOrder').submit(function (e) {
 
 
 
+$("#bkash").change(function() {
+    $payment_method = $("#bkash").val();
+    $payment_method2 = $("#cod").val();
+    if ($payment_method == "Bkash") {
+
+        $("#payment-bkash").removeClass('hidden');
+
+    }
+
+})
+$("#cod").change(function() {
+
+    $payment_method2 = $("#cod").val();
+    if ($payment_method2 == "COD") {
+
+        $("#payment-bkash").addClass('hidden');
+
+    }
+
+});
+
+$('#frmProductReview').submit(function (e) {
+
+    e.preventDefault();
+
+
+    $.ajax({
+        type: "Post",
+        url: "/product_review_process",
+        data: $('#frmProductReview').serialize(),
+
+        success: function (result) {
+       if(result.status=="sucess"){
+        alertify.set('notifier', 'position', 'top-center');
+        alertify.success(result.msg);
+        $('#frmProductReview')[0].reset();
+        //set intervel for execute this code after 3 secend intervel
+        setInterval(function(){
+            window.location.href=window.location.href;
+        },3000);
+
+
+       }if(result.status=="error"){
+        alertify.set('notifier', 'position', 'top-center');
+        alertify.error(result.msg);
+    }
+
+
+
+        }
+    });
+
+});

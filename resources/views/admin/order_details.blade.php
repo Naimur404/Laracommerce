@@ -45,8 +45,15 @@ echo "<option value='$list' selected>$list</option>";
       </select>
 
 </div>
-<div class=" col-md-6 order_operations">
-    <textarea class="form-control"></textarea>
+
+<div class=" col-md-12 order_operations">
+    <h5 style="margin-bottom: 5px">  Track Deatils </h5>
+<form method="POST">
+    @csrf
+
+    <textarea class="form-control" name="track_details" required>{{ $orders_details[0]->track_details }}</textarea>
+    <button type="submit" style="margin-top: 5px" class="btn btn-primary btn-lg">Update</button>
+</form>
 </div>
 
     </div>
