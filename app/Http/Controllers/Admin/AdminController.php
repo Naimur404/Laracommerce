@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\Admin\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -70,6 +70,23 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        return view('admin.dashboard');
+
+        $result['total_orders'] = DB::table('orders')->count();
+
+        $result['total_items'] = DB::table('orders_details')
+        ->leftjoin('orders','orders.id','=','orders_details.orders_id')
+        ->where('orders.payment_status','=',"Success")
+        ->sum('orders_details.qty')
+       ;
+       $result['total_earnings'] = DB::table('orders')
+
+       ->where('payment_status','=',"Success")
+       ->sum('orders.total_amt')
+      ;
+
+
+
+
+        return view('admin.dashboard',$result);
     }
 }

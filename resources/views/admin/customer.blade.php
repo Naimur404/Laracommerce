@@ -21,7 +21,7 @@
             <div class="au-card">
 
                 <div class="table-responsive table-responsive-data2">
-                    <table class="table table-data2">
+                    <table class="table table-data2" id="datatable2">
                         <thead>
                             <tr>
                                 <th>id</th>

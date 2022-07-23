@@ -56,7 +56,11 @@
                      <h3>{{ $product[0]->pname }}</h3>
                      <div class="aa-price-block">
                        <span class="aa-product-view-price">৳ {{ $product_attr[$product[0]->id][0]->price }}</span>
+                       @if($product_attr[$product[0]->id][0]->qty ==0)
+                       <p class="aa-product-avilability">Avilability: <span style="color: red">Out Of stock</span></p>
+                       @else
                        <p class="aa-product-avilability">Avilability: <span>In stock</span></p>
+                       @endif
                        @if ($product[0]->lead_time != '')
                        <p class="aa-product-avilability"> <span style="color: red; font-weight:bold">{{ $product[0]->lead_time }}</span></p>
                        @endif
@@ -206,15 +210,18 @@
                <h3>Related Products</h3>
                <ul class="aa-product-catg aa-related-item-slider">
                  <!-- start single product item -->
+                 @foreach ($related_product as $data)
+
+
                  <li>
                    <figure>
-                     <a class="aa-product-img" href="{{ url('product/'. $related_product[0]->pslug) }}"><img src="{{ asset('storage/media/' . $related_product[0]->image ) }}" alt="polo shirt img"></a>
+                     <a class="aa-product-img" href="{{ url('product/'. $data->pslug) }}"><img src="{{ asset('storage/media/' . $data->image ) }}" alt="polo shirt img"></a>
                      <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                       <figcaption>
-                       <h4 class="aa-product-title"><a href="#">{{ $related_product[0]->pname }}</a></h4>
-                       <span class="aa-product-price">৳ {{ $related_product_attr[$related_product[0]->id][0]->price }}</span>
-                      @if($related_product_attr[$related_product[0]->id][0]->mrp != '')
-                       <span class="aa-product-price"><del>৳ {{ $related_product_attr[$related_product[0]->id][0]->mrp }}</del></span>
+                       <h4 class="aa-product-title"><a href="#">{{ $data->pname }}</a></h4>
+                       <span class="aa-product-price">৳ {{ $related_product_attr[$data->id][0]->price }}</span>
+                      @if($related_product_attr[$data->id][0]->mrp != '')
+                       <span class="aa-product-price"><del>৳ {{ $related_product_attr[$data->id][0]->mrp }}</del></span>
                        @endif
                      </figcaption>
                    </figure>
@@ -226,6 +233,7 @@
                    <!-- product badge -->
                    <span class="aa-badge aa-sale" href="#">SALE!</span>
                  </li>
+                 @endforeach
                   <!-- start single product item -->
 
                  <!-- start single product item -->

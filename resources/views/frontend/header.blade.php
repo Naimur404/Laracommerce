@@ -9,16 +9,7 @@
               <div class="aa-header-top-left">
                 <!-- start language -->
                 <div class="aa-language">
-                  <div class="dropdown">
-                    <a class="btn dropdown-toggle" href="#" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                      <img src="img/flag/english.jpg" alt="english flag">ENGLISH
-                      <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                      <li><a href="#"><img src="img/flag/french.jpg" alt="">FRENCH</a></li>
-                      <li><a href="#"><img src="img/flag/english.jpg" alt="">ENGLISH</a></li>
-                    </ul>
-                  </div>
+
                 </div>
                 <!-- / language -->
 
@@ -73,9 +64,9 @@
               <!-- logo  -->
               <div class="aa-logo">
                 <!-- Text based logo -->
-                <a href="index.html">
+                <a href="/">
                   <span class="fa fa-shopping-cart"></span>
-                  <p>daily<strong>Shop</strong> <span>Your Shopping Partner</span></p>
+                  <p>Sto<strong>len</strong> <span>Shopping Partner</span></p>
                 </a>
                 <!-- img based logo -->
                 <!-- <a href="index.html"><img src="img/logo.jpg" alt="logo img"></a> -->
@@ -124,7 +115,9 @@
                         </span>
                       </li>
                   </ul>
-                  <a class="aa-cartbox-checkout aa-primary-btn" href="{{ url('/checkout') }}">Checkout</a>
+                  <a class="aa-cartbox-checkout aa-primary-btn" href="{{ url('/cart') }}">Cart</a>
+                  @else
+                  <h2>Cart Is Empty</h2>
 
                   @endif
                 </div>

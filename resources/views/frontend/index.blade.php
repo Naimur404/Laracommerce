@@ -208,7 +208,7 @@
                     <li>
                       <figure>
                         <a class="aa-product-img" href="{{ url('product/'. $product->pslug) }}"><img src="{{ asset('storage/media/' . $product->image ) }}" alt="{{ $product->pname }}"></a>
-                        <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                        <a class="aa-add-card-btn"href="javascript:void(0)"onclick="home_add_to_cart('{{ $product->id }}','{{$home_featured_product_attr[$product->id][0]->size}}','{{ $home_featured_product_attr[$product->id][0]->color}}')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                           <figcaption>
                           <h4 class="aa-product-title"><a href="{{ url('product/'. $product->pslug) }}">{{ $product->pname }}</a></h4>
                            @if (isset($home_featured_product_attr[$product->id][0]))
@@ -245,13 +245,13 @@
                     <!-- start single product item -->
 
                   </ul>
-                  <a class="aa-browse-btn" href="#">Browse all Product <span class="fa fa-long-arrow-right"></span></a>
+
                 </div>
                 <!-- / popular product category -->
 
                 <!-- start featured product category -->
                 <div class="tab-pane fade" id="tranding">
-                 <ul class="aa-product-catg aa-tranding-slider">
+                 <ul class="aa-product-catg aa-featured-slider">
                     @if (isset($home_tranding_product[$list->id][0]))
 
 
@@ -261,7 +261,7 @@
                     <li>
                       <figure>
                         <a class="aa-product-img" href="{{ url('product/'. $product->pslug) }}"><img src="{{ asset('storage/media/' . $product->image ) }}" alt="{{ $product->pname }}"></a>
-                        <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                        <a class="aa-add-card-btn"href="javascript:void(0)" onclick="home_add_to_cart('{{ $product->id }}','{{$home_tranding_product_attr[$product->id][0]->size}}','{{ $home_tranding_product_attr[$product->id][0]->color}}')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                           <figcaption>
                           <h4 class="aa-product-title"><a href="{{ url('product/'. $product->pslug) }}">{{ $product->pname }}</a></h4>
                           @if (isset($home_tranding_product_attr[$product->id][0]))
@@ -296,14 +296,14 @@
                     <!-- start single product item -->
 
                   </ul>
-                  <a class="aa-browse-btn" href="#">Browse all Product <span class="fa fa-long-arrow-right"></span></a>
+
                 </div>
 
                 <!-- / featured product category -->
 
                 <!-- start latest product category -->
                 <div class="tab-pane fade" id="discounted">
-                  <ul class="aa-product-catg aa-discounted-slider">
+                  <ul class="aa-product-catg aa-featured-slider">
                     @if (isset($home_discounted_product[$list->id][0]))
                     @foreach ($home_discounted_product[$list->id] as $list )
 
@@ -312,7 +312,7 @@
                     <li>
                       <figure>
                         <a class="aa-product-img" href="#"><img src="{{ asset('storage/media/' . $list->image ) }}" alt="polo shirt img"></a>
-                        <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                        <a class="aa-add-card-btn"href="#" onclick="home_add_to_cart('{{ $list->id }}','{{$home_discounted_product_attr[$list->id][0]->size}}','{{ $home_discounted_product_attr[$list->id][0]->color}}')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                          <figcaption>
                           <h4 class="aa-product-title"><a href="#"></a>{{ $list->pname }}</h4>
                           @if (isset($home_discounted_product_attr[$list->id][0]))
@@ -347,7 +347,7 @@
                     <!-- start single product item -->
 
                   </ul>
-                  <a class="aa-browse-btn" href="#">Browse all Product <span class="fa fa-long-arrow-right"></span></a>
+
                 </div>
                 <!-- / latest product category -->
               </div>

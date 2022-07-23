@@ -30,22 +30,23 @@ class FrontController extends Controller
 
 
         foreach ($result['home_category'] as $list) {
-            $result['home_category_product'][$list->id] = DB::table('products')->where(['status' => 1])->where(['category_id' => $list->id])->get();
+            $result['home_category_product'][$list->id] = DB::table('products')->where(['status' => 1])->where(['category_id' => $list->id])->skip(0)->take(8)->get()
+            ;
             foreach ($result['home_category_product'][$list->id] as $list1) {
                 $result['home_product_attr'][$list1->id] = DB::table('product_arts')->leftJoin('sizes', 'sizes.id', '=', 'size_id')->leftJoin('colors', 'colors.id', '=', 'color_id')->where(['product_arts.product_id' => $list1->id])->get();
             }
         }
 
-        $result['home_featured_product'][$list->id] = DB::table('products')->where(['status' => 1])->where(['is_featured' => 1])->get();
+        $result['home_featured_product'][$list->id] = DB::table('products')->where(['status' => 1])->where(['is_featured' => 1])->skip(0)->take(4)->get();
         foreach ($result['home_featured_product'][$list->id] as $list1) {
             $result['home_featured_product_attr'][$list1->id] = DB::table('product_arts')->leftJoin('sizes', 'sizes.id', '=', 'size_id')->leftJoin('colors', 'colors.id', '=', 'color_id')->where(['product_arts.product_id' => $list1->id])->get();
         }
 
-        $result['home_tranding_product'][$list->id] = DB::table('products')->where(['status' => 1])->where(['is_tranding' => 1])->get();
+        $result['home_tranding_product'][$list->id] = DB::table('products')->where(['status' => 1])->where(['is_tranding' => 1])->skip(0)->take(4)->get();
         foreach ($result['home_tranding_product'][$list->id] as $list1) {
             $result['home_tranding_product_attr'][$list1->id] = DB::table('product_arts')->leftJoin('sizes', 'sizes.id', '=', 'size_id')->leftJoin('colors', 'colors.id', '=', 'color_id')->where(['product_arts.product_id' => $list1->id])->get();
         }
-        $result['home_discounted_product'][$list->id] = DB::table('products')->where(['status' => 1])->where(['is_discounted' => 1])->get();
+        $result['home_discounted_product'][$list->id] = DB::table('products')->where(['status' => 1])->where(['is_discounted' => 1])->skip(0)->take(4)->get();
         foreach ($result['home_discounted_product'][$list->id] as $list1) {
             $result['home_discounted_product_attr'][$list1->id] = DB::table('product_arts')->leftJoin('sizes', 'sizes.id', '=', 'size_id')->leftJoin('colors', 'colors.id', '=', 'color_id')->where(['product_arts.product_id' => $list1->id])->get();
         }
@@ -71,7 +72,7 @@ class FrontController extends Controller
             $result['product_images'][$list1->id] = DB::table('product_imgs')->where(['product_imgs.product_id' => $list1->id])->get();
         }
         //for related product basis on related category
-        $result['related_product'] = DB::table('products')->where(['status' => 1])->where('pslug', '!=', $slug)->where(['category_id' => $result['product'][0]->category_id])->get();
+        $result['related_product'] = DB::table('products')->where(['status' => 1])->where('pslug', '!=', $slug)->where(['category_id' => $result['product'][0]->category_id])->skip(0)->take(4)->get();
 
         foreach ($result['related_product'] as $list1) {
             $result['related_product_attr'][$list1->id] = DB::table('product_arts')->leftJoin('sizes', 'sizes.id', '=', 'size_id')->leftJoin('colors', 'colors.id', '=', 'color_id')->where(['product_arts.product_id' => $list1->id])->get();
@@ -108,11 +109,26 @@ class FrontController extends Controller
         $proudct_id = $request->post('product_id');
         $pqty = $request->post('pqty');
 
-        $result = DB::table('product_arts')->select('product_arts.id')
-            ->leftJoin('sizes', 'sizes.id', '=', 'product_arts.size_id')->leftJoin('colors', 'colors.id', '=', 'product_arts.color_id')->where(['product_id' => $proudct_id])->where(['sizes.size' => $size_id])->where(['colors.color' => $color_id])->get();
+
+   $result = DB::table('product_arts')->select('product_arts.id')
+            ->leftJoin('sizes', 'sizes.id', '=', 'product_arts.size_id')
+            ->leftJoin('colors', 'colors.id', '=', 'product_arts.color_id')
+            ->where(['product_id' => $proudct_id])
+            ->where(['sizes.size' => $size_id])
+            ->where(['colors.color' => $color_id])
+            ->get();
         $product_attr_id = $result[0]->id;
 
-        $check =  DB::table('cart')
+       $getAvaliableQty = getAvaliableQty($proudct_id, $product_attr_id);
+
+
+
+        $existsproduct =$getAvaliableQty[0]->qty;
+
+        if($pqty>$existsproduct){
+            return response()->json(['msg' => "not_avaliable", 'data' => "Only $existsproduct Left"]);
+        }else{
+            $check =  DB::table('cart')
             ->where(['user_id' => $uid])
             ->where(['user_type' => $user_type])
             ->where(['product_id' => $proudct_id])
@@ -150,6 +166,10 @@ class FrontController extends Controller
             ->select('cart.qty', 'products.pname', 'products.image', 'products.pslug', 'sizes.size', 'colors.color', 'product_arts.price', 'products.id as pid', 'product_arts.id as attr_id')
             ->get();
         return response()->json(['msg' => $msg, 'data' => $result, 'totalitems' => count($result)]);
+        }
+
+
+
     }
     public  function cart(Request $request)
     {
@@ -231,7 +251,7 @@ class FrontController extends Controller
         }
 
         $query = $query->distinct()->select('products.*');
-        $query = $query->get();
+        $query = $query->paginate(12);
         $result['product'] = $query;
         foreach ($result['product'] as $list1) {
             $query  = DB::table('product_arts');
@@ -278,7 +298,7 @@ class FrontController extends Controller
         $query = $query->orWhere('technical_specification', 'like', "%$str%");
 
         $query = $query->distinct()->select('products.*');
-        $query = $query->get();
+        $query = $query->paginate(12);
         $result['product'] = $query;
         foreach ($result['product'] as $list1) {
             $query  = DB::table('product_arts');
@@ -585,7 +605,13 @@ class FrontController extends Controller
                     $productDetailArr['price'] = $list->price;
                     $productDetailArr['qty'] = $list->qty;
                     $productDetailArr['orders_id'] = $order_id;
+                    $totalproduct = getAvaliableQty($productDetailArr['product_id'],$productDetailArr['products_attr_id']);
                     DB::table('orders_details')->insert($productDetailArr);
+                    DB::table('product_arts')
+                    ->where(['product_id'=>$productDetailArr['product_id']])
+                    ->where(['id'=> $productDetailArr['products_attr_id']])
+                    ->update(['qty'=>  ($totalproduct[0]->qty-$productDetailArr['qty'])]);
+
                 }
                 $url_final = "";
                 if ($request->payment_type == 'Gateway') {

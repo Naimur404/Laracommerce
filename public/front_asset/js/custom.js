@@ -407,27 +407,33 @@ function add_to_cart(id, size_attr_id, color_attr_id) {
             success: function (result) {
                 alertify.set('notifier', 'position', 'top-center');
                 alertify.success('Product ' + result.msg);
-                if (result.totalitems == 0) {
-                    $('.aa-cart-notify').html('0');
-                    $('.aa-cartbox-summary').remove();
-                } else {
-                    var toltalprice = 0;
-                    $('.aa-cart-notify').html(result.totalitems);
-                    var html = '<ul>'
-                    //$.each jquery foreach
-                    $.each(result.data, function (key, val) {
+                if(result.msg=="not_avaliable"){
+                    alertify.set('notifier', 'position', 'top-center');
+                    alertify.success(result.data);
+                }else{
+                    if (result.totalitems == 0) {
+                        $('.aa-cart-notify').html('0');
+                        $('.aa-cartbox-summary').remove();
+                    } else {
+                        var toltalprice = 0;
+                        $('.aa-cart-notify').html(result.totalitems);
+                        var html = '<ul>'
+                        //$.each jquery foreach
+                        $.each(result.data, function (key, val) {
 
-                        toltalprice = parseInt(toltalprice) + (parseInt(val.qty) * parseInt(val.price));
-                        html += ' <li id="box_remove_' + val.attr_id + '"><a class="aa-cartbox-img" href=""><img src="' + ImagePath + '/' + val.image + '"alt="img"></a> <div class="aa-cartbox-info"><h4><a href="#">' + val.pname + '</a></h4><p>' + val.qty + ' x ৳ ' + val.price + '</p></div></li>';
+                            toltalprice = parseInt(toltalprice) + (parseInt(val.qty) * parseInt(val.price));
+                            html += ' <li id="box_remove_' + val.attr_id + '"><a class="aa-cartbox-img" href=""><img src="' + ImagePath + '/' + val.image + '"alt="img"></a> <div class="aa-cartbox-info"><h4><a href="#">' + val.pname + '</a></h4><p>' + val.qty + ' x ৳ ' + val.price + '</p></div></li>';
 
 
-                    });
-                    html += ' <li><spanclass="aa-cartbox-total-title">Total</span><span class="aa-cartbox-total-price"> ৳ ' + toltalprice + '</span></li>';
-                    html += '</ul><a class="aa-cartbox-checkout aa-primary-btn" href="checkout">Checkout</a>';
+                        });
+                        html += ' <li><spanclass="aa-cartbox-total-title">Total</span><span class="aa-cartbox-total-price"> ৳ ' + toltalprice + '</span></li>';
+                        html += '</ul><a class="aa-cartbox-checkout aa-primary-btn" href="checkout">Checkout</a>';
 
-                    $('.aa-cartbox-summary').html(html);
+                        $('.aa-cartbox-summary').html(html);
 
+                    }
                 }
+
             }
         });
     }

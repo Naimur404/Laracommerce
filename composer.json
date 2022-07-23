@@ -6,13 +6,14 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "cartalyst/stripe-laravel": "^13.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "shurjopayv2/laravel8": "dev-master",
-        "cartalyst/stripe-laravel": "^13.0"
+        "symfony/polyfill": "^1.26"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -29,7 +30,7 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files":[
-"app/helpers/common.php"
+"app/Helpers/Common.php"
 
 
         ]

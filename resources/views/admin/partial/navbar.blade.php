@@ -2,7 +2,7 @@
     <div class="header-mobile__bar">
         <div class="container-fluid">
             <div class="header-mobile-inner">
-                <a class="logo" href="index.html">
+                <a class="logo" href="dashboard">
                     <img src="{{ asset('admin_asset/images/icon/logo.png') }}" alt="CoolAdmin" />
                 </a>
                 <button class="hamburger hamburger--slider" type="button">
@@ -17,7 +17,7 @@
         <div class="container-fluid">
             <ul class="navbar-mobile__list list-unstyled">
                 <li class="@yield('dashboard_select')">
-                    <a class="js-arrow" href="#">
+                    <a class="js-arrow" href="dashboard">
                         <i class=" fas fa-solid fa-list"></i>Dashboard</a>
 
                 </li>
@@ -71,7 +71,11 @@
                         <i class="fas fa-users"></i>Customers</a>
 
                 </li>
+                <li class="@yield('review_select')">
+                    <a href="{{ route('admin.product_review') }}">
+                        <i class="fas fa-comments"></i>Product Review</a>
 
+                </li>
 
 
             </ul>

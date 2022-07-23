@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductReview;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Front\FrontController;
@@ -101,6 +102,14 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::get('admin/banner/edit/{id}', [BannerController::class, 'edit']);
     Route::get('admin/banner/status/{status}/{id}', [BannerController::class, 'status']);
     Route::post('admin/manage_banner_process', [BannerController::class, 'manage_banner_process'])->name('banner.insert');
+
+
+    Route::get('admin/product_review', [ProductReview::class, 'index'])->name('admin.product_review');
+
+    Route::get('admin/product_review/delete/{id}', [ProductReview::class, 'delete']);
+
+    Route::get('admin/product_review/status/{status}/{id}', [ProductReview::class, 'status']);
+
 
 
     Route::get('admin/customer', [CustomerController::class, 'index'])->name('admin.customer');

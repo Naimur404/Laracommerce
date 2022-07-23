@@ -26,7 +26,7 @@
 	</div>
 
 	<footer class="site-footer" id="footer">
-		<p class="site-footer__fineprint" id="fineprint">Copyright ©2022 | All Rights Reserved</p>
+		
 	</footer>
 
 @endsection

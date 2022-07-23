@@ -138,3 +138,27 @@ if($date!=''){
    return date('d-M Y',$date);
 }
 }
+function getAvaliableQty($product_id,$attr_id){
+    $result =  DB::table('product_arts')
+
+
+    ->where(['product_arts.product_id'=> $product_id])
+    ->where(['product_arts.id'=> $attr_id])
+    ->select('product_arts.qty')
+    ->get();
+
+    return $result;
+}
+function updateAvaliableQty($order_id){
+    $result =  DB::table('order_details')
+    ->leftJoin('product_arts' ,'product_arts.id','=','order_details.products_attr_id')
+
+
+    ->where(['order_details.orders_id'=> $order_id])
+    ->where('order_details.id','=', 'order_details.product_id')
+    ->where('order_details.id','=', 'order_details.products_attr_id')
+    ->select('product_arts.qty as pqty','product_arts.qty')
+    ->get();
+
+    return $result;
+}

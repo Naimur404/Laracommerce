@@ -34,7 +34,12 @@
     <!-- Bootstrap theme -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <link href="{{ asset('admin_asset/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css')}}" rel="stylesheet" media="all">
+    <link href="{{ asset('admin_asset/vendor/wow/animate.css')}}" rel="stylesheet" media="all">
+    <link href="{{ asset('admin_asset/vendor/css-hamburgers/hamburgers.min.css')}}" rel="stylesheet" media="all">
+    <link href="{{ asset('admin_asset/vendor/slick/slick.css" rel="stylesheet')}}" media="all">
+    <link href="{{ asset('admin_asset/vendor/select2/select2.min.css')}}" rel="stylesheet" media="all">
+    <link href="{{ asset('admin_asset/vendor/perfect-scrollbar/perfect-scrollbar.css')}}" rel="stylesheet" media="all">
 
-   
 
 </head>

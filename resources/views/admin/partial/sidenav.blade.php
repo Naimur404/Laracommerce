@@ -1,6 +1,6 @@
 <aside class="menu-sidebar d-none d-lg-block">
     <div class="logo">
-        <a href="#">
+        <a href="dashboard">
             <img src="{{ asset('admin_asset/images/icon/logo.png') }}" alt="Cool Admin" />
         </a>
     </div>
@@ -62,6 +62,12 @@
                 <li class=" @yield('customers_select')">
                     <a href="{{ route('admin.customer') }}">
                         <i class="fas fa-users"></i>Customers</a>
+
+                </li>
+
+                <li class="@yield('review_select')">
+                    <a href="{{ route('admin.product_review') }}">
+                        <i class="fas fa-comments"></i>Product Review</a>
 
                 </li>
             </ul>

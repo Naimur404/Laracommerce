@@ -26,7 +26,7 @@
             <div class="au-card">
 
                 <div class="table-responsive table-responsive-data2">
-                    <table class="table table-data2">
+                    <table class="table table-data2" id="product_table">
                         <thead>
                             <tr>
 
@@ -88,20 +88,9 @@
                                             </button>
                                         </div>
                                     </td>
+
+                            </tr>
                             @endforeach
-                            </tr>
-                            <tr class="spacer"></tr>
-                            <tr class="tr-shadow">
-
-
-
-
-
-
-
-
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>

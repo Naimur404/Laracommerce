@@ -59,9 +59,26 @@
         <script src="{{ asset('admin_asset/vendor/wow/wow.min.js') }}"></script>
 
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.jqueryui.min.js"></script>
         <!-- Main JS-->
         <script src="{{ asset('admin_asset/js/main.js') }}"></script>
+        <script src="{{ asset('admin_asset/vendor/counter-up/jquery.waypoints.min.js') }}"></script>
+        <script src="{{ asset('admin_asset/vendor/counter-up/jquery.counterup.min.js') }}">
+        </script>
+        <script src="{{ asset('admin_asset/vendor/circle-progress/circle-progress.min.js') }}"></script>
+        <script src="{{ asset('admin_asset/vendor/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+        <script src="{{ asset('admin_asset/vendor/chartjs/Chart.bundle.min.js') }}"></script>
+        <script src="{{ asset('admin_asset/vendor/select2/select2.min.js') }}">
+        </script>
+<script>
+ $(document).ready( function () {
+    $('#datatable').DataTable();
+} );
+$(document).ready( function () {
+    $('#product_table').DataTable();
+} );
 
+</script>
 </body>
 
 </html>

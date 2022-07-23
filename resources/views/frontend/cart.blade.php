@@ -70,7 +70,7 @@
                             <input class="aa-coupon-code" type="text" placeholder="Coupon">
                             <input class="aa-cart-view-btn" type="submit" value="Apply Coupon">
                           </div>
-                          <input class="aa-cart-view-btn" type="submit" value="Checkout">
+                          <a class="aa-cart-view-btn" href="{{ url('/checkout') }}">Checkout</a>
                         </td>
                       </tr>
 
